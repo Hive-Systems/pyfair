@@ -2,7 +2,11 @@
 
 VERSION = '0.0.1'
 
-from .model import FairModel
-from .model import FairMetaModel
-from .report import FairReport
-from .utility import FairException
+
+from . import model
+from . import report
+from . import utility
+
+from .model.model import FairModel
+from .model.meta_model import FairMetaModel
+from .utility.beta_pert import FairBetaPert

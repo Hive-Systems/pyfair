@@ -3,11 +3,6 @@ import numpy as np
 import pandas as pd
 
 
-class FairException(Exception):
-    '''Vanity exception class'''
-    pass
-
-
 class FairBetaPert(object):
     '''A PERT distribution for all your pseudoscientific needs.
     
@@ -79,10 +74,3 @@ class FairBetaPert(object):
         # Convert using probability point function (percentile)
         gt['sample'] = self._beta_curve.ppf(gt['uniform'])
         return gt['sample']
-
-
-class FairDatabase(object):
-    '''An interface for a database that stores FAIR results, reports, and metadata.'''
-    
-    def __init__(self, path_to_database):
-        raise NotImplementedError()
