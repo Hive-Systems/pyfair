@@ -9,6 +9,7 @@ from ..utility.beta_pert import FairBetaPert
 class FairDataInput(object):
     '''Data entry and validation.'''
     
+    # TODO confirm accuracy of these function mappings.
     def __init__(self):
         # Lookup table
         self._function_dict = {

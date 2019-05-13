@@ -13,10 +13,12 @@ from ..utility.fair_exception import FairException
 class FairModel(object):
     '''A main class to act as an API for FAIR Model construction.'''
     
+    # TODO confirm mapping names to ensure they are consistent with current nomenclature
     def __init__(self, name=None, n_simulations=10_000, random_seed=34, model_uuid=None):
         # Set n_simulations and random seed for reproducablility
         self._name = name
         self._n_simulations = n_simulations
+        # Do not change the random_seed unless you have a good reason.
         self._random_seed = random_seed
         np.random.seed(random_seed)
         # Instantiate components
@@ -76,6 +78,7 @@ class FairModel(object):
         data = self._data_input.generate(target, self._n_simulations, **kwargs)
         self._tree.update_status(target, 'Supplied')
         self._model_table[target] = data
+        return self
         
     def calculate_all(self):
         '''Calculate all nodes'''
@@ -96,6 +99,7 @@ class FairModel(object):
                 # Remove node from list if calculated.
                 if self._tree.nodes[node_name].status == 'Calculated':
                     calculable_nodes.remove(node_name)
+        return self
     
     def _calculate_node(self, name):
         '''Calculate an individual node'''
@@ -142,10 +146,10 @@ class FairModel(object):
     def export_params(self):
         '''Export params as dict'''
         # <screed>
-        # I know. I know. Getters and setters have no place in Python.
-        # That said ... if it's people will read AND write it.
-        # We definitely don't want people writing to params.
-        # We could wrap a decorator allowing setting, but that's overkill.
-        # It's better to just have a simple export function.
+        #    I know. I know. Getters and setters have no place in Python.
+        #    That said ... if it's people will read AND write it.
+        #    We definitely don't want people writing to params.
+        #    We could wrap a decorator allowing setting, but that's overkill.
+        #    It's better to just have a simple export function.
         # </screed>
         return self._data_input.get_supplied_values()

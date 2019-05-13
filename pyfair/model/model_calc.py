@@ -1,6 +1,7 @@
 class FairCalculations(object):
     '''A class to perform calculations'''
     
+    # TODO confirm accuracy of these calculations.
     def __init__(self):
         self._data = None
         # Lookup table (no leaf nodes required)
