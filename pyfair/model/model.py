@@ -74,6 +74,10 @@ class FairModel(object):
         model.calculate_all()
         return model
 
+    def get_node_statuses(self):
+        '''Public method to give access to internals'''
+        return self._tree.get_node_statuses()
+
     def input_data(self, target, **kwargs):
         data = self._data_input.generate(target, self._n_simulations, **kwargs)
         self._tree.update_status(target, 'Supplied')

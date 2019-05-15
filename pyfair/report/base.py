@@ -1,5 +1,10 @@
 import base64
+import os
 import pathlib
+
+import pandas as pd
+
+from .. import VERSION
 
 
 class FairBaseReport(object):
@@ -57,3 +62,13 @@ class FairBaseReport(object):
         output = self._construct_output()
         with open(output_path, 'w+') as f:
             f.write(output)
+    
+    def _get_metadata_table(self):
+            # Add metadata
+        metadata = pd.Series({
+            'Author': os.environ['USERNAME'],
+            'Created': str(pd.datetime.now()).partition('.')[0],
+            'PyFair Version': VERSION,
+            'Type': type(self).__name__
+        }).to_frame().to_html(border=0, header=None, justify='left', classes='fair_metadata_table')
+        return metadata

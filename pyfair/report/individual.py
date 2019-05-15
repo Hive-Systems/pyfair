@@ -1,9 +1,6 @@
-import os
-
 import pandas as pd
 
 from .base import FairBaseReport
-from .. import VERSION
 
 
 class FairReport(FairBaseReport):
@@ -26,15 +23,10 @@ class FairReport(FairBaseReport):
         report = report.replace('{PYTHON_LOGO}', python_img_tag)
 
         # Add metadata
-        metadata = pd.Series({
-            'Author': os.environ['USERNAME'],
-            'Created': str(pd.datetime.now()).partition('.')[0],
-            'PyFair Version': VERSION,
-            'Type': type(self).__name__
-        }).to_frame().to_html(border=0, header=None, justify='left', classes='fair_metadata_table')
+        metadata = self._get_metadata_table()
         report = report.replace('{METADATA}', metadata)
 
-
+        # Drawing
         
 
         # Return report

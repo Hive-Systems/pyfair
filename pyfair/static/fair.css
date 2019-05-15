@@ -45,3 +45,7 @@
     text-align: left;
     flex-grow: 1;
 }
+
+.fair_metadata_table th {
+    padding-right: 10px;
+}
