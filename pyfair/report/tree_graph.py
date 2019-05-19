@@ -33,21 +33,21 @@ class FairTreeGraph(object):
     'External Loss Factors'      : ['ELF', 8400,    0, 7800,  800],
 }, orient='index', columns=['tag', 'self_x', 'self_y', 'parent_x', 'parent_y'])
     
-    def __init__(self, results, statuses, params, format_strings):
+    def __init__(self, model, format_strings):
         self._colormap = {'Not Required': 'grey', 'Supplied': 'green', 'Calculated': 'blue'}
-        self._results = results.T
+        self._results = model.export_results().T
         self._format_strings = format_strings
         # Calculate mean and standard deviation for results
         self._result_summary = pd.DataFrame({
-            'μ': results.T.mean(axis=1), 
-            'σ': results.T.std(axis=1),
-            '↑': results.T.max(axis=1),
+            'μ': self._results.mean(axis=1), 
+            'σ': self._results.std(axis=1),
+            '↑': self._results.max(axis=1),
         })
         # Make status input into a dataframe.
-        self._statuses = statuses
+        self._statuses = model.get_node_statuses()
         self._process_statuses()
-        # Make params a frame
-        self._params = pd.DataFrame(params).T.reindex(self._statuses.index)
+        # Make params a frame (must occur after process_statuses())
+        self._params = pd.DataFrame(model.export_params()).T.reindex(self._statuses.index)
         # Tack all data together
         self._data = pd.concat([
             self._statuses, 
@@ -161,4 +161,4 @@ class FairTreeGraph(object):
         self._generate_rects(ax)
         self._data.apply(self._generate_lines, args=[ax], axis=1)
         self._generate_legend(ax)
-        return fig
+        return (ax, fig)
