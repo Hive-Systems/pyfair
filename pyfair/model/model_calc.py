@@ -6,7 +6,7 @@ class FairCalculations(object):
         self._data = None
         # Lookup table (no leaf nodes required)
         self._function_dict = {
-            'Risk'                       : self._calculate_addition,
+            'Risk'                       : self._calculate_multiplication,
             'Loss Event Frequency'       : self._calculate_multiplication,
             'Threat Event Frequency'     : self._calculate_multiplication,
             'Vulnerability'              : self._calculate_step,
