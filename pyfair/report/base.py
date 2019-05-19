@@ -14,18 +14,17 @@ class FairBaseReport(object):
         # Attach model
         self._model = model
         # Add formatting strings
-        self._dollar_format_string     = '${0:,}'
-        self._integer_format_string    = '{0:,}'
-        self._percentage_format_string = '{0:.3f}'
+        self._dollar_format_string     = '${0:,.2f}'
+        self._float_format_string      = '{0:.2f}'
         self._format_strings = {
             'Risk'                        : self._dollar_format_string,
-            'Loss Event Frequency'        : self._integer_format_string,
-            'Threat Event Frequency'      : self._integer_format_string,
-            'Vulnerability'               : self._integer_format_string,         
-            'Contact'                     : self._percentage_format_string,
-            'Action'                      : self._percentage_format_string,
-            'Threat Capability'           : self._percentage_format_string,
-            'Control Strength'            : self._percentage_format_string,
+            'Loss Event Frequency'        : self._float_format_string,
+            'Threat Event Frequency'      : self._float_format_string,
+            'Vulnerability'               : self._float_format_string,         
+            'Contact'                     : self._float_format_string,
+            'Action'                      : self._float_format_string,
+            'Threat Capability'           : self._float_format_string,
+            'Control Strength'            : self._float_format_string,
             'Probable Loss Magnitude'     : self._dollar_format_string,
             'Primary Loss Factors'        : self._dollar_format_string,
             'Asset Loss Factors'          : self._dollar_format_string,
@@ -41,6 +40,9 @@ class FairBaseReport(object):
             'css'       : self._static_location / 'fair.css',
             'individual': self._static_location / 'individual.html'
         }
+
+    def get_format_strings(self):
+        return self._format_strings
 
     def base64ify(self, image_path, alternative_text='', options=''):
         '''Loads an image into a base64 embeddable <img> tag'''

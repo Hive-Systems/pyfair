@@ -1,0 +1,164 @@
+import pandas as pd
+
+import matplotlib.pyplot as plt
+
+from matplotlib.patches import Patch
+from matplotlib.patches import Rectangle
+from matplotlib.collections import PatchCollection
+
+
+class FairTreeGraph(object):
+    '''Provides a pretty tree diagram to summarize calculations.
+    
+    TODO: Magic numbers galore.
+    
+    '''
+    
+    # Class attribute
+    DIMENSIONS = pd.DataFrame.from_dict({
+    'Contact'                    : ['C'  ,    0,    0,  600,  800],
+    'Threat Event Frequency'     : ['TEF',  600,  800, 1800, 1600],
+    'Action'                     : ['A'  , 1200,    0,  600,  800],
+    'Threat Capability'          : ['TC' , 2400,    0, 3000,  800],
+    'Vulnerability'              : ['V'  , 3000,  800, 1800, 1600],
+    'Control Strength'           : ['CS' , 3600,    0, 3000,  800],
+    'Probable Loss Magnitude'    : ['PLM', 6600, 1600, 4200, 2400],
+    'Loss Event Frequency'       : ['LEF', 1800, 1600, 4200, 2400],
+    'Risk'                       : ['R'  , 4200, 2400, 4200, 5000],
+    'Primary Loss Factors'       : ['PLF', 5400,  800, 6600, 1600],
+    'Secondary Loss Factors'     : ['SLF', 7800,  800, 6600, 1600],
+    'Asset Loss Factors'         : ['ALF', 4800,    0, 5400,  800],
+    'Threat Loss Factors'        : ['TLF', 6000,    0, 5400,  800],
+    'Organizational Loss Factors': ['OLF', 7200,    0, 7800,  800],
+    'External Loss Factors'      : ['ELF', 8400,    0, 7800,  800],
+}, orient='index', columns=['tag', 'self_x', 'self_y', 'parent_x', 'parent_y'])
+    
+    def __init__(self, results, statuses, params, format_strings):
+        self._colormap = {'Not Required': 'grey', 'Supplied': 'green', 'Calculated': 'blue'}
+        self._results = results.T
+        self._format_strings = format_strings
+        # Calculate mean and standard deviation for results
+        self._result_summary = pd.DataFrame({
+            'μ': results.T.mean(axis=1), 
+            'σ': results.T.std(axis=1),
+            '↑': results.T.max(axis=1),
+        })
+        # Make status input into a dataframe.
+        self._statuses = statuses
+        self._process_statuses()
+        # Make params a frame
+        self._params = pd.DataFrame(params).T.reindex(self._statuses.index)
+        # Tack all data together
+        self._data = pd.concat([
+            self._statuses, 
+            self.DIMENSIONS, 
+            self._result_summary,
+            self._params
+        ], axis=1, sort=True)
+        # Add format strinsg (forgot to add previously)
+        self._data['formatter'] = pd.Series(self._format_strings)
+
+    def _process_statuses(self):
+        '''Turn dict into df and add color column'''
+        self._statuses = pd.DataFrame.from_records([self._statuses]).T
+        self._statuses.columns = ['status']
+        self._statuses['color'] = self._statuses['status'].map(self._colormap)
+        
+    def _tweak_axes(self, ax):
+        # Set title
+        ax.set_title('Calculation Tree', fontsize=30, pad=30)
+        # Set limits
+        ax.set_xlim(0, 9_400)
+        ax.set_ylim(0, 2_900)
+        # Disappear axes and spines
+        for axis in [ax.xaxis, ax.yaxis]:
+            axis.set_visible(False)
+        for spine_name in ['left', 'right', 'top', 'bottom']:
+            ax.spines[spine_name].set_visible(False)
+        return ax
+    
+    def _generate_rects(self, ax):
+        '''Cannot be done via apply'''
+        patches = []
+        patch_colors = []
+        for index, row in self._data.iterrows():
+            rect = Rectangle(
+                (row['self_x'], row['self_y']),
+                1000,
+                500,
+                alpha=.3,
+            )
+            patches.append(rect)
+            patch_colors.append(row['color'])
+        collection = PatchCollection(patches, facecolor=patch_colors, alpha=.3)
+        ax.add_collection(collection)
+        return ax
+    
+    def _generate_text(self, row, ax):
+        '''Apply-able function'''
+        # Draw header
+        plt.text(
+            row['self_x'] + 500, 
+            row['self_y'] + 370, 
+            row['tag'], 
+            horizontalalignment='center',
+            fontsize=14,
+            fontweight='bold',
+        )
+        # Draw data
+        fmt = row['formatter']
+        if row['status'] == 'Calculated':
+            output = 'μ: {0}\nσ: {1}\n↑: {2}'.format(
+                fmt.format(row['μ']), 
+                fmt.format(row['σ']),
+                fmt.format(row['↑']),
+            )
+        elif row['status'] == 'Supplied' and row.name != 'Vulnerability':
+            output = 'l: {0}\nm: {1}\nh: {2}'.format(
+                fmt.format(row['low']), 
+                fmt.format(row['mode']),
+                fmt.format(row['high'])
+            )
+        elif row['status'] == 'Supplied' and row.name == 'Vulnerability':
+            output = 'P: {0}'.format(fmt.format(row['p']))
+        else:
+            output = ''
+        plt.text(
+            row['self_x'] + 50, 
+            row['self_y'] + 50, 
+            output,
+            horizontalalignment='left',
+            fontsize=8,
+            fontfamily='monospace'
+        )
+
+    def _generate_lines(self, row, ax):
+        '''Generate lines between boxes'''
+        if (row['color'] != 'grey') and row.name != 'Risk':
+            ax.annotate(
+                None,
+                xy=(row['parent_x'] + 500, row['parent_y']), 
+                xytext=(row['self_x'] + 500, row['self_y'] + 500),     
+                arrowprops=dict(
+                    arrowstyle="-",
+                    connectionstyle="angle3,angleA=0,angleB=-90",
+                    ec=row['color'],
+                    alpha=.3,
+                    linestyle='--', 
+                    linewidth=3
+                ),
+            )
+            
+    def _generate_legend(self, ax):
+        patches = [Patch(color=color, label=label, alpha=.3) for label, color in self._colormap.items()]
+        plt.legend(handles=patches, frameon=False)
+        
+    def generate_image(self):
+        fig, ax = plt.subplots()
+        fig.set_size_inches(20,6)
+        ax = self._tweak_axes(ax)
+        self._data.apply(self._generate_text, args=[ax], axis=1)
+        self._generate_rects(ax)
+        self._data.apply(self._generate_lines, args=[ax], axis=1)
+        self._generate_legend(ax)
+        return fig
