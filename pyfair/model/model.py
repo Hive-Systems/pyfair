@@ -14,7 +14,7 @@ class FairModel(object):
     '''A main class to act as an API for FAIR Model construction.'''
     
     # TODO confirm mapping names to ensure they are consistent with current nomenclature
-    def __init__(self, name=None, n_simulations=10_000, random_seed=34, model_uuid=None):
+    def __init__(self, name, n_simulations=10_000, random_seed=34, model_uuid=None):
         # Set n_simulations and random seed for reproducablility
         self._name = name
         self._n_simulations = n_simulations
@@ -157,3 +157,6 @@ class FairModel(object):
         #    It's better to just have a simple export function.
         # </screed>
         return self._data_input.get_supplied_values()
+
+    def get_name(self):
+        return self._name
