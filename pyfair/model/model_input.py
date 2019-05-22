@@ -1,5 +1,6 @@
 import scipy.stats
 
+import numpy as np
 import pandas as pd
 
 from ..utility.fair_exception import FairException
@@ -42,14 +43,23 @@ class FairDataInput(object):
             target_func = self._function_dict[target]
         except KeyError:
             raise FairException(target + ' is not a valid target.')
-        # Execute function
-        rvs = target_func(target, count, **kwargs)
-        self._supplied_values[target] = {**kwargs}
-        return rvs
+        # If constant test and fill
+        if 'constant' in kwargs.keys():
+            self._check_constant(target, **kwargs)
+            self._supplied_values[target] = {**kwargs}
+            return np.full(count, kwargs['constant'])
+        # If not contstant, get target funciton and run
+        else:
+            rvs = target_func(target, count, **kwargs)
+            self._supplied_values[target] = {**kwargs}
+            return rvs
 
     def _gen_betapert_zero_to_one(self, target, count, **kwargs):
         '''For numbers between 0 and 1'''
-        self._check_pert_zero_to_one(target, **kwargs)
+        self._check_pert_general(target, **kwargs)
+        if kwargs['high'] > 1:
+            err = 'Params {} fail PERT between zero and one requirement'.format(kwargs)
+            raise FairException(err)
         pert = FairBetaPert(**kwargs)
         rvs = pert.random_variates(count)
         return rvs
@@ -68,31 +78,18 @@ class FairDataInput(object):
         return rvs
 
     def _check_pert_general(self, target, **kwargs):
-        conditions_met = [
-            kwargs['low']  >= 0              and 
-            kwargs['mode'] >  kwargs['low']  and
-            kwargs['high'] >  kwargs['mode'] and
-            'low' in kwargs.keys()           and
-            'mode' in kwargs.keys()          and
-            'high' in kwargs.keys()
-        ]
-        # If all conditions are not met
-        if not all(conditions_met):
-            raise FairException(str(kwargs) + ' does not meet requirements for general PERT.')
-
-    def _check_pert_zero_to_one(self, target, **kwargs):
-        conditions_met = [
-            kwargs['low']  >= 0              and
-            kwargs['mode'] >  kwargs['low']  and
-            kwargs['high'] >  kwargs['mode'] and
-            kwargs['high'] <= 1              and
-            'low' in kwargs.keys()           and
-            'mode' in kwargs.keys()          and
-            'high' in kwargs.keys()
-        ]
-        # If all conditions are not met
-        if not all(conditions_met):
-            raise FairException(str(kwargs) + ' does not meet requirements for PERT between 0 and 1.')
+        conditions = {
+            'low >= 0'     : kwargs['low']  >= 0,
+            'mode >= low'  : kwargs['mode'] >= kwargs['low'],
+            'high >= mode' : kwargs['high'] >= kwargs['mode'],
+            'low supplied' : 'low'  in kwargs.keys(),
+            'mode supplied': 'mode' in kwargs.keys(),
+            'high supplied': 'high' in kwargs.keys(),
+        }
+        for condition_name, condition_value in conditions.items():
+            if condition_value == False:
+                err = 'Params {} fail PERT requirement {}.'.format(kwargs, condition_name)
+                raise FairException(err)
 
     def _check_bernoulli(self, target, **kwargs):
         conditions_met = [
@@ -103,3 +100,16 @@ class FairDataInput(object):
         # If all conditions are not met
         if not all(conditions_met):
             raise FairException(str(kwargs) + ' does not meet the requirements for Bernoulli distribution.')
+
+    def _check_constant(self, target, **kwargs):
+        '''Check if constant is below zero (or equal to or less one in some circumstnaces)'''
+        if kwargs['constant'] < 0:
+            raise FairException(str(kwargs) + ' has a number less than zero.')
+        associated_func = self._function_dict[target]
+        zero_to_one_functs = [
+            self._gen_betapert_zero_to_one, 
+            self._gen_bernoulli
+        ]
+        if associated_func in zero_to_one_functs:
+            if kwargs['constant'] > 1:
+                raise FairException(str(kwargs) + ' has a constant number greater than is allowed.')

@@ -1,6 +1,6 @@
 import pandas as pd
 
-from .base import FairBaseReport
+from .report_base import FairBaseReport
 
 
 class FairReport(FairBaseReport):

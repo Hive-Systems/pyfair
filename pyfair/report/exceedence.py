@@ -1,3 +1,4 @@
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -8,31 +9,16 @@ from matplotlib.ticker import StrMethodFormatter
 from ..model.model import FairModel
 from ..model.meta_model import FairMetaModel
 from ..utility.fair_exception import FairException
+from ..report.base_curve import FairBaseCurve
 
 
-class FairExceedenceCurves(object):
+class FairExceedenceCurves(FairBaseCurve):
     '''Plots one or more exceedence curves'''
     
     def __init__(self, model_or_iterable):
         # If it's just a model, make it a list.
+        super().__init__()
         self._input = self._input_check(model_or_iterable)
-
-    def _input_check(self, value):
-        # If it's a model or metamodel, plug it in a dict.
-        rv = {}
-        if value.__class__.__name__ in ['FairModel', 'FairMetaModel']:
-            rv[value.get_name()] = value
-            return rv
-        # Check for iterable.
-        if not hasattr(value, '__iter__'):
-            raise FairException('Input is not a FairModel, FairMetaModel, or an iterable.')
-        # Iterate and process remainder.
-        for proported_model in value:
-            if proported_model.__class__.__name__ in ['FairModel', 'FairMetaModel']:
-                rv[proported_model.get_name()] = proported_model
-            else:
-                raise FairException('Iterable member is not a FairModel or FairMetaModel')
-        return rv
     
     def generate_image(self):
         '''Main function for generating plots'''
