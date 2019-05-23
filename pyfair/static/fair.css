@@ -1,51 +1,103 @@
 
-.fair_table {
-    font-size: 11pt; 
-    font-family: Arial;
-    border-collapse: collapse; 
-    border: 1px solid silver;
-}
+            .fair_table {
+                font-size: 11pt; 
+                font-family: Arial;
+                border-collapse: collapse; 
+                border: 1px solid silver;
+            }
 
-.fair_table td, th {
-    padding: 2px;
-}
+            .fair_table td, th {
+                padding: 5px;
+            }
 
-.fair_table tr:nth-child(even) {
-    background: #E0E0E0;
-}
+            .fair_table tr:nth-child(even) {
+                background: #E0E0E0;
+            }
 
-.fair_table th {
-    text-align: left
-}
+            .fair_table th {
+                text-align: left
+            }
 
-#band {
-    background-color: navy;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    align-items: center;
-}
+            #band {
+                background-color: navy;
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                align-items: center;
+            }
 
-#title {
-    color: white;
-    font-family: Arial;
-    text-align: center;
-}
+            #title {
+                color: white;
+                font-family: Arial;
+                text-align: center;
+                font-size: 30pt; 
+            }
 
-#main {
-    display: flex;
-    flex-direction: column;
-}
+            #main {
+                display: flex;
+                flex-direction: column;
+            }
 
-.fair_metadata_table {
-    color: white;
-    font-size: 11pt; 
-    font-family: Arial;
-    border-color: navy;
-    text-align: left;
-    flex-grow: 1;
-}
+            .fair_metadata_table {
+                color: black;
+                font-size: 11pt; 
+                font-family: Arial;
+                text-align: left;
+                margin: 0px 0px 0px auto;
+            }
 
-.fair_metadata_table th {
-    padding-right: 10px;
-}
+            .fair_metadata_table th {
+                padding-right: 10px;
+            }
+
+            #python_image_container {
+                height: 50px;
+            }
+
+            #python_image_container img {
+                height: 100%;
+                width: 75%;
+                padding-left: 25px;
+            }
+
+            .separator {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                background-color: navy;
+                width: 100%;
+            }
+
+            .separator p {
+                color: white;
+                font-size: 20pt; 
+                font-family: Arial;
+                padding-left: 20px;
+            }
+
+            #overview_row {
+                padding-left: 20px;
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                align-items: center;
+            }
+    
+            #overview_row table td {
+                text-align: right;
+                padding-left: 30px;
+            }
+
+            #tree_container {
+                height: inherit;
+                flex-grow: 1;
+            }
+
+            #tree_container img {
+                padding-top: 25px;
+                width: 100%;
+            }
+
+            #overview_container {
+                height: inherit;
+                flex-grow: 1;
+            }

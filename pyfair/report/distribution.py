@@ -1,5 +1,5 @@
 import numpy as np
-import mayplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 from matplotlib.ticker import StrMethodFormatter
 from scipy.stats import beta

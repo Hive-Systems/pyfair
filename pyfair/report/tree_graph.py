@@ -161,4 +161,4 @@ class FairTreeGraph(object):
         self._generate_rects(ax)
         self._data.apply(self._generate_lines, args=[ax], axis=1)
         self._generate_legend(ax)
-        return (ax, fig)
+        return (fig, ax)

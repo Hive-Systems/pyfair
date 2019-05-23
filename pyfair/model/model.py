@@ -48,6 +48,9 @@ class FairModel(object):
         else:
             self._model_uuid = str(uuid.uuid1())
 
+    def get_uuid(self):
+        return self._model_uuid
+
     @staticmethod
     def read_json(param_json):
         '''Class function for loading a model from json'''
@@ -151,7 +154,7 @@ class FairModel(object):
         '''Export params as dict'''
         # <screed>
         #    I know. I know. Getters and setters have no place in Python.
-        #    That said ... if it's people will read AND write it.
+        #    That said ... if it's public people will read AND write it.
         #    We definitely don't want people writing to params.
         #    We could wrap a decorator allowing setting, but that's overkill.
         #    It's better to just have a simple export function.

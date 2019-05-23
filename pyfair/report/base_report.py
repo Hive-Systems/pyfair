@@ -1,4 +1,5 @@
 import base64
+import io
 import os
 import pathlib
 
@@ -6,15 +7,15 @@ import pandas as pd
 
 from .. import VERSION
 
+from .tree_graph import FairTreeGraph
+
 
 class FairBaseReport(object):
     '''A base report class with boilerplate.'''
 
-    def __init__(self, model):
-        # Attach model
-        self._model = model
+    def __init__(self):
         # Add formatting strings
-        self._dollar_format_string     = '${0:,.2f}'
+        self._dollar_format_string     = '${0:,.0f}'
         self._float_format_string      = '{0:.2f}'
         self._format_strings = {
             'Risk'                        : self._dollar_format_string,
@@ -36,19 +37,26 @@ class FairBaseReport(object):
         # Add locations
         self._fair_location = pathlib.Path(__file__).parent.parent
         self._static_location = self._fair_location / 'static'
+        self._logo_location = self._static_location / 'white_python_logo.png'
         self._template_paths = {
-            'css'       : self._static_location / 'fair.css',
-            'individual': self._static_location / 'individual.html'
+            'css'   : self._static_location / 'fair.css',
+            'simple': self._static_location / 'simple.html'
         }
 
     def get_format_strings(self):
         return self._format_strings
 
-    def base64ify(self, image_path, alternative_text='', options=''):
+    def base64ify(self, image, alternative_text='', options=''):
         '''Loads an image into a base64 embeddable <img> tag'''
-        # Read data.
-        with open(image_path, 'rb') as f:
-            binary_data = f.read()
+        # If path, open and read.
+        if type(image) == str or isinstance(image, pathlib.Path):
+            with open(image, 'rb') as f:
+                binary_data = f.read()
+        # If bytes, jsut write
+        elif type(image) == bytes:
+            binary_data = image
+        else:
+            raise TypeError(str(image) + ' is not a string, path, or bytes.')
         # Get base64 string
         base64_string = base64.b64encode(binary_data).decode('utf8')
         # Create tag
@@ -74,3 +82,13 @@ class FairBaseReport(object):
             'Type': type(self).__name__
         }).to_frame().to_html(border=0, header=None, justify='left', classes='fair_metadata_table')
         return metadata
+    
+    def _get_tree(self, model):
+        ftg = FairTreeGraph(model, self._format_strings)
+        fig, ax = ftg.generate_image()
+        data = io.BytesIO()
+        fig.savefig(data, format='png')
+        # Seek to start of file
+        data.seek(0)
+        img_tag = self.base64ify(data.read())
+        return img_tag
