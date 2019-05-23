@@ -88,7 +88,7 @@ class FairDataInput(object):
         }
         for condition_name, condition_value in conditions.items():
             if condition_value == False:
-                err = 'Params {} fail PERT requirement {}.'.format(kwargs, condition_name)
+                err = 'Params {} fail PERT requirement "{}".'.format(kwargs, condition_name)
                 raise FairException(err)
 
     def _check_bernoulli(self, target, **kwargs):

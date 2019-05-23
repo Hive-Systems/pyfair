@@ -27,7 +27,9 @@ class FairExceedenceCurves(FairBaseCurve):
         plt.subplots_adjust(hspace=.5)
         ax1, ax2 = axes
         # For each model, calculate and plot.
+        legend_labels = []
         for name, model in self._input.items():
+            legend_labels.append(name)
             data = model.export_results()
             # Get Risk Data
             risk = data['Risk']
@@ -40,6 +42,8 @@ class FairExceedenceCurves(FairBaseCurve):
             # Generate curves with x and y
             self._generate_prob_curve(name, ax1, *prob_xy)
             self._generate_loss_curve(name, ax2, *loss_xy)
+        ax1.legend(legend_labels, frameon=False)
+        ax2.legend(legend_labels, frameon=False)
         return (fig, (ax1, ax2))
     
     def _get_prob_data(self, space, risk):
@@ -60,7 +64,6 @@ class FairExceedenceCurves(FairBaseCurve):
         ax.axes.yaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter('${x:,.0f}'))
         ax.axes.xaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter('{x:,.0f}%'))
         ax.axes.set_title('Exceedence Probability Curve', fontsize=20)
-        ax.legend(name, frameon=False)
     
     def _generate_loss_curve(self, name, ax, space, loss_expectancy):
         '''For each dollar amount, what was the probability that loss was exceeded?'''
@@ -73,4 +76,3 @@ class FairExceedenceCurves(FairBaseCurve):
         for tick in ax.axes.xaxis.get_major_ticks():
             tick.label.set_horizontalalignment('left')
         ax.axes.set_title('Loss Exceedence Curve', fontsize=20)
-        ax.legend(name, frameon=False)
