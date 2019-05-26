@@ -74,7 +74,7 @@
                 padding-left: 20px;
             }
 
-            #overview_row {
+            .flex_row {
                 padding-left: 20px;
                 display: flex;
                 flex-direction: row;
@@ -82,22 +82,16 @@
                 align-items: center;
             }
     
-            #overview_row table td {
+            .flex_row table td {
                 text-align: right;
                 padding-left: 30px;
             }
 
-            #tree_container {
-                height: inherit;
-                flex-grow: 1;
+            #overview_img_container {
+                flex-direction: column;
             }
 
-            #tree_container img {
-                padding-top: 25px;
-                width: 100%;
+            #overview_row {
+                align-items: center;
             }
 
-            #overview_container {
-                height: inherit;
-                flex-grow: 1;
-            }

@@ -8,6 +8,10 @@ import pandas as pd
 from .. import VERSION
 
 from .tree_graph import FairTreeGraph
+from .distribution import FairDistributionCurve
+from .exceedence import FairExceedenceCurves
+from ..utility.fair_exception import FairException
+from .violin import FairViolinPlot
 
 
 class FairBaseReport(object):
@@ -43,6 +47,24 @@ class FairBaseReport(object):
             'simple': self._static_location / 'simple.html'
         }
 
+    def _input_check(self, value):
+        # If it's a model or metamodel, plug it in a dict.
+        rv = {}
+        if value.__class__.__name__ in ['FairModel', 'FairMetaModel']:
+            rv[value.get_name()] = value
+            return rv
+        # Check for iterable.
+        if not hasattr(value, '__iter__'):
+            raise FairException('Input is not a FairModel, FairMetaModel, or an iterable.')
+        # Iterate and process remainder.
+        for proported_model in value:
+            if proported_model.__class__.__name__ in ['FairModel', 'FairMetaModel']:
+                rv[proported_model.get_name()] = proported_model
+            else:
+                raise FairException('Iterable member is not a FairModel or FairMetaModel')
+        return rv
+
+
     def get_format_strings(self):
         return self._format_strings
 
@@ -72,8 +94,30 @@ class FairBaseReport(object):
         output = self._construct_output()
         with open(output_path, 'w+') as f:
             f.write(output)
-    
+
+    def _fig_to_img_tag(self, fig):
+        '''Convert fig to base64 encoded img tag'''
+        data = io.BytesIO()
+        fig.savefig(data, format='png', transparent=True)
+        data.seek(0)
+        img_tag = self.base64ify(data.read())
+        return img_tag
+
+    def _get_data_table(self, model):
+        data = model.export_results().dropna(axis=1)
+        table = data.to_html(
+            border=0, 
+            justify='left', 
+            classes='fair_metadata_table'
+        )
+        return table
+
+    def _get_parameter_table(self, model):
+        data = model.export_parameters()
+        return data       
+
     def _get_metadata_table(self):
+        '''Do not put model-specific data in here.'''
             # Add metadata
         metadata = pd.Series({
             'Author': os.environ['USERNAME'],
@@ -81,14 +125,34 @@ class FairBaseReport(object):
             'PyFair Version': VERSION,
             'Type': type(self).__name__
         }).to_frame().to_html(border=0, header=None, justify='left', classes='fair_metadata_table')
-        return metadata
-    
+        return metadata    
+
     def _get_tree(self, model):
         ftg = FairTreeGraph(model, self._format_strings)
         fig, ax = ftg.generate_image()
-        data = io.BytesIO()
-        fig.savefig(data, format='png')
-        # Seek to start of file
-        data.seek(0)
-        img_tag = self.base64ify(data.read())
+        img_tag = self._fig_to_img_tag(fig)
+        return img_tag
+
+    def _get_distribution(self, model_or_models):
+        fdc = FairDistributionCurve(model_or_models)
+        fig, ax = fdc.generate_image()
+        img_tag = self._fig_to_img_tag(fig)
+        return img_tag
+
+    def _get_distribution_icon(self, model, target):
+        fdc = FairDistributionCurve(model)
+        fig, ax = fdc.generate_icon(model.get_name(), target)        
+        img_tag = self._fig_to_img_tag(fig)
+        return img_tag
+
+    def _get_exceedence_curves(self, model_or_models):
+        fec = FairExceedenceCurves(model_or_models)
+        fig, ax = fec.generate_image()
+        img_tag = self._fig_to_img_tag(fig)
+        return img_tag
+    
+    def _get_violins(self, metamodel):
+        vplot = FairViolinPlot(metamodel)
+        fig, ax = vplot.generate_image()
+        img_tag = self._fig_to_img_tag(fig)
         return img_tag

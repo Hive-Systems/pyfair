@@ -9,6 +9,8 @@
     <body>
         <div id="main">
 
+
+            <!--Header-->
             <div id="band">
                 <div id="python_image_container">
                     {PYTHON_LOGO}
@@ -16,34 +18,37 @@
                 <div height=inherit style="flex-grow: 1;">
                     <p id="title">FAIR Report</p>
                 </div>
-
             </div>
 
+            <!--Metadata table-->
             <br>
             <div id="metadata_table">
                     {METADATA}
             </div>
 
+            <!--Overview Rows-->
             <div class='separator'>
                 <p>Overview</p>
             </div>
 
-            <div id='overview_row'>
-                <div id='overview_container'>
+            <div class='flex_row' id='overview_row'>
+                <div id='overview_df_container'>
                     {OVERVIEW_DATAFRAME}
                 </div>
-                <div id='tree_container'>
-                    {TREE}
+                <div id='overview_img_container'>
+                    {HIST}
+                    {EXCEEDENCE}
                 </div>
             </div>
-            
-            <div class='separator'>
-                <p>Analysis</p>
-            </div>
 
+
+            <!--Parameter breakdwon rows-->
             <div class='separator'>
                 <p>Parameters</p>
             </div>
+
+            {PARAMETER_TABLE}
+            {PARAMETER_IMG}
 
             <div class='separator'>
                 <p>Code</p>
@@ -54,3 +59,22 @@
     </body>
 
 </html>
+
+
+
+* Summary General
+    * Summary Table (mean, stdev, low, high, n)
+    * hist
+    * Exceedence curves
+* Summary Comparison
+    * Summary Table (mean, stdev, low, high, n)
+    * Summary Table 2
+    * Combined Hist
+    * Exceedence curves
+    
+<section parameters>
+
+* Model Detail
+    * Parameter table with distributions
+* Metamodel Detail
+    * Risk table with stacked area

@@ -23,8 +23,8 @@ class FairExceedenceCurves(FairBaseCurve):
     def generate_image(self):
         '''Main function for generating plots'''
         # Setup plots
-        fig, axes = plt.subplots(2,1, figsize=(6, 8))
-        plt.subplots_adjust(hspace=.5)
+        fig, axes = plt.subplots(1,2, figsize=(16, 4))
+        plt.subplots_adjust(bottom=.3)
         ax1, ax2 = axes
         # For each model, calculate and plot.
         legend_labels = []

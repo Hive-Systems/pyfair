@@ -18,7 +18,7 @@ class FairDistributionCurve(FairBaseCurve):
         model = self._input[model_name]
         data = model.export_results().loc[:, target]
         # Set up ax and params
-        fig, ax = plt.subplots(figsize=(4, .5))
+        fig, ax = plt.subplots(figsize=(6, 1))
         ax.set_xlim(0, data.max())
         # Set spines and axis invisible
         for spine in ['left', 'right', 'top', 'bottom']:
@@ -35,12 +35,14 @@ class FairDistributionCurve(FairBaseCurve):
         # Plot data (range is required)
         plt.hist(data, bins=100, range=(0, data.max()), alpha=.4)
         plt.vlines(data.mean(), 0, plt.ylim()[1], linestyle='--')
+        plt.tight_layout()
         return (fig, ax)
     
     def generate_image(self):
         '''Provides histogram(s) with PDF curve(s)'''
         # Setup plots
-        fig, ax = plt.subplots(figsize=(8, 3))
+        fig, ax = plt.subplots(figsize=(16, 6))
+        plt.subplots_adjust(bottom=.2)
         ax.axes.set_title('Risk Distribution', fontsize=20)
         # Format X axis
         ax.axes.xaxis.set_major_formatter(StrMethodFormatter('${x:,.0f}'))
