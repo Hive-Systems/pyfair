@@ -27,6 +27,10 @@
                 text-align: left
             }
 
+            .fair_table td img {
+                width: 100%;
+            }
+
             #band {
                 background-color: #1f77b4; /* Default matplotlib blue */
                 display: flex;
@@ -142,7 +146,7 @@
     </tr>
     <tr>
       <th>Created</th>
-      <td>2019-05-27 15:51:06</td>
+      <td>2019-05-27 16:00:14</td>
     </tr>
     <tr>
       <th>PyFair Version</th>
@@ -199,8 +203,8 @@
     </tr>
     <tr>
       <th>Identifier</th>
-      <td>25a303c8-80c1-11e9-bb45-f06e0bbd6cbe</td>
-      <td>25b07194-80c1-11e9-8b8a-f06e0bbd6cbe</td>
+      <td>6c5208de-80c2-11e9-be0f-f06e0bbd6cbe</td>
+      <td>6c5b31e4-80c2-11e9-85fe-f06e0bbd6cbe</td>
     </tr>
     <tr>
       <th>Model Type</th>
@@ -306,10 +310,77 @@
                     </tr>
                     <tr>
                         <td class='code_cell'>
-                            <code>{JSON}</code>
+                            <code>HA2
+====================
+{
+    "Creation Datetime": "2019-05-27 16:00:14.083708",
+    "Loss Event Frequency": {
+        "low": 0.5,
+        "mode": 0.7,
+        "high": 0.9
+    },
+    "Probable Loss Magnitude": {
+        "low": 2000000000,
+        "mode": 3000000000,
+        "high": 5000000000
+    },
+    "name": "HA2",
+    "n_simulations": 10000,
+    "random_seed": 34,
+    "model_uuid": "6c5208de-80c2-11e9-be0f-f06e0bbd6cbe",
+    "type": "FairModel"
+}
+
+
+My Meta Model!
+====================
+{
+    "HA1": {
+        "Creation Datetime": "2019-05-27 16:00:14.051699",
+        "Loss Event Frequency": {
+            "low": 20,
+            "mode": 100,
+            "high": 900
+        },
+        "Probable Loss Magnitude": {
+            "low": 3000000,
+            "mode": 3500000,
+            "high": 5000000
+        },
+        "name": "HA1",
+        "n_simulations": 10000,
+        "random_seed": 34,
+        "model_uuid": "6c4d2686-80c2-11e9-ac33-f06e0bbd6cbe",
+        "type": "FairModel"
+    },
+    "HA2": {
+        "Creation Datetime": "2019-05-27 16:00:14.083708",
+        "Loss Event Frequency": {
+            "low": 0.5,
+            "mode": 0.7,
+            "high": 0.9
+        },
+        "Probable Loss Magnitude": {
+            "low": 2000000000,
+            "mode": 3000000000,
+            "high": 5000000000
+        },
+        "name": "HA2",
+        "n_simulations": 10000,
+        "random_seed": 34,
+        "model_uuid": "6c5208de-80c2-11e9-be0f-f06e0bbd6cbe",
+        "type": "FairModel"
+    },
+    "name": "My Meta Model!",
+    "meta_model_uuid": "6c5b31e4-80c2-11e9-85fe-f06e0bbd6cbe",
+    "type": "FairMetaModel"
+}
+
+
+</code>
                         </td>
                         <td class='code_cell'>
-                            <code>{SOURCE}</code>
+                            <code>Report was called from iPython and not a script.</code>
                         </td>
                     </tr>
                 </table>

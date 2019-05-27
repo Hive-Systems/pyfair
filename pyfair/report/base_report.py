@@ -1,5 +1,4 @@
 import base64
-import copy
 import inspect
 import io
 import os
@@ -199,7 +198,7 @@ class FairBaseReport(object):
         return overview_html
 
     def _get_model_parameter_table(self, model):
-            params = copy.deepcopy(model.export_params())
+            params = dict(**model.export_params())
             # Remove items we don't want.
             params = {
                 key: value 

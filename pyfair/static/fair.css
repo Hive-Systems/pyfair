@@ -23,6 +23,10 @@
                 text-align: left
             }
 
+            .fair_table td img {
+                width: 100%;
+            }
+
             #band {
                 background-color: #1f77b4; /* Default matplotlib blue */
                 display: flex;
