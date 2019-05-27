@@ -1,4 +1,5 @@
 import base64
+import inspect
 import io
 import os
 import pathlib
@@ -46,6 +47,21 @@ class FairBaseReport(object):
             'css'   : self._static_location / 'fair.css',
             'simple': self._static_location / 'simple.html'
         }
+        self._caller_source = self._set_caller_source()
+
+    def _set_caller_source(self):
+        frame = inspect.getouterframes(inspect.currentframe())[2]
+        filename = frame[1]
+        name = pathlib.Path(filename)
+        if 'ipython-input' in str(name):
+            return 'Report was called from iPython and not a script.'
+        elif name.exists():
+            return name.read_text()
+        else:
+            return 'Report was not called from a script file.'
+
+    def _get_caller_source(self):
+        return self._caller_source
 
     def _input_check(self, value):
         # If it's a model or metamodel, plug it in a dict.

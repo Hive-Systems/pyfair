@@ -47,34 +47,33 @@
                 <p>Parameters</p>
             </div>
 
-            {PARAMETER_TABLE}
-            {PARAMETER_IMG}
+            <div class='flex_row' id='overview_row'>
+                {PARAMETER_TABLE}
+                <br>
+                {PARAMETER_IMG}
+            </div>
 
             <div class='separator'>
                 <p>Code</p>
-             </div>
+            </div>
 
+            <table class='fair_table'>
+                <tr>
+                    <th>JSON</th>
+                    <th>Source Code</th>
+                </tr>
+                <tr>
+                    <td valign='top'>
+                        <code>{JSON}</code>
+                    </td>
+                    <td valign='top'>
+                        <code>{SOURCE}</code>
+                    </td>
+                </tr>
+
+            <table>
 
         </div>
     </body>
 
 </html>
-
-
-
-* Summary General
-    * Summary Table (mean, stdev, low, high, n)
-    * hist
-    * Exceedence curves
-* Summary Comparison
-    * Summary Table (mean, stdev, low, high, n)
-    * Summary Table 2
-    * Combined Hist
-    * Exceedence curves
-    
-<section parameters>
-
-* Model Detail
-    * Parameter table with distributions
-* Metamodel Detail
-    * Risk table with stacked area

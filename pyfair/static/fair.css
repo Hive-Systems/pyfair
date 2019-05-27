@@ -7,7 +7,7 @@
             }
 
             .fair_table td, th {
-                padding: 5px;
+                padding: 10px;
             }
 
             .fair_table tr:nth-child(even) {
@@ -19,7 +19,7 @@
             }
 
             #band {
-                background-color: navy;
+                background-color: #1f77b4; /* Default matplotlib blue */
                 display: flex;
                 flex-direction: row;
                 width: 100%;
@@ -63,7 +63,7 @@
             .separator {
                 margin-top: 20px;
                 margin-bottom: 20px;
-                background-color: navy;
+                background-color: #1f77b4; /* Default matplotlib blue */
                 width: 100%;
             }
 
@@ -93,5 +93,9 @@
 
             #overview_row {
                 align-items: center;
+            }
+
+            code {
+                white-space: pre;
             }
 

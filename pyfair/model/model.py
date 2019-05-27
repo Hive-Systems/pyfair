@@ -143,7 +143,7 @@ class FairModel(object):
         data['n_simulations'] = self._n_simulations
         data['random_seed'] = self._random_seed
         data['model_uuid'] = self._model_uuid
-        data['type'] = str(self.__class__)
+        data['type'] = str(self.__class__.__name__)
         json_data = json.dumps(
             data,
             indent=4,

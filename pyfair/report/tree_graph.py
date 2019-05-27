@@ -65,8 +65,6 @@ class FairTreeGraph(object):
         self._statuses['color'] = self._statuses['status'].map(self._colormap)
         
     def _tweak_axes(self, ax):
-        # Set title
-        ax.set_title('Calculation Tree', fontsize=30, pad=30)
         # Set limits
         ax.set_xlim(0, 9_400)
         ax.set_ylim(0, 2_900)

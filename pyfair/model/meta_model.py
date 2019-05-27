@@ -29,6 +29,12 @@ class FairMetaModel(object):
         else:
             self._meta_model_uuid = str(uuid.uuid1())
 
+    def get_name(self):
+        return self._name
+
+    def get_uuid(self):
+        return self._meta_model_uuid
+
     @staticmethod
     def read_json(json_data):
         # TODO this is inefficient and convoluted
@@ -111,7 +117,7 @@ class FairMetaModel(object):
         data = {**self._params}
         data['name'] = str(self._name)
         data['meta_model_uuid'] = self._meta_model_uuid
-        data['type'] = str(self.__class__)
+        data['type'] = str(self.__class__.__name__)
         json_data = json.dumps(
             data,
             indent=4,
