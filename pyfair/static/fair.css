@@ -6,6 +6,11 @@
                 border: 1px solid silver;
             }
 
+            h1 {
+                font-family: Arial;
+                font-size: 30pt;  
+            }
+
             .fair_table td, th {
                 padding: 10px;
             }
@@ -61,8 +66,6 @@
             }
 
             .separator {
-                margin-top: 20px;
-                margin-bottom: 20px;
                 background-color: #1f77b4; /* Default matplotlib blue */
                 width: 100%;
             }
@@ -72,6 +75,8 @@
                 font-size: 20pt; 
                 font-family: Arial;
                 padding-left: 20px;
+                margin-top: 5px;
+                margin-bottom: 5px;
             }
 
             .flex_row {
@@ -97,5 +102,10 @@
 
             code {
                 white-space: pre;
+            }
+
+            .code_cell {
+                text-align: left !important;
+                vertical-align: top;
             }
 

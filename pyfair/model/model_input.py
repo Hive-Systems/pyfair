@@ -8,7 +8,11 @@ from ..utility.beta_pert import FairBetaPert
 
 
 class FairDataInput(object):
-    '''Data entry and validation.'''
+    '''Data entry and validation.
+    
+    TODO: This probably should support normal dists via mean= and std= keywords
+    
+    '''
     
     # TODO confirm accuracy of these function mappings.
     def __init__(self):

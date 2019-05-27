@@ -1,9 +1,11 @@
 import base64
+import copy
 import inspect
 import io
 import os
 import pathlib
 
+import numpy as np
 import pandas as pd
 
 from .. import VERSION
@@ -16,10 +18,15 @@ from .violin import FairViolinPlot
 
 
 class FairBaseReport(object):
-    '''A base report class with boilerplate.'''
+    '''A base report class with boilerplate.
+    
+    TODO: make an HTML generator. This class is bloated.
+    TODO: this should capture errors and warnings in a sep table.
+    '''
 
     def __init__(self):
         # Add formatting strings
+        self._model_or_models = None
         self._dollar_format_string     = '${0:,.0f}'
         self._float_format_string      = '{0:.2f}'
         self._format_strings = {
@@ -79,7 +86,6 @@ class FairBaseReport(object):
             else:
                 raise FairException('Iterable member is not a FairModel or FairMetaModel')
         return rv
-
 
     def get_format_strings(self):
         return self._format_strings
@@ -172,3 +178,91 @@ class FairBaseReport(object):
         fig, ax = vplot.generate_image()
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
+    
+    def _get_overview_table(self, model_or_models):
+        risk_results = pd.DataFrame({
+            name: model.export_results()['Risk']
+            for name, model 
+            in model_or_models.items()
+        })
+        risk_results = risk_results.agg([np.mean, np.std, np.min, np.max])
+        risk_results.index = ['Mean', 'Stdev', 'Minimum', 'Maximum']
+        overview_df = risk_results.applymap(lambda x: self._format_strings['Risk'].format(x))
+        overview_df.loc['Simulations'] = [
+            '{0:,.0f}'.format(len(model.export_results())) 
+            for model 
+            in model_or_models.values()
+        ]
+        overview_df.loc['Identifier'] = [model.get_uuid() for model in model_or_models.values()]
+        overview_df.loc['Model Type'] = [model.__class__.__name__ for model in model_or_models.values()]
+        overview_html = overview_df.to_html(border=0, header=True, justify='left', classes='fair_table')
+        return overview_html
+
+    def _get_model_parameter_table(self, model):
+            params = copy.deepcopy(model.export_params())
+            # Remove items we don't want.
+            params = {
+                key: value 
+                for key, value 
+                in params.items() 
+                if key in self._format_strings.keys()
+            }
+            fs = self._format_strings
+            param_df = pd.DataFrame(params).T
+            param_df = param_df[['low', 'mode', 'high']]
+            param_df['mean'] = model.export_results().mean(axis=0)
+            param_df['stdev'] = model.export_results().std(axis=0)
+            param_df['min'] = model.export_results().min(axis=0)
+            param_df['max'] = model.export_results().max(axis=0)
+            param_df = param_df.apply(
+                lambda row: pd.Series(
+                    [
+                        fs[row.name].format(item) 
+                        for item 
+                        in row
+                    ],
+                    index=row.index.values
+                ),
+                axis=1,
+            )
+            # Do not truncate our base64 images.
+            pd.set_option('display.max_colwidth', -1)
+            param_df['distribution'] = [
+                self._get_distribution_icon(model, target)
+                for target 
+                in param_df.index.values
+            ]
+            detail_table = param_df.to_html(
+                border=0, 
+                header=True, 
+                justify='left', 
+                classes='fair_table',
+                escape=False
+            )
+            return detail_table
+    
+    def _get_metamodel_parameter_table(self, metamodel):
+            risk_df = metamodel.export_results().T
+            risk_df = pd.DataFrame({
+                'mean' : risk_df.mean(axis=1),
+                'stdev': risk_df.std(axis=1),
+                'min'  : risk_df.min(axis=1),
+                'max'  : risk_df.max(axis=1),
+            })
+            risk_df = risk_df.apply(
+                lambda row: pd.Series(
+                    [self._format_strings['Risk'].format(item) for item in row],
+                    index=row.index.values
+                ),
+                axis=1,
+            )
+            # Do not truncate our base64 images.
+            detail_table = risk_df.to_html(
+                border=0, 
+                header=True, 
+                justify='left', 
+                classes='fair_table',
+                escape=False
+            )
+            return detail_table
+        

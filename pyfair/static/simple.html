@@ -46,32 +46,28 @@
             <div class='separator'>
                 <p>Parameters</p>
             </div>
-
-            <div class='flex_row' id='overview_row'>
-                {PARAMETER_TABLE}
-                <br>
-                {PARAMETER_IMG}
-            </div>
-
+                {PARAMETER_HTML}
+            <!--Code rows-->
             <div class='separator'>
                 <p>Code</p>
             </div>
 
-            <table class='fair_table'>
-                <tr>
-                    <th>JSON</th>
-                    <th>Source Code</th>
-                </tr>
-                <tr>
-                    <td valign='top'>
-                        <code>{JSON}</code>
-                    </td>
-                    <td valign='top'>
-                        <code>{SOURCE}</code>
-                    </td>
-                </tr>
-
-            <table>
+            <div class='flex_row'>
+                <table class='fair_table'>
+                    <tr>
+                        <th>JSON</th>
+                        <th>Source Code</th>
+                    </tr>
+                    <tr>
+                        <td class='code_cell'>
+                            <code>{JSON}</code>
+                        </td>
+                        <td class='code_cell'>
+                            <code>{SOURCE}</code>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
         </div>
     </body>
