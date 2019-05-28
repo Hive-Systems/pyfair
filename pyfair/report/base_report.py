@@ -56,7 +56,7 @@ class FairBaseReport(object):
         self._caller_source = self._set_caller_source()
 
     def _set_caller_source(self):
-        frame = inspect.getouterframes(inspect.currentframe())[2]
+        frame = inspect.getouterframes(inspect.currentframe())[-1]
         filename = frame[1]
         name = pathlib.Path(filename)
         if 'ipython-input' in str(name):
