@@ -47,6 +47,7 @@ class FairModel(object):
             self._model_uuid  = model_uuid
         else:
             self._model_uuid = str(uuid.uuid1())
+        # TODO: we removed creation datetime from input. Replace here?
 
     def get_uuid(self):
         return self._model_uuid
