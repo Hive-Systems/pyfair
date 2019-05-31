@@ -1,3 +1,4 @@
+import datetime
 import json
 import uuid
 
@@ -10,6 +11,7 @@ from .model import FairModel
 
 class FairMetaModel(object):
     '''An aggregation of models used to add up risk.'''
+    # TODO should 'meta_model_uuid' just be 'model_uuid'?
 
     def __init__(self, name=None, models=None, meta_model_uuid=None):
         self._name = name
@@ -27,13 +29,15 @@ class FairMetaModel(object):
         if meta_model_uuid:
             self._meta_model_uuid = meta_model_uuid
         else:
-            self._meta_model_uuid = str(uuid.uuid1())
+            self._model_uuid = str(uuid.uuid1())
+            self._creation_date = str(datetime.datetime.now())
+
 
     def get_name(self):
         return self._name
 
     def get_uuid(self):
-        return self._meta_model_uuid
+        return self._model_uuid
 
     @staticmethod
     def read_json(json_data):
@@ -45,7 +49,7 @@ class FairMetaModel(object):
             key: value
             for key, value
             in data.items()
-            if key not in ['name', 'meta_model_uuid', 'type']
+            if key not in ['name', 'model_uuid', 'type']
         }
         # Instantiate models (there is no need to cover)
         # metamodels here because metamodel json only
@@ -59,7 +63,7 @@ class FairMetaModel(object):
         meta_model = FairMetaModel(
             name=data['name'],
             models=models,
-            meta_model_uuid=data['meta_model_uuid']
+            meta_model_uuid=data['model_uuid']
         )
         return meta_model
     
@@ -75,7 +79,7 @@ class FairMetaModel(object):
             key: value
             for key, value
             in params.items()
-            if key not in ['name', 'meta_model_uuid', 'type']
+            if key not in ['name', 'model_uuid', 'type']
         }
         # Iterate through params
         for model_params in params.values():
@@ -116,7 +120,8 @@ class FairMetaModel(object):
     def to_json(self):
         data = {**self._params}
         data['name'] = str(self._name)
-        data['meta_model_uuid'] = self._meta_model_uuid
+        data['model_uuid'] = self._meta_model_uuid
+        data['creation_date'] = self._creation_date
         data['type'] = str(self.__class__.__name__)
         json_data = json.dumps(
             data,

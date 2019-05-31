@@ -10,110 +10,128 @@ from ..utility.beta_pert import FairBetaPert
 class FairDataInput(object):
     '''Data entry and validation.
     
-    TODO: This probably should support normal dists via mean= and std= keywords
+    TODO: confirm accuracy of these function mappings.
     
     '''
     
-    # TODO confirm accuracy of these function mappings.
     def __init__(self):
-        # Lookup table
-        self._function_dict = {
-            'Loss Event Frequency'       : self._gen_betapert_general,
-            'Threat Event Frequency'     : self._gen_betapert_general,
-            'Contact'                    : self._gen_betapert_zero_to_one,
-            'Action'                     : self._gen_betapert_zero_to_one,
-            'Vulnerability'              : self._gen_bernoulli,
-            'Control Strength'           : self._gen_betapert_zero_to_one,
-            'Threat Capability'          : self._gen_betapert_general,
-            'Probable Loss Magnitude'    : self._gen_betapert_general,
-            'Primary Loss Factors'       : self._gen_betapert_general,
-            'Asset Loss Factors'         : self._gen_betapert_general,
-            'Threat Loss Factors'        : self._gen_betapert_general,
-            'Secondary Loss Factors'     : self._gen_betapert_general,
-            'Organizational Loss Factors': self._gen_betapert_general,
-            'External Loss Factors'      : self._gen_betapert_general,
+        # These targets must be less than or equal to one
+        self._le_1_targets = ['Contact', 'Action', 'Vulnerability', 'Control Strength']
+        self._le_1_keywords = ['constant', 'high', 'mode', 'low', 'mean', 'p']
+        # Parameter map associates parameters with functions
+        self._parameter_map = {
+            'constant': self._gen_constant,
+            'high'    : self._gen_pert,
+            'mode'    : self._gen_pert,
+            'low'     : self._gen_pert,
+            'gamma'   : self._gen_pert,
+            'mean'    : self._gen_normal,
+            'stdev'   : self._gen_normal,
+            'p'       : self._gen_bernoulli,
         }
+        # Vulnerability is bernoulli only.
+        self._bernoulli_targets = ['Vulnerability']
+        # List of keywords with function keys
+        self._required_keywords = {
+            self._gen_constant : ['constant'],
+            self._gen_pert     : ['low', 'mode', 'high'],
+            self._gen_normal   : ['mean', 'stdev'],
+            self._gen_bernoulli: ['p']
+        }  
         # Storage of inputs
-        self._supplied_values = {'Creation Datetime': str(pd.datetime.now())}
+        self._supplied_values = {}
 
     def get_supplied_values(self):
         '''Fetch params'''
         return self._supplied_values
+    
+    def _check_le_1(self, target, **kwargs):
+        '''Checks if certain keyword arguments are less than 1'''
+        # For every keyword argument
+        for key, value in kwargs.items():
+            # If key is in specified list
+            if key in self._le_1_keywords:
+                # Check if value is less than or equal to 1
+                if 0.0 <= value <= 1.0:
+                    pass
+                # If not, raise error
+                else:
+                    raise FairException('"{}" must have "{}" value between zero and one.'.format(target, key))
+
+    def _check_parameters(self, target_function, **kwargs):
+        '''Look up keywords based on function type'''
+        required_keywords = self._required_keywords[target_function]
+        for required_keyword in required_keywords:
+            if required_keyword in kwargs.keys():
+                pass
+            else:
+                raise FairException('"{}" is missing "{}".'.format(str(target_function), required_keyword))
 
     def generate(self, target, count, **kwargs):
-        '''Function for dispatching request'''
-        # Lookup function
-        try:
-            target_func = self._function_dict[target]
-        except KeyError:
-            raise FairException(target + ' is not a valid target.')
-        # If constant test and fill
-        if 'constant' in kwargs.keys():
-            self._check_constant(target, **kwargs)
-            self._supplied_values[target] = {**kwargs}
-            return np.full(count, kwargs['constant'])
-        # If not contstant, get target funciton and run
+        '''Function for dispatching a generation request'''
+        # If destined for a le_1_target, check validity.
+        if target in self._le_1_targets:
+            self._check_le_1(target, **kwargs)
+        # If target is bernoulli, shunt into that function.
+        if target in self._bernoulli_targets:
+            results = self._gen_bernoulli(count, **kwargs)
         else:
-            rvs = target_func(target, count, **kwargs)
-            self._supplied_values[target] = {**kwargs}
-            return rvs
+            # Otherwise figure out what function
+            func = self._determine_func(**kwargs)
+            # Check to make sure sufficient parameters exist
+            self._check_parameters(func, **kwargs)
+            # Run the function
+            results = func(count, **kwargs)
+        # Record params
+        self._supplied_values[target] = {**kwargs}
+        return results
+            
+    def _determine_func(self, **kwargs):
+        '''This function takes keywords and determines function'''
+        # Check whether keys are recognized
+        for key in kwargs.keys():
+            if not key in self._parameter_map.keys():
+                raise FairException('"{}"" is not a recognized keyword'.format(key))
+        # Check whether all keys go to same function via set comprension
+        functions = list(set([
+            self._parameter_map[key]
+            for key
+            in kwargs.keys()
+        ]))
+        if len(functions) > 1:
+            raise FairException('"{}" mixes incompatible keywords.'.format(str(kwargs.keys())))
+        else:
+            function = functions[0]
+            return function
 
-    def _gen_betapert_zero_to_one(self, target, count, **kwargs):
-        '''For numbers between 0 and 1'''
-        self._check_pert_general(target, **kwargs)
-        if kwargs['high'] > 1:
-            err = 'Params {} fail PERT between zero and one requirement'.format(kwargs)
-            raise FairException(err)
-        pert = FairBetaPert(**kwargs)
-        rvs = pert.random_variates(count)
-        return rvs
-
-    def _gen_betapert_general(self, target, count, **kwargs):
-        '''Does not technically need to be greater than one.'''
-        self._check_pert_general(target, **kwargs)
-        pert = FairBetaPert(**kwargs)
-        rvs = pert.random_variates(count)
-        return rvs
-
-    def _gen_bernoulli(self, target, count, **kwargs):
-        self._check_bernoulli(target, **kwargs)
+    def _gen_bernoulli(self, count, **kwargs):
+        # No check required as 0 to 1 is already esablished
         bernoulli = scipy.stats.bernoulli(**kwargs)
         rvs = bernoulli.rvs(count)
         return rvs
-
-    def _check_pert_general(self, target, **kwargs):
+    
+    def _gen_constant(self, count, **kwargs):
+        return np.full(count, kwargs['constant'])
+    
+    def _gen_normal(self, count, **kwargs):
+        normal = scipy.stats.norm(loc=kwargs['mean'], scale=kwargs['stdev'])
+        rvs = normal.rvs(count)
+        # Clip out of range values
+        clipped_rvs = np.clip(rvs, 0.0, 1.0)
+        return clipped_rvs
+    
+    def _gen_pert(self, count, **kwargs):
+        self._check_pert(**kwargs)
+        pert = FairBetaPert(**kwargs)
+        rvs = pert.random_variates(count)
+        return rvs
+    
+    def _check_pert(self, **kwargs):
         conditions = {
-            'low >= 0'     : kwargs['low']  >= 0,
             'mode >= low'  : kwargs['mode'] >= kwargs['low'],
             'high >= mode' : kwargs['high'] >= kwargs['mode'],
-            'low supplied' : 'low'  in kwargs.keys(),
-            'mode supplied': 'mode' in kwargs.keys(),
-            'high supplied': 'high' in kwargs.keys(),
         }
         for condition_name, condition_value in conditions.items():
             if condition_value == False:
-                err = 'Params {} fail PERT requirement "{}".'.format(kwargs, condition_name)
+                err = 'Param "{}" fails PERT requirement "{}".'.format(kwargs, condition_name)
                 raise FairException(err)
-
-    def _check_bernoulli(self, target, **kwargs):
-        conditions_met = [
-            kwargs['p'] >= 0 and
-            kwargs['p'] <= 1 and
-            'p' in kwargs.keys()
-        ]
-        # If all conditions are not met
-        if not all(conditions_met):
-            raise FairException(str(kwargs) + ' does not meet the requirements for Bernoulli distribution.')
-
-    def _check_constant(self, target, **kwargs):
-        '''Check if constant is below zero (or equal to or less one in some circumstnaces)'''
-        if kwargs['constant'] < 0:
-            raise FairException(str(kwargs) + ' has a number less than zero.')
-        associated_func = self._function_dict[target]
-        zero_to_one_functs = [
-            self._gen_betapert_zero_to_one, 
-            self._gen_bernoulli
-        ]
-        if associated_func in zero_to_one_functs:
-            if kwargs['constant'] > 1:
-                raise FairException(str(kwargs) + ' has a constant number greater than is allowed.')

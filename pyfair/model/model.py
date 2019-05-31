@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 from .model_input import FairDataInput
-from .model_dependency import FairDependencyTree
+from .model_tree import FairDependencyTree
 from .model_calc import FairCalculations
 from ..utility.fair_exception import FairException
 
@@ -14,7 +14,7 @@ class FairModel(object):
     '''A main class to act as an API for FAIR Model construction.'''
     
     # TODO confirm mapping names to ensure they are consistent with current nomenclature
-    def __init__(self, name, n_simulations=10_000, random_seed=34, model_uuid=None):
+    def __init__(self, name, n_simulations=10_000, random_seed=42, model_uuid=None):
         # Set n_simulations and random seed for reproducablility
         self._name = name
         self._n_simulations = n_simulations
@@ -47,7 +47,7 @@ class FairModel(object):
             self._model_uuid  = model_uuid
         else:
             self._model_uuid = str(uuid.uuid1())
-        # TODO: we removed creation datetime from input. Replace here?
+            self._creation_date = str(pd.datetime.now())
 
     def get_uuid(self):
         return self._model_uuid
@@ -145,6 +145,7 @@ class FairModel(object):
         data['random_seed'] = self._random_seed
         data['model_uuid'] = self._model_uuid
         data['type'] = str(self.__class__.__name__)
+        data['creation_date'] = self._creation_date
         json_data = json.dumps(
             data,
             indent=4,
