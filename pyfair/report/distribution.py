@@ -1,3 +1,5 @@
+import warnings
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -69,7 +71,10 @@ class FairDistributionCurve(FairBaseCurve):
         # Plot for each
         for name, model in self._input.items():
             risk = model.export_results()['Risk']
-            beta_curve = beta(*beta.fit(risk))
+            # Catch warnings as we're "fitting" with known shape parameters.
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                beta_curve = beta(*beta.fit(risk))
             space = np.linspace(0, xmax, 1000)
             tyax.plot(space, beta_curve.pdf(space))
         plt.margins(0)

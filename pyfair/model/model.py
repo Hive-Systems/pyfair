@@ -87,6 +87,12 @@ class FairModel(object):
         self._tree.update_status(target, 'Supplied')
         self._model_table[target] = data
         return self
+
+    def bulk_import_data(self, param_dictionary):
+        '''This takes {'target': {param_1: value_1}} formatted dictionaries'''
+        for target, parameters in param_dictionary.items():
+            self.input_data(target, **parameters)
+        return self
         
     def calculate_all(self):
         '''Calculate all nodes'''

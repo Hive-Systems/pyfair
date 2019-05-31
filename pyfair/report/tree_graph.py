@@ -105,6 +105,7 @@ class FairTreeGraph(object):
             fontweight='bold',
         )
         # Draw data
+        # TODO: Now that htis can be done with Mean as well, need new boxes.
         fmt = row['formatter']
         if row['status'] == 'Calculated':
             output = 'μ: {0}\nσ: {1}\n↑: {2}'.format(

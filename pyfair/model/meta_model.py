@@ -120,7 +120,7 @@ class FairMetaModel(object):
     def to_json(self):
         data = {**self._params}
         data['name'] = str(self._name)
-        data['model_uuid'] = self._meta_model_uuid
+        data['model_uuid'] = self._model_uuid
         data['creation_date'] = self._creation_date
         data['type'] = str(self.__class__.__name__)
         json_data = json.dumps(
