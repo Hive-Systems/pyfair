@@ -13,7 +13,7 @@ class FairMetaModel(object):
     '''An aggregation of models used to add up risk.'''
     # TODO should 'meta_model_uuid' just be 'model_uuid'?
 
-    def __init__(self, name=None, models=None, meta_model_uuid=None):
+    def __init__(self, name=None, models=None, model_uuid=None):
         self._name = name
         self._params = {}
         self._risk_table = pd.DataFrame()
@@ -26,8 +26,8 @@ class FairMetaModel(object):
             if type(model) == type(self):
                 self._load_meta_model(model)
         # Assign UUID
-        if meta_model_uuid:
-            self._meta_model_uuid = meta_model_uuid
+        if model_uuid:
+            self._model_uuid = model_uuid
         else:
             self._model_uuid = str(uuid.uuid1())
             self._creation_date = str(datetime.datetime.now())

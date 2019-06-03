@@ -1,5 +1,6 @@
 import pandas as pd
 
+import matplotlib
 import matplotlib.pyplot as plt
 
 from matplotlib.patches import Patch
@@ -105,26 +106,31 @@ class FairTreeGraph(object):
             fontweight='bold',
         )
         # Draw data
-        # TODO: Now that htis can be done with Mean as well, need new boxes.
         fmt = row['formatter']
-        if row['status'] == 'Calculated':
-            output = 'μ: {0}\nσ: {1}\n↑: {2}'.format(
-                fmt.format(row['μ']), 
-                fmt.format(row['σ']),
-                fmt.format(row['↑']),
-            )
-        elif row['status'] == 'Supplied' and row.name != 'Vulnerability':
-            output = 'l: {0}\nm: {1}\nh: {2}'.format(
-                fmt.format(row['low']), 
-                fmt.format(row['mode']),
-                fmt.format(row['high'])
-            )
-        elif row['status'] == 'Supplied' and row.name == 'Vulnerability':
-            output = 'P: {0}'.format(fmt.format(row['p']))
+        key_just = 5
+        value_just = 17
+        # Set conditions
+        calculated = row['status'] == 'Calculated'
+        supplied = row['status'] == 'Supplied'
+        vuln_type = row.name == 'Vulnerability'
+        if calculated:
+            data = row.loc[['μ', 'σ', '↑']].dropna()
+            output = '\n'.join([
+                str(key).rjust(key_just) + ' ' + fmt.format(value).rjust(value_just)
+                for key, value
+                in data.iteritems()
+            ])
+        elif supplied:
+            data = row.loc[['low', 'mode', 'high', 'mean', 'stdev']].dropna()
+            output = '\n'.join([
+                str(key).rjust(key_just) + ' ' + fmt.format(value).rjust(value_just)
+                for key, value
+                in data.iteritems()
+            ])
         else:
             output = ''
         plt.text(
-            row['self_x'] + 50, 
+            row['self_x'] + 25, 
             row['self_y'] + 50, 
             output,
             horizontalalignment='left',
