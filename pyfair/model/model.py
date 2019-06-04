@@ -31,7 +31,7 @@ class FairModel(object):
             'Action', 
             'Threat Capability', 
             'Control Strength', 
-            'Probable Loss Magnitude', 
+            'Loss Magnitude', 
             'Primary Loss', 
             'Secondary Loss',
             'Secondary Loss Event Frequency', 

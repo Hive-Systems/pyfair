@@ -26,7 +26,7 @@ class FairDependencyTree(object):
             'Action', 
             'Threat Capability', 
             'Control Strength', 
-            'Probable Loss Magnitude', 
+            'Loss Magnitude', 
             'Primary Loss', 
             'Secondary Loss',
             'Secondary Loss Event Frequency', 
@@ -75,7 +75,7 @@ class FairDependencyTree(object):
         nodes = self.nodes
         # Add branches to root
         nodes['Risk'].add_child(nodes['Loss Event Frequency'])
-        nodes['Risk'].add_child(nodes['Probable Loss Magnitude'])
+        nodes['Risk'].add_child(nodes['Loss Magnitude'])
         # Loss Event Frequency Branch
         nodes['Loss Event Frequency'].add_child(nodes['Threat Event Frequency'])
         nodes['Loss Event Frequency'].add_child(nodes['Vulnerability'])
@@ -85,7 +85,7 @@ class FairDependencyTree(object):
         # Vulnerability Subbranch
         nodes['Vulnerability'].add_child(nodes['Control Strength'])
         nodes['Vulnerability'].add_child(nodes['Threat Capability'])
-        # Probable Loss Magnitude Branch
+        # Loss Magnitude Branch
         nodes['Loss Magnitude'].add_child(nodes['Primary Loss'])
         nodes['Loss Magnitude'].add_child(nodes['Secondary Loss'])
         # Secondary Loss Subbranch

@@ -37,7 +37,7 @@ class FairBaseReport(object):
             'Action'                      : self._float_format_string,
             'Threat Capability'           : self._float_format_string,
             'Control Strength'            : self._float_format_string,
-            'Probable Loss Magnitude'     : self._dollar_format_string,
+            'Loss Magnitude'     : self._dollar_format_string,
             'Primary Loss'                : self._dollar_format_string,
             'Secondary Loss'              : self._dollar_format_string,
             'Secondary Loss Event Frequency' : self._dollar_format_string,

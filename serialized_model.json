@@ -5,7 +5,7 @@
         "mode": 15,
         "high": 16
     },
-    "Probable Loss Magnitude": {
+    "Loss Magnitude": {
         "low": 500000000,
         "mode": 500900000,
         "high": 600000000

@@ -10,7 +10,7 @@ class FairCalculations(object):
             'Loss Event Frequency'       : self._calculate_multiplication,
             'Threat Event Frequency'     : self._calculate_multiplication,
             'Vulnerability'              : self._calculate_step,
-            'Probable Loss Magnitude'    : self._calculate_addition,
+            'Loss Magnitude'    : self._calculate_addition,
             'Primary Loss'               : self._calculate_multiplication,
             'Secondary Loss'             : self._calculate_multiplication,
         }
