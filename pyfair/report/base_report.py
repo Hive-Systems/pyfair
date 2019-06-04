@@ -38,12 +38,10 @@ class FairBaseReport(object):
             'Threat Capability'           : self._float_format_string,
             'Control Strength'            : self._float_format_string,
             'Probable Loss Magnitude'     : self._dollar_format_string,
-            'Primary Loss Factors'        : self._dollar_format_string,
-            'Asset Loss Factors'          : self._dollar_format_string,
-            'Threat Loss Factors'         : self._dollar_format_string,
-            'Secondary Loss Factors'      : self._dollar_format_string,
-            'Organizational Loss Factors' : self._dollar_format_string,
-            'External Loss Factors'       : self._dollar_format_string,
+            'Primary Loss'                : self._dollar_format_string,
+            'Secondary Loss'              : self._dollar_format_string,
+            'Secondary Loss Event Frequency' : self._dollar_format_string,
+            'Secondary Loss Magnitude'       : self._dollar_format_string,
         }
         # Add locations
         self._fair_location = pathlib.Path(__file__).parent.parent

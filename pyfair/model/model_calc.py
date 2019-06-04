@@ -11,9 +11,8 @@ class FairCalculations(object):
             'Threat Event Frequency'     : self._calculate_multiplication,
             'Vulnerability'              : self._calculate_step,
             'Probable Loss Magnitude'    : self._calculate_addition,
-            'Primary Loss Factors'       : self._calculate_multiplication,
-            'Threat Loss Factors'        : self._calculate_multiplication,
-            'Secondary Loss Factors'     : self._calculate_multiplication,
+            'Primary Loss'               : self._calculate_multiplication,
+            'Secondary Loss'             : self._calculate_multiplication,
         }
 
     def calculate(self, parent_name, child_1_data, child_2_data):

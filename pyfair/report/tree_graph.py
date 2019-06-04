@@ -17,21 +17,20 @@ class FairTreeGraph(object):
     
     # Class attribute
     DIMENSIONS = pd.DataFrame.from_dict({
-    'Contact'                    : ['C'  ,    0,    0,  600,  800],
-    'Threat Event Frequency'     : ['TEF',  600,  800, 1800, 1600],
-    'Action'                     : ['A'  , 1200,    0,  600,  800],
-    'Threat Capability'          : ['TC' , 2400,    0, 3000,  800],
-    'Vulnerability'              : ['V'  , 3000,  800, 1800, 1600],
-    'Control Strength'           : ['CS' , 3600,    0, 3000,  800],
-    'Probable Loss Magnitude'    : ['PLM', 6600, 1600, 4200, 2400],
-    'Loss Event Frequency'       : ['LEF', 1800, 1600, 4200, 2400],
-    'Risk'                       : ['R'  , 4200, 2400, 4200, 5000],
-    'Primary Loss Factors'       : ['PLF', 5400,  800, 6600, 1600],
-    'Secondary Loss Factors'     : ['SLF', 7800,  800, 6600, 1600],
-    'Asset Loss Factors'         : ['ALF', 4800,    0, 5400,  800],
-    'Threat Loss Factors'        : ['TLF', 6000,    0, 5400,  800],
-    'Organizational Loss Factors': ['OLF', 7200,    0, 7800,  800],
-    'External Loss Factors'      : ['ELF', 8400,    0, 7800,  800],
+    'Contact'                       : ['C'   ,    0,    0,  600,  800],
+    'Threat Event Frequency'        : ['TEF' ,  600,  800, 1800, 1600],
+    'Action'                        : ['A'   , 1200,    0,  600,  800],
+    'Threat Capability'             : ['TC'  , 2400,    0, 3000,  800],
+    'Vulnerability'                 : ['V'   , 3000,  800, 1800, 1600],
+    'Control Strength'              : ['CS'  , 3600,    0, 3000,  800],
+    'Loss Magnitude'                : ['LM'  , 6600, 1600, 4200, 2400],
+    'Loss Event Frequency'          : ['LEF' , 1800, 1600, 4200, 2400],
+    'Risk'                          : ['R'   , 4200, 2400, 4200, 5000],
+    'Primary Loss'                  : ['PL'  , 5400,  800, 6600, 1600],
+    'Secondary Loss'                : ['SL'  , 7800,  800, 6600, 1600],
+    'Secondary Loss Event Frequency': ['SLEF', 7200,    0, 7800,  800],
+    'Secondary Loss Magnitude'      : ['SLM' , 8400,    0, 7800,  800],
+    # Secondary Loss Magnitude
 }, orient='index', columns=['tag', 'self_x', 'self_y', 'parent_x', 'parent_y'])
     
     def __init__(self, model, format_strings):

@@ -27,12 +27,10 @@ class FairDependencyTree(object):
             'Threat Capability', 
             'Control Strength', 
             'Probable Loss Magnitude', 
-            'Primary Loss Factors', 
-            'Asset Loss Factors',
-            'Threat Loss Factors',
-            'Secondary Loss Factors',
-            'Organizational Loss Factors', 
-            'External Loss Factors'
+            'Primary Loss', 
+            'Secondary Loss',
+            'Secondary Loss Event Frequency', 
+            'Secondary Loss Magnitude'
         ]
         # Initial tree setup
         self.nodes = {
@@ -88,14 +86,11 @@ class FairDependencyTree(object):
         nodes['Vulnerability'].add_child(nodes['Control Strength'])
         nodes['Vulnerability'].add_child(nodes['Threat Capability'])
         # Probable Loss Magnitude Branch
-        nodes['Probable Loss Magnitude'].add_child(nodes['Primary Loss Factors'])
-        nodes['Probable Loss Magnitude'].add_child(nodes['Secondary Loss Factors'])
-        # Primary Loss Factors Subbranch
-        nodes['Primary Loss Factors'].add_child(nodes['Asset Loss Factors'])
-        nodes['Primary Loss Factors'].add_child(nodes['Threat Loss Factors'])
-        # Secondary Loss Factors Subbranch
-        nodes['Secondary Loss Factors'].add_child(nodes['Organizational Loss Factors'])
-        nodes['Secondary Loss Factors'].add_child(nodes['External Loss Factors'])
+        nodes['Loss Magnitude'].add_child(nodes['Primary Loss'])
+        nodes['Loss Magnitude'].add_child(nodes['Secondary Loss'])
+        # Secondary Loss Subbranch
+        nodes['Secondary Loss'].add_child(nodes['Secondary Loss Event Frequency'])
+        nodes['Secondary Loss'].add_child(nodes['Secondary Loss Magnitude'])
             
     def _obtain_status(self, node):
         '''Traverse the tree and record the statuses'''

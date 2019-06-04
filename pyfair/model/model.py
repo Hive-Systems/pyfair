@@ -32,12 +32,10 @@ class FairModel(object):
             'Threat Capability', 
             'Control Strength', 
             'Probable Loss Magnitude', 
-            'Primary Loss Factors', 
-            'Asset Loss Factors',
-            'Threat Loss Factors',
-            'Secondary Loss Factors',
-            'Organizational Loss Factors', 
-            'External Loss Factors'
+            'Primary Loss', 
+            'Secondary Loss',
+            'Secondary Loss Event Frequency', 
+            'Secondary Loss Magnitude'
         ])
         self._data_input  = FairDataInput() 
         self._tree        = FairDependencyTree()
