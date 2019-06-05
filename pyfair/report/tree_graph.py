@@ -105,23 +105,33 @@ class FairTreeGraph(object):
         )
         # Draw data
         fmt = row['formatter']
-        key_just = 5
-        value_just = 17
         # Set conditions
         calculated = row['status'] == 'Calculated'
         supplied = row['status'] == 'Supplied'
-        vuln_type = row.name == 'Vulnerability'
         if calculated:
+            # Get rid of items with value
             data = row.loc[['μ', 'σ', '↑']].dropna()
+            # Get max legnth for justification
+            data = data.map(lambda x: fmt.format(x))
+            value_just = data.str.len().max()
+            # Create output
             output = '\n'.join([
-                str(key).rjust(key_just) + ' ' + fmt.format(value).rjust(value_just)
+                key + '  ' + value.rjust(value_just)
                 for key, value
                 in data.iteritems()
             ])
         elif supplied:
-            data = row.loc[['low', 'mode', 'high', 'mean', 'stdev']].dropna()
+            # Get rid of value less items and rename
+            data = row.loc[['high', 'mode', 'low', 'mean', 'stdev']]
+            data.index = ['↑', '-', '↓', 'μ', 'σ']
+            data = data.dropna()
+            # Format string
+            data = data.map(lambda x: fmt.format(x))
+            # Get max length of stirng
+            value_just = data.str.len().max()
+            # Output format
             output = '\n'.join([
-                str(key).rjust(key_just) + ' ' + fmt.format(value).rjust(value_just)
+                key + '  ' + value.rjust(value_just)
                 for key, value
                 in data.iteritems()
             ])

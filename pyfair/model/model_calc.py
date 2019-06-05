@@ -6,13 +6,13 @@ class FairCalculations(object):
         self._data = None
         # Lookup table (no leaf nodes required)
         self._function_dict = {
-            'Risk'                       : self._calculate_multiplication,
-            'Loss Event Frequency'       : self._calculate_multiplication,
-            'Threat Event Frequency'     : self._calculate_multiplication,
-            'Vulnerability'              : self._calculate_step,
-            'Loss Magnitude'    : self._calculate_addition,
-            'Primary Loss'               : self._calculate_multiplication,
-            'Secondary Loss'             : self._calculate_multiplication,
+            'Risk'                   : self._calculate_multiplication,
+            'Loss Event Frequency'   : self._calculate_multiplication,
+            'Threat Event Frequency' : self._calculate_multiplication,
+            'Vulnerability'          : self._calculate_step,
+            'Loss Magnitude'         : self._calculate_addition,
+            'Primary Loss'           : self._calculate_multiplication,
+            'Secondary Loss'         : self._calculate_multiplication,
         }
 
     def calculate(self, parent_name, child_1_data, child_2_data):

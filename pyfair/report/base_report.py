@@ -29,17 +29,17 @@ class FairBaseReport(object):
         self._dollar_format_string     = '${0:,.0f}'
         self._float_format_string      = '{0:.2f}'
         self._format_strings = {
-            'Risk'                        : self._dollar_format_string,
-            'Loss Event Frequency'        : self._float_format_string,
-            'Threat Event Frequency'      : self._float_format_string,
-            'Vulnerability'               : self._float_format_string,         
-            'Contact'                     : self._float_format_string,
-            'Action'                      : self._float_format_string,
-            'Threat Capability'           : self._float_format_string,
-            'Control Strength'            : self._float_format_string,
-            'Loss Magnitude'     : self._dollar_format_string,
-            'Primary Loss'                : self._dollar_format_string,
-            'Secondary Loss'              : self._dollar_format_string,
+            'Risk'                           : self._dollar_format_string,
+            'Loss Event Frequency'           : self._float_format_string,
+            'Threat Event Frequency'         : self._float_format_string,
+            'Vulnerability'                  : self._float_format_string,         
+            'Contact'                        : self._float_format_string,
+            'Action'                         : self._float_format_string,
+            'Threat Capability'              : self._float_format_string,
+            'Control Strength'               : self._float_format_string,
+            'Loss Magnitude'                 : self._dollar_format_string,
+            'Primary Loss'                   : self._dollar_format_string,
+            'Secondary Loss'                 : self._dollar_format_string,
             'Secondary Loss Event Frequency' : self._dollar_format_string,
             'Secondary Loss Magnitude'       : self._dollar_format_string,
         }
