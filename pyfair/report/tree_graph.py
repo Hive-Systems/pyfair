@@ -122,7 +122,7 @@ class FairTreeGraph(object):
             ])
         elif supplied:
             # Get rid of value less items and rename
-            data = row.loc[['high', 'mode', 'low', 'mean', 'stdev']]
+            data = row.reindex(['high', 'mode', 'low', 'mean', 'stdev'])
             data.index = ['↑', '-', '↓', 'μ', 'σ']
             data = data.dropna()
             # Format string
@@ -164,9 +164,13 @@ class FairTreeGraph(object):
             )
             
     def _generate_legend(self, ax):
+        # Gen legend
         patches = [Patch(color=color, label=label, alpha=.3) for label, color in self._colormap.items()]
         plt.legend(handles=patches, frameon=False)
-        
+        # Gen quasi-legend
+        ax.text(8_900, 1_900, '\n'.join(['high', 'mode', 'low', 'mean', 'stdev']), fontsize=20)
+        ax.text(8_600, 1_900, '\n'.join(['↑', '-', '↓', 'μ', 'σ']))
+
     def generate_image(self):
         fig, ax = plt.subplots()
         fig.set_size_inches(20,6)

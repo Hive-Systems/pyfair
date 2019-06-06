@@ -69,6 +69,14 @@ class FairDataInput(object):
 
     def generate(self, target, count, **kwargs):
         '''Function for dispatching a generation request'''
+        # Generate result
+        result = self._generate_single(target, count, **kwargs)
+        # Record and return
+        self._supplied_values[target] = {**kwargs}
+        return result
+    
+    def _generate_single(self, target, count, **kwargs):
+        '''Internal function for single request'''
         # If destined for a le_1_target, check validity.
         if target in self._le_1_targets:
             self._check_le_1(target, **kwargs)
@@ -82,9 +90,31 @@ class FairDataInput(object):
             self._check_parameters(func, **kwargs)
             # Run the function
             results = func(count, **kwargs)
-        # Record params
-        self._supplied_values[target] = {**kwargs}
         return results
+
+    def generate_multi(self, prefixed_target, count, kwargs_dict):
+        # Remove prefix from target
+        final_target = prefixed_target.lstrip('multi_')
+        # Create a container for dataframes
+        df_dict = {target: pd.DataFrame() for target in kwargs_dict.keys()}
+        # For each target
+        for target, column_dict in kwargs_dict.items():
+            # For each column in that garget
+            for column, params in column_dict.items():
+                # Gen data
+                data = self._generate_single(target, count, **params)
+                s = pd.Series(data)
+                # Put in dict
+                df_dict[target][column] = s
+        # Multiply
+        df1, df2 = df_dict.values()
+        combined_df = df1 * df2
+        # Sum
+        summed = combined_df.sum(axis=1)
+        # Record params
+        new_target = 'multi_' + final_target
+        self._supplied_values[new_target] = kwargs_dict
+        return summed
             
     def _determine_func(self, **kwargs):
         '''This function takes keywords and determines function'''

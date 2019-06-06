@@ -13,7 +13,6 @@ from ..utility.fair_exception import FairException
 class FairModel(object):
     '''A main class to act as an API for FAIR Model construction.'''
     
-    # TODO confirm mapping names to ensure they are consistent with current nomenclature
     def __init__(self, name, n_simulations=10_000, random_seed=42, model_uuid=None):
         # Set n_simulations and random seed for reproducablility
         self._name = name
@@ -83,6 +82,14 @@ class FairModel(object):
     def input_data(self, target, **kwargs):
         data = self._data_input.generate(target, self._n_simulations, **kwargs)
         self._tree.update_status(target, 'Supplied')
+        self._model_table[target] = data
+        return self
+
+    def input_multi_data(self, target, kwargs_dict):
+        data = self._data_input.generate_multi(target, self._n_simulations, kwargs_dict)
+        # Supplied then calculated is a nasty workaround to propegate down then change.
+        self._tree.update_status(target, 'Supplied')
+        self._tree.update_status(target, 'Calculated')
         self._model_table[target] = data
         return self
 
