@@ -1,3 +1,15 @@
+##############################################################################
+
+# User-Defined Section
+
+# Images are binary
+*.png binary
+
+# Excel data entry templates should have line endings untouched
+*.xlsx binary
+
+##############################################################################
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

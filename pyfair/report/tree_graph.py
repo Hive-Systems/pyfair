@@ -167,9 +167,6 @@ class FairTreeGraph(object):
         # Gen legend
         patches = [Patch(color=color, label=label, alpha=.3) for label, color in self._colormap.items()]
         plt.legend(handles=patches, frameon=False)
-        # Gen quasi-legend
-        ax.text(8_900, 1_900, '\n'.join(['high', 'mode', 'low', 'mean', 'stdev']), fontsize=20)
-        ax.text(8_600, 1_900, '\n'.join(['↑', '-', '↓', 'μ', 'σ']))
 
     def generate_image(self):
         fig, ax = plt.subplots()
