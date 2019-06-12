@@ -64,7 +64,7 @@ class FairModel(object):
         for key in ['name',
                     'n_simulations', 
                     'random_seed', 
-                    'Creation Datetime', 
+                    'creation_date', 
                     'model_uuid',
                     'type']:
             del data[key]

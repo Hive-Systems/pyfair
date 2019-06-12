@@ -11,7 +11,6 @@ from .model import FairModel
 
 class FairMetaModel(object):
     '''An aggregation of models used to add up risk.'''
-    # TODO should 'meta_model_uuid' just be 'model_uuid'?
 
     def __init__(self, name=None, models=None, model_uuid=None):
         self._name = name
@@ -39,7 +38,7 @@ class FairMetaModel(object):
     def get_uuid(self):
         return self._model_uuid
 
-    @staticmethod
+    @classmethod
     def read_json(json_data):
         # TODO this is inefficient and convoluted
         # TODO Support metamodels inside of metamodels
@@ -63,7 +62,7 @@ class FairMetaModel(object):
         meta_model = FairMetaModel(
             name=data['name'],
             models=models,
-            meta_model_uuid=data['model_uuid']
+            model_uuid=data['model_uuid']
         )
         return meta_model
     
