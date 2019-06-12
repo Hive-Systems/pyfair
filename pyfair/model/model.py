@@ -61,16 +61,19 @@ class FairModel(object):
             data['model_uuid']
         )
         # Be lazy
-        for key in ['name',
-                    'n_simulations', 
-                    'random_seed', 
-                    'creation_date', 
-                    'model_uuid',
-                    'type']:
-            del data[key]
+        drop_params = [
+            'name',
+            'n_simulations', 
+            'random_seed', 
+            'creation_date', 
+            'model_uuid',
+            'type'
+        ]
         # Load params one-by-one.
         for param_name, param_value in data.items():
-            model.input_data(param_name, **param_value)
+            # If it's not in the drop list, load it.
+            if param_name not in drop_params:
+                model.input_data(param_name, **param_value)
         # Calculate
         model.calculate_all()
         return model
