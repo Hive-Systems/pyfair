@@ -38,11 +38,11 @@ fsr.to_html('output.html')
 
 ## Report Output
 
-![Overview](./git_page_static/overview.png)
+![Overview](./git_page_static/overview.PNG)
 
-![Tree](./git_page_static/tree.png)
+![Tree](./git_page_static/tree.PNG)
 
-![Violin](./git_page_static/violin.png)
+![Violin](./git_page_static/violin.PNG)
 
 ## Serialized Model
 
