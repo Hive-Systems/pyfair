@@ -29,7 +29,7 @@ class FairTreeGraph(object):
     'Primary Loss'                  : ['PL'  , 5400,  800, 6600, 1600],
     'Secondary Loss'                : ['SL'  , 7800,  800, 6600, 1600],
     'Secondary Loss Event Frequency': ['SLEF', 7200,    0, 7800,  800],
-    'Secondary Loss Magnitude'      : ['SLM' , 8400,    0, 7800,  800],
+    'Secondary Loss Event Magnitude': ['SLEM', 8400,    0, 7800,  800],
 }, orient='index', columns=['tag', 'self_x', 'self_y', 'parent_x', 'parent_y'])
     
     def __init__(self, model, format_strings):

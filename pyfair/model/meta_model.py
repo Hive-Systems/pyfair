@@ -10,9 +10,13 @@ from .model import FairModel
 
 
 class FairMetaModel(object):
-    '''An aggregation of models used to add up risk.'''
+    '''An aggregation of models used to add up risk.
+    
+    DO NOT SUPPLY YOUR OWN UUID/CREATION DATE UNLESS YOU WANT TO BREAK THINGS.
+    
+    '''
 
-    def __init__(self, name=None, models=None, model_uuid=None):
+    def __init__(self, name=None, models=None, model_uuid=None, creation_date=None):
         self._name = name
         self._params = {}
         self._risk_table = pd.DataFrame()
@@ -25,12 +29,12 @@ class FairMetaModel(object):
             if type(model) == type(self):
                 self._load_meta_model(model)
         # Assign UUID
-        if model_uuid:
+        if model_uuid and creation_date:
             self._model_uuid = model_uuid
+            self._creation_date = creation_date
         else:
             self._model_uuid = str(uuid.uuid1())
             self._creation_date = str(datetime.datetime.now())
-
 
     def get_name(self):
         return self._name
@@ -38,17 +42,20 @@ class FairMetaModel(object):
     def get_uuid(self):
         return self._model_uuid
 
-    @classmethod
+    @staticmethod
     def read_json(json_data):
         # TODO this is inefficient and convoluted
         # TODO Support metamodels inside of metamodels
         data = json.loads(json_data)
+        # Check type of JSON
+        if data['type'] != 'FairMetaModel':
+            raise FairException('Failed JSON parse attempt. This is not a FairMetaModel.')
         # Get model params
         model_params = {
             key: value
             for key, value
             in data.items()
-            if key not in ['name', 'model_uuid', 'type']
+            if key not in ['name', 'model_uuid', 'type', 'creation_date']
         }
         # Instantiate models (there is no need to cover)
         # metamodels here because metamodel json only
@@ -62,7 +69,8 @@ class FairMetaModel(object):
         meta_model = FairMetaModel(
             name=data['name'],
             models=models,
-            model_uuid=data['model_uuid']
+            model_uuid=data['model_uuid'],
+            creation_date=data['creation_date']
         )
         return meta_model
     
@@ -78,7 +86,7 @@ class FairMetaModel(object):
             key: value
             for key, value
             in params.items()
-            if key not in ['name', 'model_uuid', 'type']
+            if key not in ['name', 'model_uuid', 'type', 'creation_date']
         }
         # Iterate through params
         for model_params in params.values():

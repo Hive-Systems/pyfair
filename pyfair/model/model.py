@@ -11,9 +11,13 @@ from ..utility.fair_exception import FairException
 
 
 class FairModel(object):
-    '''A main class to act as an API for FAIR Model construction.'''
+    '''A main class to act as an API for FAIR Model construction.
     
-    def __init__(self, name, n_simulations=10_000, random_seed=42, model_uuid=None):
+    DO NOT SUPPLY YOUR OWN UUID/CREATION DATE UNLESS YOU WANT TO BREAK THINGS.
+
+    '''
+    
+    def __init__(self, name, n_simulations=10_000, random_seed=42, model_uuid=None, creation_date=None):
         # Set n_simulations and random seed for reproducablility
         self._name = name
         self._n_simulations = n_simulations
@@ -34,14 +38,15 @@ class FairModel(object):
             'Primary Loss', 
             'Secondary Loss',
             'Secondary Loss Event Frequency', 
-            'Secondary Loss Magnitude'
+            'Secondary Loss Event Magnitude',
         ])
         self._data_input  = FairDataInput() 
         self._tree        = FairDependencyTree()
         self._calculation = FairCalculations()
         # If no ID supplied, create.
-        if model_uuid:
+        if model_uuid and creation_date:
             self._model_uuid  = model_uuid
+            self._creation_date = creation_date
         else:
             self._model_uuid = str(uuid.uuid1())
             self._creation_date = str(pd.datetime.now())
@@ -53,12 +58,15 @@ class FairModel(object):
     def read_json(param_json):
         '''Class function for loading a model from json'''
         data = json.loads(param_json)
-        # TODO CHeck for metamodel or model
+        # Check type of JSON
+        if data['type'] != 'FairModel':
+            raise FairException('Failed JSON parse attempt. This is not a FairModel.')
         model = FairModel(
-            data['name'],
-            data['n_simulations'], 
-            data['random_seed'],
-            data['model_uuid']
+            name=data['name'],
+            n_simulations=data['n_simulations'], 
+            random_seed=data['random_seed'],
+            model_uuid=data['model_uuid'],
+            creation_date=data['creation_date']
         )
         # Be lazy
         drop_params = [

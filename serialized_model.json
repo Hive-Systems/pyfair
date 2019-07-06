@@ -1,57 +1,18 @@
 {
-    "HA1": {
-        "Loss Event Frequency": {
-            "low": 20,
-            "mode": 100,
-            "high": 900
-        },
-        "Primary Loss": {
-            "low": 3000000,
-            "mode": 3500000,
-            "high": 5000000
-        },
-        "multi_Secondary Loss": {
-            "Secondary Loss Event Frequency": {
-                "Reputational": {
-                    "low": 0.01,
-                    "mode": 0.8,
-                    "high": 0.99
-                }
-            },
-            "Secondary Loss Event Magnitude": {
-                "Reputational": {
-                    "low": 10000,
-                    "mode": 20000,
-                    "high": 100000
-                }
-            }
-        },
-        "name": "HA1",
-        "n_simulations": 10000,
-        "random_seed": 42,
-        "model_uuid": "e50a157a-8cb7-11e9-960a-f06e0bbd6cbe",
-        "type": "FairModel",
-        "creation_date": "2019-06-11 21:15:06.105791"
+    "Loss Event Frequency": {
+        "low": 20,
+        "mode": 100,
+        "high": 900
     },
-    "HA2": {
-        "Loss Event Frequency": {
-            "mean": 0.5,
-            "stdev": 0.1
-        },
-        "Loss Magnitude": {
-            "low": 2000000000,
-            "mode": 3000000000,
-            "high": 5000000000
-        },
-        "name": "HA2",
-        "n_simulations": 10000,
-        "random_seed": 42,
-        "model_uuid": "e50ef79c-8cb7-11e9-ba71-f06e0bbd6cbe",
-        "type": "FairModel",
-        "creation_date": "2019-06-11 21:15:06.137794"
+    "Loss Magnitude": {
+        "low": 3000000,
+        "mode": 3500000,
+        "high": 5000000
     },
-    "name": "My Meta Model!",
-    "model_uuid": "de6b17fe-8cb8-11e9-8dcf-f06e0bbd6cbe",
-    "creation_date": "2019-06-11 21:22:04.494233",
-    "type": "FairMetaModel"
+    "name": "Regular Model 1",
+    "n_simulations": 10000,
+    "random_seed": 42,
+    "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",
+    "type": "FairModel",
+    "creation_date": "2019-07-06 17:23:43.647370"
 }

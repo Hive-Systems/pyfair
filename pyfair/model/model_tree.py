@@ -30,7 +30,7 @@ class FairDependencyTree(object):
             'Primary Loss', 
             'Secondary Loss',
             'Secondary Loss Event Frequency', 
-            'Secondary Loss Magnitude'
+            'Secondary Loss Event Magnitude'
         ]
         # Initial tree setup
         self.nodes = {
@@ -90,7 +90,7 @@ class FairDependencyTree(object):
         nodes['Loss Magnitude'].add_child(nodes['Secondary Loss'])
         # Secondary Loss Subbranch
         nodes['Secondary Loss'].add_child(nodes['Secondary Loss Event Frequency'])
-        nodes['Secondary Loss'].add_child(nodes['Secondary Loss Magnitude'])
+        nodes['Secondary Loss'].add_child(nodes['Secondary Loss Event Magnitude'])
             
     def _obtain_status(self, node):
         '''Traverse the tree and record the statuses'''
