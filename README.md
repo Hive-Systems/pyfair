@@ -1,4 +1,4 @@
-# pyfair
+# ALPHA: pyfair
 Factor Analysis of Information Risk (FAIR) model written in Python.
 
 This package endeavors to create a simple API for automating the creation
