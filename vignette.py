@@ -1,10 +1,10 @@
 import pyfair
 
-# Create using LEF (PERT), PL, (PERT), and SL (PERT)
+# Create using LEF (PERT), PL, (PERT), and SL (constant)
 model1 = pyfair.FairModel(name="Regular Model 1", n_simulations=10_000)
 model1.input_data('Loss Event Frequency', low=20, mode=100, high=900)
 model1.input_data('Primary Loss', low=3_000_000, mode=3_500_000, high=5_000_000)
-model1.input_data('Secondary Loss', low=3_000_000, mode=3_500_000, high=5_000_000)
+model1.input_data('Secondary Loss', constant=3_500_000)
 model1.calculate_all()
 
 # Create another model using LEF (Normal) and LM (PERT)
