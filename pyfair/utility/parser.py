@@ -9,6 +9,7 @@ from pyfair.utility.fair_exception import FairException
 
 
 class FairSimpleParser(object):
+    '''Horific parser.'''
     
     def __init__(self, workbook_path):
         self._path          = workbook_path
@@ -28,7 +29,7 @@ class FairSimpleParser(object):
     def to_html(self, path):
         metamodels = [item for item in self._metamodels.values() if item is not None]
         if metamodels:
-            fsr = pyfair.FairSimpleReport(metamodels)
+            fsr = FairSimpleReport(metamodels)
             fsr.to_html(path)
         else:
             raise FairException('Template is missing data.')
@@ -73,12 +74,12 @@ class FairSimpleParser(object):
             # Run the parse frame operation on the big frame
             rv = self._parse_raw_frame(big_frame)
             # Split rv into names, primary, and secondary
-            model_name_series, primary_param_df, secondary_param_df = rv
+            model_names, primary_params, secondary_params = rv
             # Store as dict of dicts
             self._data[designation] = {
-                'names'           : model_name_series,
-                'primary_params'  : primary_param_df,
-                'secondary_params': secondary_param_df,
+                'names'           : model_names,
+                'primary_params'  : primary_params,
+                'secondary_params': secondary_params,
             }
             
     def _convert_to_models(self):
@@ -86,9 +87,10 @@ class FairSimpleParser(object):
             model_list = []
             for i in range(10):
                 target         = self._data[designation]
-                name           = target['names'].iloc[i]
-                raw_pri_params = target['primary_params'].iloc[i]
-                raw_sec_params = target['secondary_params'].iloc[i]
+                # ILOC because pandas is giving a weird error
+                name           = target['names'][i]
+                raw_pri_params = target['primary_params'][i]
+                raw_sec_params = target['secondary_params'][i]
                 # Alias
                 cdtpd = self._convert_df_to_param_dict
                 # Run function
@@ -118,9 +120,10 @@ class FairSimpleParser(object):
         # Groups of 12
         gb = df.groupby(df.index.values // 12)
         # Get names
-        names = gb.apply(self._get_model_name)
-        primary = gb.apply(self._get_model_primary_params)
-        secondary = gb.apply(self._get_model_secondary_params)
+        dfs = [gb.get_group(group) for group in gb.groups]
+        names = [self._get_model_name(df) for df in dfs]
+        primary = [self._get_model_primary_params(df) for df in dfs]
+        secondary = [self._get_model_secondary_params(df) for df in dfs]
         return (names, primary, secondary)
 
     def _get_model_name(self, df):
@@ -166,4 +169,3 @@ class FairSimpleParser(object):
         # Make a dict from that series of dicts, giving us out multidimensional dict
         rv_dict = param_series.to_dict()
         return rv_dict   
-        
