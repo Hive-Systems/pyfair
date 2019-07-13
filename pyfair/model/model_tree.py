@@ -49,6 +49,13 @@ class FairDependencyTree(object):
             return False
         else:
             return True
+
+    def calculation_completed(self):
+        '''Determine whether the model has been completed.'''
+        if self._root.status == 'Calculated':
+            return True
+        else:
+            return False
         
     def update_status(self, node_name, new_status):
         '''Notify node that data was provided'''

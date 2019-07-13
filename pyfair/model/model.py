@@ -51,9 +51,6 @@ class FairModel(object):
             self._model_uuid = str(uuid.uuid1())
             self._creation_date = str(pd.datetime.now())
 
-    def get_uuid(self):
-        return self._model_uuid
-
     @staticmethod
     def read_json(param_json):
         '''Class function for loading a model from json'''
@@ -161,7 +158,8 @@ class FairModel(object):
 
     def to_json(self):
         '''Dump model as json'''
-        data = self._data_input.get_supplied_values()
+        # Copy only.
+        data = {**self._data_input.get_supplied_values()}
         data['name'] = str(self._name)
         data['n_simulations'] = self._n_simulations
         data['random_seed'] = self._random_seed
@@ -187,3 +185,8 @@ class FairModel(object):
 
     def get_name(self):
         return self._name
+    
+    def calculation_completed(self):
+        '''Check tree to see if the dependencies are complete'''
+        status = self._tree.calculation_completed()
+        return status

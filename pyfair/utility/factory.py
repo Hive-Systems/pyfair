@@ -41,6 +41,5 @@ class FairModelFactory(object):
                 model.input_multi_data(arg_name, **arg_value)
             # If regular, run input_data()
             else:
-                print(arg_value)
                 model.input_data(arg_name, **arg_value)                
         return model

@@ -71,6 +71,10 @@ class FairDataInput(object):
         '''Function for dispatching a generation request'''
         # Generate result
         result = self._generate_single(target, count, **kwargs)
+        # Explicitly insert optional keywords for model storage
+        dict_keys = kwargs.keys()
+        if 'low' in dict_keys and 'gamma' not in dict_keys:
+            kwargs['gamma'] = 4
         # Record and return
         self._supplied_values[target] = {**kwargs}
         return result
