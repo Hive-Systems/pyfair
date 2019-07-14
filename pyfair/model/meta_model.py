@@ -97,7 +97,7 @@ class FairMetaModel(object):
 
     def _record_params(self, model):
         model_params = json.loads(model.to_json())
-        model_name = model_json['name']
+        model_name = model_params['name']
         self._params[model_name] = model_params
     
     def _calculate_model(self, model):
