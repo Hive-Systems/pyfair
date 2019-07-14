@@ -78,7 +78,10 @@ class FairModel(object):
         for param_name, param_value in data.items():
             # If it's not in the drop list, load it.
             if param_name not in drop_params:
-                model.input_data(param_name, **param_value)
+                if param_name.startswith('multi'):
+                    model.input_multi_data(param_name, param_value)
+                else:
+                    model.input_data(param_name, **param_value)
         # Calculate
         model.calculate_all()
         return model
@@ -96,9 +99,10 @@ class FairModel(object):
     def input_multi_data(self, target, kwargs_dict):
         data = self._data_input.generate_multi(target, self._n_simulations, kwargs_dict)
         # Supplied then calculated is a nasty workaround to propegate down then change.
-        self._tree.update_status(target, 'Supplied')
-        self._tree.update_status(target, 'Calculated')
-        self._model_table[target] = data
+        mod_target = target.lstrip('multi_')
+        self._tree.update_status(mod_target, 'Supplied')
+        self._tree.update_status(mod_target, 'Calculated')
+        self._model_table[mod_target] = data
         return self
 
     def bulk_import_data(self, param_dictionary):
