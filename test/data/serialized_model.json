@@ -1,0 +1,18 @@
+{
+    "Loss Event Frequency": {
+        "low": 20,
+        "mode": 100,
+        "high": 900
+    },
+    "Loss Magnitude": {
+        "low": 3000000,
+        "mode": 3500000,
+        "high": 5000000
+    },
+    "name": "Regular Model 1",
+    "n_simulations": 10000,
+    "random_seed": 42,
+    "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",
+    "type": "FairModel",
+    "creation_date": "2019-07-06 17:23:43.647370"
+}

@@ -11,13 +11,22 @@ from ..utility.fair_exception import FairException
 
 
 class FairModel(object):
-    '''A main class to act as an API for FAIR Model construction.
+    """A main class to act as an API for FAIR Model construction.
     
-    DO NOT SUPPLY YOUR OWN UUID/CREATION DATE UNLESS YOU WANT TO BREAK THINGS.
+    Attributes
+    ----------
+    _name : str
+        A human-readable designation for identification
+    _n_simulations : int
+        The number of Monte Carlo simulations being created
 
-    '''
+    """
     
     def __init__(self, name, n_simulations=10_000, random_seed=42, model_uuid=None, creation_date=None):
+        """
+            .. warning:: Do not supply your own UUID/creation date unless you want to break things.
+
+        """
         # Set n_simulations and random seed for reproducablility
         self._name = name
         self._n_simulations = n_simulations
