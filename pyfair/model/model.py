@@ -17,7 +17,14 @@ class FairModel(object):
 
     A single instance of this class is created for each FAIR model. It
     contains a dependency resolution tree (self._tree), a calculation
-    member (self._calculation), and an input parser (self._input).
+    member (self._calculation), and an input parser (self._input). 
+
+    Calculations are strucutred as a series of connected nodes, with
+    one node for each of the potential FAIR inputs. A user interacts
+    with this class by loading data via JSON or by inputting data
+    for the individual nodes. The user then triggers the
+    calculate_all() method to run all the subcalculations necessary
+    to complete the FAIR model.
     
     Parameters
     ----------
@@ -234,7 +241,7 @@ class FairModel(object):
 
         Returns
         -------
-        self
+        pyfair.model.FairModel
             A reference to this object of type FairModel
 
         Examples
@@ -270,7 +277,7 @@ class FairModel(object):
 
         Returns
         -------
-        self
+        pyfair.model.FairModel
             A reference to this object of type FairModel
 
         Examples
@@ -301,7 +308,37 @@ class FairModel(object):
         return self
 
     def bulk_import_data(self, param_dictionary):
-        '''This takes {'target': {param_1: value_1}} formatted dictionaries'''
+        """Takes multiple inputs via nested dictionaries.
+        
+        The function iterates through a dictionary and runs input_data()
+        for each item. This allows for multiple items to be added at a 
+        single time. The param dictionary will take the form:
+        
+        {
+            'target_1': {param_1: value_1},
+            'target_2': {param_2: value_2},
+        }
+
+        Parameters
+        ----------
+        param_dictionary : dict
+            A nested dictionary of parameters.
+
+        Returns
+        -------
+        pyfair.model.FairModel
+            A reference to this object of type FairModel
+
+        Examples
+        --------
+        >>> model = pyfair.FairModel(name="Insider Threat")
+        >>> model.bulk_import_data({
+        ...     'Loss Event Frequency': {'mean': 90, 'stdev': 100},
+        ...     'Loss Magnitude': {'constant': 4000}, 
+        ... })
+        
+        """
+        # Iterate through each key, value pair and run through input_data()
         for target, parameters in param_dictionary.items():
             self.input_data(target, **parameters)
         return self
@@ -311,7 +348,33 @@ class FairModel(object):
     ##########################################################################
 
     def calculate_all(self):
-        '''Calculate all nodes'''
+        """Runs all outstanding calculations for uncalculated nodes.
+
+        This is done by obtaining a list of all 'calculatble' nodes.
+        If it is not ready for a complete calculation, it throws an
+        error. It goes through all the calculable nodes and calculates
+        them using the private _calculate_node() method.
+
+        Raises
+        ------
+        pyfair.fair_exception.FairException
+            Raised is complete calculation is impossible.
+
+        Returns
+        -------
+        pyfair.model.FairModel
+            A reference to this object of type FairModel
+
+        Examples
+        --------
+        >>> model = pyfair.FairModel(name="Insider Threat")
+        >>> model.bulk_import_data({
+        ...     'Loss Event Frequency': {'mean': 90, 'stdev': 100},
+        ...     'Loss Magnitude': {'constant': 4000}, 
+        ... })
+        ... model.calculate_all)()
+
+        """
         # If required data has not been input, raise error
         ready_for_calculation = self._tree.ready_for_calculation()
         if not(ready_for_calculation):
@@ -332,7 +395,7 @@ class FairModel(object):
         return self
     
     def _calculate_node(self, name):
-        '''Calculate an individual node'''
+        '''Calculate node by checking parents and updating status'''
         # Alsias for data table
         data = self._model_table
         # Get child node statuses
@@ -361,18 +424,57 @@ class FairModel(object):
     ##########################################################################
 
     def export_results(self):
+        """Exports the result of the calculation as a dataframe
+
+        Returns
+        -------
+        pandas.DataFrame
+            A reference to this object of type FairModel
+
+        Examples
+        --------
+        >>> model = pyfair.FairModel(name="Insider Threat")
+        >>> model.bulk_import_data({
+        ...     'Loss Event Frequency': {'mean': 90, 'stdev': 100},
+        ...     'Loss Magnitude': {'constant': 4000}, 
+        ... })
+        ... model.calculate_all)()
+        ... results = model.export_results()
+
+        """
         return self._model_table
 
     def to_json(self):
-        '''Dump model as json'''
+        """Dump the model as JSON string
+
+        For an example, see the file: "serialized_model.json".
+
+        Returns
+        -------
+        str
+            A JSON string representing the model information.
+
+        Examples
+        --------
+        >>> model = pyfair.FairModel(name="Insider Threat")
+        >>> model.bulk_import_data({
+        ...     'Loss Event Frequency': {'mean': 90, 'stdev': 100},
+        ...     'Loss Magnitude': {'constant': 4000}, 
+        ... })
+        ... model.calculate_all)()
+        ... json_data = model.to_json()
+
+        """
         # Copy only.
         data = {**self._data_input.get_supplied_values()}
+        # Add non-parameter metadata information
         data['name'] = str(self._name)
         data['n_simulations'] = self._n_simulations
         data['random_seed'] = self._random_seed
         data['model_uuid'] = self._model_uuid
         data['type'] = str(self.__class__.__name__)
         data['creation_date'] = self._creation_date
+        # Dump as string
         json_data = json.dumps(
             data,
             indent=4,
@@ -380,5 +482,12 @@ class FairModel(object):
         return json_data
 
     def export_params(self):
-        '''Export params as dict'''
+        """Export params as a dictioanry.
+
+        Returns
+        -------
+        dict
+            Non-metadata parameters
+
+        """
         return self._data_input.get_supplied_values()
