@@ -1,3 +1,5 @@
+"""This module contains the main FairModel class."""
+
 import json
 import uuid
 
@@ -12,21 +14,64 @@ from ..utility.fair_exception import FairException
 
 class FairModel(object):
     """A main class to act as an API for FAIR Model construction.
+
+    A single instance of this class is created for each FAIR model. It
+    contains a dependency resolution tree (self._tree), a calculation
+    member (self._calculation), and an input parser (self._input).
     
-    Attributes
+    Parameters
     ----------
-    _name : str
+    name : str
         A human-readable designation for identification
-    _n_simulations : int
-        The number of Monte Carlo simulations being created
+    n_simulations : int, optional
+        Number of simulations created (default is 10,000)
+    random_seed : int, optional
+        Random seed for number generation (default is 42)
+    model_uuid : str, optional
+        uuid.uuid4 string (default is None, meaning one will be assigned)
+    creation_date : str, optional
+        Creation date (default is None, meaning one will be assigned)
+
+    .. warning:: Do not supply your own UUID/creation date unless you want
+    to break things.
+
+    Methods
+    -------
+    bulk_import_data(param_dictionary)
+        Import via nested dict and self._input/self._tree
+    calculate_all()
+        Calculate nodes and update depedency tree with self._calculation
+    calculation_completed()
+        Returns True if calculation is complete via self._tree
+    export_params()
+        Export the parameters inputted in the model
+    export_results()
+        Export the results of the calculated model
+    get_name()
+        Return model name
+    get_node_statuses()
+        Return the statuses of each node from captive self._tree
+    input_data(target, **kwargs)
+        Input data for a given node via self._data_input/self._tree
+    input_multi_data(target, kwargs_dict)
+        Input nested dict for multidimensional inputs (Secondary Loss)
+    read_json(param_json)
+        Static method to instatiate model from JSON
+    to_json()
+        Export model as JSON
 
     """
-    
-    def __init__(self, name, n_simulations=10_000, random_seed=42, model_uuid=None, creation_date=None):
-        """
-            .. warning:: Do not supply your own UUID/creation date unless you want to break things.
 
-        """
+    ##########################################################################
+    # Creation Methods
+    ##########################################################################
+    
+    def __init__(self, 
+                 name, 
+                 n_simulations=10_000, 
+                 random_seed=42, 
+                 model_uuid=None, 
+                 creation_date=None):
         # Set n_simulations and random seed for reproducablility
         self._name = name
         self._n_simulations = n_simulations
@@ -62,7 +107,31 @@ class FairModel(object):
 
     @staticmethod
     def read_json(param_json):
-        '''Class function for loading a model from json'''
+        """Static method to create a model from a JSON string
+
+        Parameters
+        ----------
+        param_json : str
+            a UTF-8 encoded JSON string containing model data
+
+        Returns
+        -------
+        pyfair.model.FairModel
+            A model instance using the JSON parameters supplied
+
+        Raises
+        ------
+        pyfair.fair_exception.FairException
+            If metamodel JSON is supplied erroneously
+
+        Example
+        -------
+        >>> with open('serialized_model.json') as f:
+        ...     json_text = f.read()
+        ...
+        >>> model = FairModel.read_json(json_text)
+
+        """
         data = json.loads(param_json)
         # Check type of JSON
         if data['type'] != 'FairModel':
@@ -95,22 +164,139 @@ class FairModel(object):
         model.calculate_all()
         return model
 
+    ##########################################################################
+    # Inspection Methods
+    ##########################################################################
+    #
+    # <screed>
+    #    I know. I know. Getters and setters have no place in Python.
+    #    That said ... if it's public people will read AND write it.
+    #    We definitely don't want people writing to params.
+    #    We could wrap a decorator allowing setting, but that's overkill.
+    #    It's better to just have a simple export function.
+    # </screed>
+    #
+    ##########################################################################
+
     def get_node_statuses(self):
-        '''Public method to give access to internals'''
+        '''Public method access private node status information in ._tree
+        
+        Returns
+        -------
+        pandas.Series
+            A series with index of nodes, and values of statuses 
+
+        '''
         return self._tree.get_node_statuses()
 
+    def get_name(self):
+        '''Gives the name of the model
+
+        Returns
+        -------
+        str
+            Name of model
+        
+        '''
+        return self._name
+    
+    def calculation_completed(self):
+        '''Public method to check completion status of dependency tree
+        
+        Returns
+        -------
+        bool
+            Whether the calculation dependencies are satisfied
+        
+        '''
+        status = self._tree.calculation_completed()
+        return status
+
+    ##########################################################################
+    # Input methods
+    ##########################################################################
+
     def input_data(self, target, **kwargs):
+        """Input data for a single node
+
+        This takes input, feeds it to self._data_input.generate(), and
+        updates the dependencies via self._tree.update_status(). The kwargs
+        can be for normal (keywords `mean` and `stdev`), BetaPert (keywords
+        `low`, `mode`, `high`, and `gamma`), Bernoulli/binomial (keywords
+        `p`), or a constant (keywords `constant`).
+
+        Parameters
+        ----------
+        target : str
+            The name of the node for which the arguments are directed
+        kwargs : dict
+            The arguments used to generate a distribution for the node
+
+        Returns
+        -------
+        self
+            A reference to this object of type FairModel
+
+        Examples
+        --------
+        >>> model = pyfair.model.FairModel(name='Data Loss')
+        >>> model.input_data('Loss Magnitude', {'mean': 20, 'stdev': 10})
+
+        """
+        # Generate data via data captive class
         data = self._data_input.generate(target, self._n_simulations, **kwargs)
+        # Update dependency tracker captive class
         self._tree.update_status(target, 'Supplied')
+        # Update the model table with the generated data
         self._model_table[target] = data
         return self
 
     def input_multi_data(self, target, kwargs_dict):
+        """Input data for multiple items that roll up into an aggrgate
+
+        As of now, this is only used for Secondary Loss when calculating
+        mutliple secondary loss line items (e.g. 'Reputation' has a
+        probability of A and a loss of B; 'Morale' has a probability
+        of C and a loss of D, etc.).
+
+
+        Parameters
+        ----------
+        target : str
+            The name of the node for which the arguments are directed
+        kwargs_dict : dict
+            The arguments used to generate a distribution for the node
+
+
+        Returns
+        -------
+        self
+            A reference to this object of type FairModel
+
+        Examples
+        --------
+        >>> model = pyfair.FairModel(name="Insider Threat")
+        >>> model1.input_multi_data('Secondary Loss', {
+        ...     'Reputational': {
+        ...         'Secondary Loss Event Frequency': {'constant': 4000}, 
+        ...         'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},
+        ...     },
+        ...     'Legal': {
+        ...         'Secondary Loss Event Frequency': {'constant': 2000}, 
+        ...         'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},        
+        ...     }
+        ... })
+
+
+        """
+        # Generate our data
         data = self._data_input.generate_multi(target, self._n_simulations, kwargs_dict)
-        # Supplied then calculated is a nasty workaround to propegate down then change.
+        # Multitargets are prefixed with 'multi_'
         mod_target = target.lstrip('multi_')
+        # Supplied then calculated is a nasty workaround to propegate down then change.
         self._tree.update_status(mod_target, 'Supplied')
         self._tree.update_status(mod_target, 'Calculated')
+        # Update model table with data
         self._model_table[mod_target] = data
         return self
 
@@ -120,6 +306,10 @@ class FairModel(object):
             self.input_data(target, **parameters)
         return self
         
+    ##########################################################################
+    # Calculation methods
+    ##########################################################################
+
     def calculate_all(self):
         '''Calculate all nodes'''
         # If required data has not been input, raise error
@@ -166,6 +356,10 @@ class FairModel(object):
         else:
             pass
 
+    ##########################################################################
+    # Export methods
+    ##########################################################################
+
     def export_results(self):
         return self._model_table
 
@@ -187,19 +381,4 @@ class FairModel(object):
 
     def export_params(self):
         '''Export params as dict'''
-        # <screed>
-        #    I know. I know. Getters and setters have no place in Python.
-        #    That said ... if it's public people will read AND write it.
-        #    We definitely don't want people writing to params.
-        #    We could wrap a decorator allowing setting, but that's overkill.
-        #    It's better to just have a simple export function.
-        # </screed>
         return self._data_input.get_supplied_values()
-
-    def get_name(self):
-        return self._name
-    
-    def calculation_completed(self):
-        '''Check tree to see if the dependencies are complete'''
-        status = self._tree.calculation_completed()
-        return status
