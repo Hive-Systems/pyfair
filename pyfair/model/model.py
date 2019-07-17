@@ -39,8 +39,8 @@ class FairModel(object):
     creation_date : str, optional
         Creation date (default is None, meaning one will be assigned)
 
-    .. warning:: Do not supply your own UUID/creation date unless you want
-    to break things.
+        .. warning:: Do not supply your own UUID/creation date unless
+           you want to break things.
 
     Methods
     -------
@@ -314,10 +314,7 @@ class FairModel(object):
         for each item. This allows for multiple items to be added at a 
         single time. The param dictionary will take the form:
         
-        {
-            'target_1': {param_1: value_1},
-            'target_2': {param_2: value_2},
-        }
+        {'target_1': {param_1: value_1}, 'target_2': {param_2: value_2}}
 
         Parameters
         ----------

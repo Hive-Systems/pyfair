@@ -1,0 +1,948 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to pyfair’s documentation! &mdash; pyfair 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> pyfair
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to pyfair’s documentation!</a></li>
+<li><a class="reference internal" href="#module-pyfair">Getting Started</a></li>
+<li><a class="reference internal" href="#main-api-classes">Main API Classes</a><ul>
+<li><a class="reference internal" href="#fairmodel">FairModel</a></li>
+<li><a class="reference internal" href="#fairmetamodel">FairMetaModel</a></li>
+<li><a class="reference internal" href="#fairsimplereport">FairSimpleReport</a></li>
+<li><a class="reference internal" href="#fairdatabase">FairDatabase</a></li>
+<li><a class="reference internal" href="#fairmodelfactory">FairModelFactory</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#model-classes">Model Classes</a><ul>
+<li><a class="reference internal" href="#faircalculations">FairCalculations</a></li>
+<li><a class="reference internal" href="#fairdatainput">FairDataInput</a></li>
+<li><a class="reference internal" href="#fairdependencynode">FairDependencyNode</a></li>
+<li><a class="reference internal" href="#fairdependencytree">FairDependencyTree</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#report-classes">Report Classes</a><ul>
+<li><a class="reference internal" href="#fairbasecurve">FairBaseCurve</a></li>
+<li><a class="reference internal" href="#fairbasereport">FairBaseReport</a></li>
+<li><a class="reference internal" href="#fairdistributioncurve">FairDistributionCurve</a></li>
+<li><a class="reference internal" href="#fairexceedencecurves">FairExceedenceCurves</a></li>
+<li><a class="reference internal" href="#fairtreegraph">FairTreeGraph</a></li>
+<li><a class="reference internal" href="#fairviolinplot">FairViolinPlot</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#utility-classes">Utility Classes</a><ul>
+<li><a class="reference internal" href="#fairexception">FairException</a></li>
+<li><a class="reference internal" href="#fairbetapert">FairBetaPert</a></li>
+<li><a class="reference internal" href="#fairsimpleparser">FairSimpleParser</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">pyfair</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Welcome to pyfair’s documentation!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-pyfair-s-documentation">
+<h1><a class="toc-backref" href="#id1">Welcome to pyfair’s documentation!</a><a class="headerlink" href="#welcome-to-pyfair-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#welcome-to-pyfair-s-documentation" id="id1">Welcome to pyfair’s documentation!</a></li>
+<li><a class="reference internal" href="#module-pyfair" id="id2">Getting Started</a></li>
+<li><a class="reference internal" href="#main-api-classes" id="id3">Main API Classes</a><ul>
+<li><a class="reference internal" href="#fairmodel" id="id4">FairModel</a></li>
+<li><a class="reference internal" href="#fairmetamodel" id="id5">FairMetaModel</a></li>
+<li><a class="reference internal" href="#fairsimplereport" id="id6">FairSimpleReport</a></li>
+<li><a class="reference internal" href="#fairdatabase" id="id7">FairDatabase</a></li>
+<li><a class="reference internal" href="#fairmodelfactory" id="id8">FairModelFactory</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#model-classes" id="id9">Model Classes</a><ul>
+<li><a class="reference internal" href="#faircalculations" id="id10">FairCalculations</a></li>
+<li><a class="reference internal" href="#fairdatainput" id="id11">FairDataInput</a></li>
+<li><a class="reference internal" href="#fairdependencynode" id="id12">FairDependencyNode</a></li>
+<li><a class="reference internal" href="#fairdependencytree" id="id13">FairDependencyTree</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#report-classes" id="id14">Report Classes</a><ul>
+<li><a class="reference internal" href="#fairbasecurve" id="id15">FairBaseCurve</a></li>
+<li><a class="reference internal" href="#fairbasereport" id="id16">FairBaseReport</a></li>
+<li><a class="reference internal" href="#fairdistributioncurve" id="id17">FairDistributionCurve</a></li>
+<li><a class="reference internal" href="#fairexceedencecurves" id="id18">FairExceedenceCurves</a></li>
+<li><a class="reference internal" href="#fairtreegraph" id="id19">FairTreeGraph</a></li>
+<li><a class="reference internal" href="#fairviolinplot" id="id20">FairViolinPlot</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#utility-classes" id="id21">Utility Classes</a><ul>
+<li><a class="reference internal" href="#fairexception" id="id22">FairException</a></li>
+<li><a class="reference internal" href="#fairbetapert" id="id23">FairBetaPert</a></li>
+<li><a class="reference internal" href="#fairsimpleparser" id="id24">FairSimpleParser</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables" id="id25">Indices and tables</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-pyfair">
+<span id="getting-started"></span><h1><a class="toc-backref" href="#id2">Getting Started</a><a class="headerlink" href="#module-pyfair" title="Permalink to this headline">¶</a></h1>
+<p>PyFair is an open-source implementation of the Factor Analysis of Information Risk (FAIR) methodology.</p>
+</div>
+<div class="section" id="main-api-classes">
+<h1><a class="toc-backref" href="#id3">Main API Classes</a><a class="headerlink" href="#main-api-classes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fairmodel">
+<h2><a class="toc-backref" href="#id4">FairModel</a><a class="headerlink" href="#fairmodel" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.model.model.FairModel">
+<em class="property">class </em><code class="descclassname">pyfair.model.model.</code><code class="descname">FairModel</code><span class="sig-paren">(</span><em>name</em>, <em>n_simulations=10000</em>, <em>random_seed=42</em>, <em>model_uuid=None</em>, <em>creation_date=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>A main class to act as an API for FAIR Model construction.</p>
+<p>A single instance of this class is created for each FAIR model. It
+contains a dependency resolution tree (self._tree), a calculation
+member (self._calculation), and an input parser (self._input).</p>
+<p>Calculations are strucutred as a series of connected nodes, with
+one node for each of the potential FAIR inputs. A user interacts
+with this class by loading data via JSON or by inputting data
+for the individual nodes. The user then triggers the
+calculate_all() method to run all the subcalculations necessary
+to complete the FAIR model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) – A human-readable designation for identification</li>
+<li><strong>n_simulations</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of simulations created (default is 10,000)</li>
+<li><strong>random_seed</strong> (<em>int</em><em>, </em><em>optional</em>) – Random seed for number generation (default is 42)</li>
+<li><strong>model_uuid</strong> (<em>str</em><em>, </em><em>optional</em>) – uuid.uuid4 string (default is None, meaning one will be assigned)</li>
+<li><strong>creation_date</strong> (<em>str</em><em>, </em><em>optional</em>) – <p>Creation date (default is None, meaning one will be assigned)</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Do not supply your own UUID/creation date unless
+you want to break things.</p>
+</div>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyfair.model.model.FairModel.bulk_import_data">
+<code class="descname">bulk_import_data</code><span class="sig-paren">(</span><em>param_dictionary</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel.bulk_import_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import via nested dict and self._input/self._tree</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model.FairModel.calculate_all">
+<code class="descname">calculate_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel.calculate_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate nodes and update depedency tree with self._calculation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model.FairModel.calculation_completed">
+<code class="descname">calculation_completed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel.calculation_completed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if calculation is complete via self._tree</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model.FairModel.export_params">
+<code class="descname">export_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel.export_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export the parameters inputted in the model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model.FairModel.export_results">
+<code class="descname">export_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel.export_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export the results of the calculated model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model.FairModel.get_name">
+<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel.get_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return model name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model.FairModel.get_node_statuses">
+<code class="descname">get_node_statuses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel.get_node_statuses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the statuses of each node from captive self._tree</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model.FairModel.input_data">
+<code class="descname">input_data</code><span class="sig-paren">(</span><em>target</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel.input_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input data for a given node via self._data_input/self._tree</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model.FairModel.input_multi_data">
+<code class="descname">input_multi_data</code><span class="sig-paren">(</span><em>target</em>, <em>kwargs_dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel.input_multi_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input nested dict for multidimensional inputs (Secondary Loss)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model.FairModel.read_json">
+<code class="descname">read_json</code><span class="sig-paren">(</span><em>param_json</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel.read_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static method to instatiate model from JSON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model.FairModel.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model.FairModel.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export model as JSON</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">bulk_import_data</code><span class="sig-paren">(</span><em>param_dictionary</em><span class="sig-paren">)</span></dt>
+<dd><p>Takes multiple inputs via nested dictionaries.</p>
+<p>The function iterates through a dictionary and runs input_data()
+for each item. This allows for multiple items to be added at a
+single time. The param dictionary will take the form:</p>
+<p>{‘target_1’: {param_1: value_1}, ‘target_2’: {param_2: value_2}}</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>param_dictionary</strong> (<em>dict</em>) – A nested dictionary of parameters.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A reference to this object of type FairModel</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">pyfair.model.FairModel</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">pyfair</span><span class="o">.</span><span class="n">FairModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Insider Threat&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">bulk_import_data</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="s1">&#39;Loss Event Frequency&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;stdev&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;Loss Magnitude&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;constant&#39;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">})</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">calculate_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Runs all outstanding calculations for uncalculated nodes.</p>
+<p>This is done by obtaining a list of all ‘calculatble’ nodes.
+If it is not ready for a complete calculation, it throws an
+error. It goes through all the calculable nodes and calculates
+them using the private _calculate_node() method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">pyfair.fair_exception.FairException</span></code> – Raised is complete calculation is impossible.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A reference to this object of type FairModel</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">pyfair.model.FairModel</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">pyfair</span><span class="o">.</span><span class="n">FairModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Insider Threat&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">bulk_import_data</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="s1">&#39;Loss Event Frequency&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;stdev&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;Loss Magnitude&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;constant&#39;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">})</span>
+<span class="gp">... </span><span class="n">model</span><span class="o">.</span><span class="n">calculate_all</span><span class="p">)()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">calculation_completed</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Public method to check completion status of dependency tree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Whether the calculation dependencies are satisfied</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">export_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Export params as a dictioanry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Non-metadata parameters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">export_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Exports the result of the calculation as a dataframe</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A reference to this object of type FairModel</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pandas.DataFrame</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">pyfair</span><span class="o">.</span><span class="n">FairModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Insider Threat&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">bulk_import_data</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="s1">&#39;Loss Event Frequency&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;stdev&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;Loss Magnitude&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;constant&#39;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">})</span>
+<span class="gp">... </span><span class="n">model</span><span class="o">.</span><span class="n">calculate_all</span><span class="p">)()</span>
+<span class="gp">... </span><span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">export_results</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Gives the name of the model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Name of model</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">get_node_statuses</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Public method access private node status information in ._tree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A series with index of nodes, and values of statuses</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pandas.Series</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">input_data</code><span class="sig-paren">(</span><em>target</em>, <em>**kwargs</em><span class="sig-paren">)</span></dt>
+<dd><p>Input data for a single node</p>
+<p>This takes input, feeds it to self._data_input.generate(), and
+updates the dependencies via self._tree.update_status(). The kwargs
+can be for normal (keywords <cite>mean</cite> and <cite>stdev</cite>), BetaPert (keywords
+<cite>low</cite>, <cite>mode</cite>, <cite>high</cite>, and <cite>gamma</cite>), Bernoulli/binomial (keywords
+<cite>p</cite>), or a constant (keywords <cite>constant</cite>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>target</strong> (<em>str</em>) – The name of the node for which the arguments are directed</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – The arguments used to generate a distribution for the node</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A reference to this object of type FairModel</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">pyfair.model.FairModel</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">pyfair</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">FairModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Data Loss&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">input_data</span><span class="p">(</span><span class="s1">&#39;Loss Magnitude&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;stdev&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">input_multi_data</code><span class="sig-paren">(</span><em>target</em>, <em>kwargs_dict</em><span class="sig-paren">)</span></dt>
+<dd><p>Input data for multiple items that roll up into an aggrgate</p>
+<p>As of now, this is only used for Secondary Loss when calculating
+mutliple secondary loss line items (e.g. ‘Reputation’ has a
+probability of A and a loss of B; ‘Morale’ has a probability
+of C and a loss of D, etc.).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>target</strong> (<em>str</em>) – The name of the node for which the arguments are directed</li>
+<li><strong>kwargs_dict</strong> (<em>dict</em>) – The arguments used to generate a distribution for the node</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A reference to this object of type FairModel</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">pyfair.model.FairModel</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">pyfair</span><span class="o">.</span><span class="n">FairModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Insider Threat&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model1</span><span class="o">.</span><span class="n">input_multi_data</span><span class="p">(</span><span class="s1">&#39;Secondary Loss&#39;</span><span class="p">,</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;Reputational&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s1">&#39;Secondary Loss Event Frequency&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;constant&#39;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="s1">&#39;Secondary Loss Event Magnitude&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;low&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;high&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;Legal&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s1">&#39;Secondary Loss Event Frequency&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;constant&#39;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="s1">&#39;Secondary Loss Event Magnitude&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;low&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;high&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">... </span><span class="p">})</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt>
+<em class="property">static </em><code class="descname">read_json</code><span class="sig-paren">(</span><em>param_json</em><span class="sig-paren">)</span></dt>
+<dd><p>Static method to create a model from a JSON string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>param_json</strong> (<em>str</em>) – a UTF-8 encoded JSON string containing model data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A model instance using the JSON parameters supplied</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">pyfair.model.FairModel</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">pyfair.fair_exception.FairException</span></code> – If metamodel JSON is supplied erroneously</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;serialized_model.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">json_text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">FairModel</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">json_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Dump the model as JSON string</p>
+<p>For an example, see the file: “serialized_model.json”.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A JSON string representing the model information.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">pyfair</span><span class="o">.</span><span class="n">FairModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Insider Threat&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">bulk_import_data</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="s1">&#39;Loss Event Frequency&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;stdev&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;Loss Magnitude&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;constant&#39;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">})</span>
+<span class="gp">... </span><span class="n">model</span><span class="o">.</span><span class="n">calculate_all</span><span class="p">)()</span>
+<span class="gp">... </span><span class="n">json_data</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="fairmetamodel">
+<h2><a class="toc-backref" href="#id5">FairMetaModel</a><a class="headerlink" href="#fairmetamodel" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.model.meta_model.FairMetaModel">
+<em class="property">class </em><code class="descclassname">pyfair.model.meta_model.</code><code class="descname">FairMetaModel</code><span class="sig-paren">(</span><em>name=None</em>, <em>models=None</em>, <em>model_uuid=None</em>, <em>creation_date=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.meta_model.FairMetaModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>An aggregation of models used to add up risk.</p>
+<p>DO NOT SUPPLY YOUR OWN UUID/CREATION DATE UNLESS YOU WANT TO BREAK THINGS.</p>
+<dl class="method">
+<dt id="pyfair.model.meta_model.FairMetaModel.calculation_completed">
+<code class="descname">calculation_completed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.meta_model.FairMetaModel.calculation_completed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if calculations are complete</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="fairsimplereport">
+<h2><a class="toc-backref" href="#id6">FairSimpleReport</a><a class="headerlink" href="#fairsimplereport" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.report.simple_report.FairSimpleReport">
+<em class="property">class </em><code class="descclassname">pyfair.report.simple_report.</code><code class="descname">FairSimpleReport</code><span class="sig-paren">(</span><em>model_or_models</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.report.simple_report.FairSimpleReport" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="fairdatabase">
+<h2><a class="toc-backref" href="#id7">FairDatabase</a><a class="headerlink" href="#fairdatabase" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.utility.database.FairDatabase">
+<em class="property">class </em><code class="descclassname">pyfair.utility.database.</code><code class="descname">FairDatabase</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.utility.database.FairDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>JSON database antipattern.</p>
+<dl class="method">
+<dt id="pyfair.utility.database.FairDatabase.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>name_or_uuid</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.utility.database.FairDatabase.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a name or UUID and dispatch to appropriate function</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.utility.database.FairDatabase.query">
+<code class="descname">query</code><span class="sig-paren">(</span><em>query</em>, <em>params=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.utility.database.FairDatabase.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow queries on underlying database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.utility.database.FairDatabase.store">
+<code class="descname">store</code><span class="sig-paren">(</span><em>model_or_metamodel</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.utility.database.FairDatabase.store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a model or metamodel and store in db</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="fairmodelfactory">
+<h2><a class="toc-backref" href="#id8">FairModelFactory</a><a class="headerlink" href="#fairmodelfactory" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.utility.factory.FairModelFactory">
+<em class="property">class </em><code class="descclassname">pyfair.utility.factory.</code><code class="descname">FairModelFactory</code><span class="sig-paren">(</span><em>static_arguments</em>, <em>n_simulations=10000</em>, <em>random_seed=42</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.utility.factory.FairModelFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a convenience class for creating small variations on models.</p>
+<dl class="method">
+<dt id="pyfair.utility.factory.FairModelFactory.generate_from_partial">
+<code class="descname">generate_from_partial</code><span class="sig-paren">(</span><em>name</em>, <em>variable_arguments</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.utility.factory.FairModelFactory.generate_from_partial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide partial parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.utility.factory.FairModelFactory.generate_from_partials">
+<code class="descname">generate_from_partials</code><span class="sig-paren">(</span><em>variable_argument_dict</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.utility.factory.FairModelFactory.generate_from_partials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide partial parameters as a dictionary</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="model-classes">
+<h1><a class="toc-backref" href="#id9">Model Classes</a><a class="headerlink" href="#model-classes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="faircalculations">
+<h2><a class="toc-backref" href="#id10">FairCalculations</a><a class="headerlink" href="#faircalculations" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.model.model_calc.FairCalculations">
+<em class="property">class </em><code class="descclassname">pyfair.model.model_calc.</code><code class="descname">FairCalculations</code><a class="headerlink" href="#pyfair.model.model_calc.FairCalculations" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to perform calculations</p>
+<dl class="method">
+<dt id="pyfair.model.model_calc.FairCalculations.calculate">
+<code class="descname">calculate</code><span class="sig-paren">(</span><em>parent_name</em>, <em>child_1_data</em>, <em>child_2_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model_calc.FairCalculations.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>General function for dispatching calculations</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="fairdatainput">
+<h2><a class="toc-backref" href="#id11">FairDataInput</a><a class="headerlink" href="#fairdatainput" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.model.model_input.FairDataInput">
+<em class="property">class </em><code class="descclassname">pyfair.model.model_input.</code><code class="descname">FairDataInput</code><a class="headerlink" href="#pyfair.model.model_input.FairDataInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data entry and validation.</p>
+<p>TODO: confirm accuracy of these function mappings.</p>
+<dl class="method">
+<dt id="pyfair.model.model_input.FairDataInput.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><em>target</em>, <em>count</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model_input.FairDataInput.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function for dispatching a generation request</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model_input.FairDataInput.get_supplied_values">
+<code class="descname">get_supplied_values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model_input.FairDataInput.get_supplied_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch params</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="fairdependencynode">
+<h2><a class="toc-backref" href="#id12">FairDependencyNode</a><a class="headerlink" href="#fairdependencynode" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.model.model_node.FairDependencyNode">
+<em class="property">class </em><code class="descclassname">pyfair.model.model_node.</code><code class="descname">FairDependencyNode</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model_node.FairDependencyNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents the status of a given calculation</p>
+</dd></dl>
+
+</div>
+<div class="section" id="fairdependencytree">
+<h2><a class="toc-backref" href="#id13">FairDependencyTree</a><a class="headerlink" href="#fairdependencytree" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.model.model_tree.FairDependencyTree">
+<em class="property">class </em><code class="descclassname">pyfair.model.model_tree.</code><code class="descname">FairDependencyTree</code><a class="headerlink" href="#pyfair.model.model_tree.FairDependencyTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents status of a tree of calculations.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919899/toc.pdf">http://pubs.opengroup.org/onlinepubs/9699919899/toc.pdf</a></p>
+</div>
+<dl class="method">
+<dt id="pyfair.model.model_tree.FairDependencyTree.calculation_completed">
+<code class="descname">calculation_completed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model_tree.FairDependencyTree.calculation_completed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether the model has been completed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model_tree.FairDependencyTree.ready_for_calculation">
+<code class="descname">ready_for_calculation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model_tree.FairDependencyTree.ready_for_calculation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensure there are no required items remaining</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.model.model_tree.FairDependencyTree.update_status">
+<code class="descname">update_status</code><span class="sig-paren">(</span><em>node_name</em>, <em>new_status</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.model.model_tree.FairDependencyTree.update_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify node that data was provided</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="report-classes">
+<h1><a class="toc-backref" href="#id14">Report Classes</a><a class="headerlink" href="#report-classes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fairbasecurve">
+<h2><a class="toc-backref" href="#id15">FairBaseCurve</a><a class="headerlink" href="#fairbasecurve" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.report.base_curve.FairBaseCurve">
+<em class="property">class </em><code class="descclassname">pyfair.report.base_curve.</code><code class="descname">FairBaseCurve</code><a class="headerlink" href="#pyfair.report.base_curve.FairBaseCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class useful only for the ._input_check() method</p>
+</dd></dl>
+
+</div>
+<div class="section" id="fairbasereport">
+<h2><a class="toc-backref" href="#id16">FairBaseReport</a><a class="headerlink" href="#fairbasereport" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.report.base_report.FairBaseReport">
+<em class="property">class </em><code class="descclassname">pyfair.report.base_report.</code><code class="descname">FairBaseReport</code><a class="headerlink" href="#pyfair.report.base_report.FairBaseReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>A base report class with boilerplate.</p>
+<p>TODO: make an HTML generator. This class is bloated.
+TODO: this should capture errors and warnings in a sep table.</p>
+<dl class="method">
+<dt id="pyfair.report.base_report.FairBaseReport.base64ify">
+<code class="descname">base64ify</code><span class="sig-paren">(</span><em>image</em>, <em>alternative_text=''</em>, <em>options=''</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.report.base_report.FairBaseReport.base64ify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads an image into a base64 embeddable &lt;img&gt; tag</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="fairdistributioncurve">
+<h2><a class="toc-backref" href="#id17">FairDistributionCurve</a><a class="headerlink" href="#fairdistributioncurve" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.report.distribution.FairDistributionCurve">
+<em class="property">class </em><code class="descclassname">pyfair.report.distribution.</code><code class="descname">FairDistributionCurve</code><span class="sig-paren">(</span><em>model_or_iterable</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.report.distribution.FairDistributionCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>A shiny distribution curve to lend credibility to our guesstimates.</p>
+<dl class="method">
+<dt id="pyfair.report.distribution.FairDistributionCurve.generate_icon">
+<code class="descname">generate_icon</code><span class="sig-paren">(</span><em>model_name</em>, <em>target</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.report.distribution.FairDistributionCurve.generate_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimalist histogram (not for comparisons)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyfair.report.distribution.FairDistributionCurve.generate_image">
+<code class="descname">generate_image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.report.distribution.FairDistributionCurve.generate_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides histogram(s) with PDF curve(s)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="fairexceedencecurves">
+<h2><a class="toc-backref" href="#id18">FairExceedenceCurves</a><a class="headerlink" href="#fairexceedencecurves" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.report.exceedence.FairExceedenceCurves">
+<em class="property">class </em><code class="descclassname">pyfair.report.exceedence.</code><code class="descname">FairExceedenceCurves</code><span class="sig-paren">(</span><em>model_or_iterable</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.report.exceedence.FairExceedenceCurves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots one or more exceedence curves</p>
+<dl class="method">
+<dt id="pyfair.report.exceedence.FairExceedenceCurves.generate_image">
+<code class="descname">generate_image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.report.exceedence.FairExceedenceCurves.generate_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function for generating plots</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="fairtreegraph">
+<h2><a class="toc-backref" href="#id19">FairTreeGraph</a><a class="headerlink" href="#fairtreegraph" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.report.tree_graph.FairTreeGraph">
+<em class="property">class </em><code class="descclassname">pyfair.report.tree_graph.</code><code class="descname">FairTreeGraph</code><span class="sig-paren">(</span><em>model</em>, <em>format_strings</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.report.tree_graph.FairTreeGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a pretty tree diagram to summarize calculations.</p>
+<p>TODO: Magic numbers galore.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="fairviolinplot">
+<h2><a class="toc-backref" href="#id20">FairViolinPlot</a><a class="headerlink" href="#fairviolinplot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.report.violin.FairViolinPlot">
+<em class="property">class </em><code class="descclassname">pyfair.report.violin.</code><code class="descname">FairViolinPlot</code><span class="sig-paren">(</span><em>metamodel</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.report.violin.FairViolinPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Area plot of metamodels</p>
+<dl class="method">
+<dt id="pyfair.report.violin.FairViolinPlot.generate_image">
+<code class="descname">generate_image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.report.violin.FairViolinPlot.generate_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function for generating plots</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="utility-classes">
+<h1><a class="toc-backref" href="#id21">Utility Classes</a><a class="headerlink" href="#utility-classes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fairexception">
+<h2><a class="toc-backref" href="#id22">FairException</a><a class="headerlink" href="#fairexception" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="pyfair.utility.fair_exception.FairException">
+<em class="property">exception </em><code class="descclassname">pyfair.utility.fair_exception.</code><code class="descname">FairException</code><a class="headerlink" href="#pyfair.utility.fair_exception.FairException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vanity exception class</p>
+</dd></dl>
+
+</div>
+<div class="section" id="fairbetapert">
+<h2><a class="toc-backref" href="#id23">FairBetaPert</a><a class="headerlink" href="#fairbetapert" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.utility.beta_pert.FairBetaPert">
+<em class="property">class </em><code class="descclassname">pyfair.utility.beta_pert.</code><code class="descname">FairBetaPert</code><span class="sig-paren">(</span><em>low</em>, <em>mode</em>, <em>high</em>, <em>gamma=4</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.utility.beta_pert.FairBetaPert" title="Permalink to this definition">¶</a></dt>
+<dd><p>A PERT distribution for all your pseudoscientific needs.</p>
+<dl class="docutils">
+<dt>Formula taken from:</dt>
+<dd><a class="reference external" href="https://www.rdocumentation.org/packages/prevalence/versions/0.4.0/topics/betaPERT">https://www.rdocumentation.org/packages/prevalence/versions/0.4.0/topics/betaPERT</a>
+<a class="reference external" href="http://mech.vub.ac.be/teaching/info/Ontwerpmethodologie/Appendix%20les%202%20PERT.pdf">http://mech.vub.ac.be/teaching/info/Ontwerpmethodologie/Appendix%20les%202%20PERT.pdf</a></dd>
+</dl>
+<dl class="method">
+<dt id="pyfair.utility.beta_pert.FairBetaPert.random_variates">
+<code class="descname">random_variates</code><span class="sig-paren">(</span><em>count</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.utility.beta_pert.FairBetaPert.random_variates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get n PERT-distributed random numbers</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="fairsimpleparser">
+<h2><a class="toc-backref" href="#id24">FairSimpleParser</a><a class="headerlink" href="#fairsimpleparser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyfair.utility.parser.FairSimpleParser">
+<em class="property">class </em><code class="descclassname">pyfair.utility.parser.</code><code class="descname">FairSimpleParser</code><span class="sig-paren">(</span><em>workbook_path</em><span class="sig-paren">)</span><a class="headerlink" href="#pyfair.utility.parser.FairSimpleParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Horific parser.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1><a class="toc-backref" href="#id25">Indices and tables</a><a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Theo Naunheim
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
