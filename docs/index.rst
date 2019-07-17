@@ -53,72 +53,6 @@ FairModelFactory
 .. autoclass:: pyfair.utility.factory.FairModelFactory
     :members:
 
-Model Classes
-=============
-
-FairCalculations
-----------------
-
-.. autoclass:: pyfair.model.model_calc.FairCalculations
-    :members:
-
-FairDataInput
--------------
-
-.. autoclass:: pyfair.model.model_input.FairDataInput
-    :members:
-
-FairDependencyNode
-------------------
-
-.. autoclass:: pyfair.model.model_node.FairDependencyNode
-    :members:
-
-FairDependencyTree
-------------------
-
-.. autoclass:: pyfair.model.model_tree.FairDependencyTree
-    :members:
-
-Report Classes
-==============
-
-FairBaseCurve
--------------
-
-.. autoclass:: pyfair.report.base_curve.FairBaseCurve
-    :members:
-
-FairBaseReport
---------------
-
-.. autoclass:: pyfair.report.base_report.FairBaseReport
-    :members:
-
-FairDistributionCurve
----------------------
-
-.. autoclass:: pyfair.report.distribution.FairDistributionCurve
-    :members:
-
-FairExceedenceCurves
---------------------
-
-.. autoclass:: pyfair.report.exceedence.FairExceedenceCurves
-    :members:
-
-FairTreeGraph
--------------
-
-.. autoclass:: pyfair.report.tree_graph.FairTreeGraph
-    :members:
-
-FairViolinPlot
---------------
-
-.. autoclass:: pyfair.report.violin.FairViolinPlot
-    :members:
-
 Utility Classes
 ===============
 
@@ -138,6 +72,42 @@ FairSimpleParser
 ----------------
 
 .. autoclass:: pyfair.utility.parser.FairSimpleParser
+    :members:
+
+Model Classes
+=============
+
+.. autoclass:: pyfair.model.model_calc.FairCalculations
+    :members:
+
+.. autoclass:: pyfair.model.model_input.FairDataInput
+    :members:
+
+.. autoclass:: pyfair.model.model_node.FairDependencyNode
+    :members:
+
+.. autoclass:: pyfair.model.model_tree.FairDependencyTree
+    :members:
+
+Report Classes
+==============
+
+.. autoclass:: pyfair.report.base_curve.FairBaseCurve
+    :members:
+
+.. autoclass:: pyfair.report.base_report.FairBaseReport
+    :members:
+
+.. autoclass:: pyfair.report.distribution.FairDistributionCurve
+    :members:
+
+.. autoclass:: pyfair.report.exceedence.FairExceedenceCurves
+    :members:
+
+.. autoclass:: pyfair.report.tree_graph.FairTreeGraph
+    :members:
+
+.. autoclass:: pyfair.report.violin.FairViolinPlot
     :members:
 
 Indices and tables
