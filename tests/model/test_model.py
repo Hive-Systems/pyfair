@@ -1,4 +1,7 @@
+import json
 import unittest
+
+import pandas as pd
 
 from .. import context
 
@@ -62,7 +65,10 @@ class TestFairModel(unittest.TestCase):
         # Test duplicate inputs passed
         model.input_data('Loss Magnitude', constant=10)
         # Test bulk_import_data
-
+        model.bulk_import_data({
+            'Loss Magnitude': {'constant': 100},
+            'Loss Event Frequency': {'low': 10, 'mode': 15, 'high': 20}
+        })
         # Test import_multi_data
         model.input_multi_data('Secondary Loss', {
             'Reputational': {
@@ -75,16 +81,40 @@ class TestFairModel(unittest.TestCase):
             }
         })
 
-
-    def test_dependency_tree(self):
-        pass
-
-
     def test_calculation(self):
-        pass
+        '''Run a calulate all.'''
+        # Create model and import data
+        model = FairModel('Test', 100)
+        model.input_data('Loss Magnitude', constant=100)
+        # Calculate based on incomplete data
+        self.assertRaises(FairException, model.calculate_all)
+        # Complete calculation and run
+        model.input_data('Loss Event Frequency', constant=10)
+        model.calculate_all()
 
     def test_exports(self):
-        pass
+        '''Test outputs post calculation'''
+        # Create model and calculate
+        samples = 100
+        model = FairModel('Test', samples)
+        model.bulk_import_data({
+            'Loss Magnitude': {'constant': 100},
+            'Loss Event Frequency': {'low': 10, 'mode': 15, 'high': 20}
+        })
+        model.calculate_all()
+        # Export results
+        results = model.export_results()
+        self.assertIsInstance(results, pd.DataFrame)
+        self.assertTrue(len(results) == samples)        
+        # Export json and ensure parse-able
+        json_data = model.to_json()
+        self.assertIsInstance(json_data, str)
+        _ = json.loads(json_data)
+        # Export params
+        params = model.export_params()
+        self.assertIsInstance(params, dict)
+        self.assertTrue(params)
+
 
 if __name__ == '__main__':
     unittest.main()
