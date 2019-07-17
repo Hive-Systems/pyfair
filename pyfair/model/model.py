@@ -247,7 +247,7 @@ class FairModel(object):
         Examples
         --------
         >>> model = pyfair.model.FairModel(name='Data Loss')
-        >>> model.input_data('Loss Magnitude', {'mean': 20, 'stdev': 10})
+        >>> model.input_data('Loss Magnitude', mean=20, stdev=10)
 
         """
         # Generate data via data captive class

@@ -1,2 +1,2 @@
 language: python
-script: python -m unittest test
+script: python -m unittest discover

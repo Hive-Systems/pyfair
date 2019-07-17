@@ -7,7 +7,7 @@ repo_dir  = this_file.parents[1]
 path      = str(repo_dir)
 
 # Get data directory
-data_directory = repo_dir / 'test' / 'data'
+data_directory = repo_dir / 'tests' / 'data'
 
 # Append directory to path.
 sys.path.append(path)
