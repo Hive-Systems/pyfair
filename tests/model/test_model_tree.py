@@ -29,11 +29,52 @@ class TestFairDependencyTree(unittest.TestCase):
         self.assertFalse(tree.ready_for_calculation())
         self.assertTrue(tree.calculation_completed())   
 
-    def test_propogation(self):
-        pass
-    
-    def test_statuses(self):
-        pass
+    def test_downward_propogation(self):
+        '''Ensure propogation up and down the tree works'''
+        tree = FairDependencyTree()
+        # The supply two nodes
+        tree.update_status('Loss Event Frequency', 'Supplied')
+        tree.update_status('Loss Magnitude', 'Supplied')
+        # Each of those nodes should now equal supplied
+        statuses = tree.get_node_statuses()
+        for node in [
+            'Loss Event Frequency',
+            'Loss Magnitude'
+        ]:
+            self.assertEqual(statuses[node], 'Supplied')
+        # And inferior nodes should be 'Not Required'
+        for node in [
+            'Threat Event Frequency',
+            'Vulnerability',
+            'Contact',
+            'Action',
+            'Threat Capability',
+            'Control Strength',
+            'Primary Loss',
+            'Secondary Loss',
+            'Secondary Loss Event Frequency',
+            'Secondary Loss Event Magnitude',
+        ]:
+            self.assertEqual(statuses[node], 'Not Required')
+
+    def test_upward_propagation(self):
+        '''Ensure upward calculation propogation works'''
+        tree = FairDependencyTree()
+        # The supply three nodes
+        tree.update_status('Loss Event Frequency', 'Supplied')
+        tree.update_status('Primary Loss', 'Supplied')
+        tree.update_status('Secondary Loss', 'Supplied')
+        # Get statuses and check appropriate fields are calculable
+        statuses = tree.get_node_statuses()
+        for node in [
+            'Risk', 
+            'Loss Magnitude'
+        ]:
+            self.assertEqual(statuses[node], 'Calculable')
+        # Now mark a node as calculated
+        tree.update_status('Loss Magnitude', 'Calculated')
+        statuses = tree.get_node_statuses()
+        self.assertEqual(statuses['Loss Magnitude'], 'Calculated')
 
 
 if __name__ == '__main__':

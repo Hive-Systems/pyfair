@@ -1,4 +1,4 @@
-"""This module contains the main FairModel class."""
+"""This module contains the main class for creating FAIR models."""
 
 import json
 import uuid
@@ -236,7 +236,7 @@ class FairModel(object):
         ----------
         target : str
             The name of the node for which the arguments are directed
-        kwargs : dict
+        kwargs : float
             The arguments used to generate a distribution for the node
 
         Returns

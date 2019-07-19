@@ -1,4 +1,4 @@
-'''This module contains two classes for model calculation dependency tracking.'''
+'''This module contains a tree class for model calculation dependency tracking.'''
 
 from .model_node import FairDependencyNode
 
