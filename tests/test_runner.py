@@ -11,11 +11,13 @@ sys.path.append(path)
 # Import test modules
 import model.test_model
 import model.test_model_tree
+import model.test_model_node
 
 # List test modules
 test_modules = [
     model.test_model,
     model.test_model_tree,
+    model.test.model_node,
 ]
 
 # Create loader and suite

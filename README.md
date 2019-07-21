@@ -1,4 +1,6 @@
 # pyfair
+![Overview](./static/logo.PNG)
+
 ![Doccumentation Badge](https://readthedocs.org/projects/pyfair/badge/?version=latest) ![Build Badge](https://travis-ci.org/theonaunheim/pyfair.svg?branch=master)
 
 Factor Analysis of Information Risk (FAIR) model written in Python.
