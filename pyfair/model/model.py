@@ -42,31 +42,6 @@ class FairModel(object):
         .. warning:: Do not supply your own UUID/creation date unless
            you want to break things.
 
-    Methods
-    -------
-    bulk_import_data(param_dictionary)
-        Import via nested dict and self._input/self._tree
-    calculate_all()
-        Calculate nodes and update depedency tree with self._calculation
-    calculation_completed()
-        Returns True if calculation is complete via self._tree
-    export_params()
-        Export the parameters inputted in the model
-    export_results()
-        Export the results of the calculated model
-    get_name()
-        Return model name
-    get_node_statuses()
-        Return the statuses of each node from captive self._tree
-    input_data(target, **kwargs)
-        Input data for a given node via self._data_input/self._tree
-    input_multi_data(target, kwargs_dict)
-        Input nested dict for multidimensional inputs (Secondary Loss)
-    read_json(param_json)
-        Static method to instatiate model from JSON
-    to_json()
-        Export model as JSON
-
     """
 
     ##########################################################################

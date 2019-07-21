@@ -22,17 +22,6 @@ class FairDependencyTree(object):
     nodes : dict
         A dict with name string key and a FairDependencyNode value
 
-    Methods
-    -------
-        ready_for_calculation()
-            Returns True if ready for calculation, otherwise False
-        calculation_completed()
-            Returns True if calculation complete, otherwise False
-        update_status(node_name, status)
-            Update the status of a node, and propogate up then down
-        get_node_statuses()
-            Return a dict node name keys and node status values
-
     Notes
     -----
         http://pubs.opengroup.org/onlinepubs/9699919899/toc.pdf
