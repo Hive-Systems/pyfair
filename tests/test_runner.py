@@ -17,7 +17,7 @@ import model.test_model_node
 test_modules = [
     model.test_model,
     model.test_model_tree,
-    model.test.model_node,
+    model.test_model_node,
 ]
 
 # Create loader and suite
