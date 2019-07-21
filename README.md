@@ -1,6 +1,6 @@
 # pyfair
 
-<img src="static/logo.PNG" alt="logo" width="200"/>
+<img src="static/logo.PNG" alt="logo" width="300"/>
 
 ![Doccumentation Badge](https://readthedocs.org/projects/pyfair/badge/?version=latest) ![Build Badge](https://travis-ci.org/theonaunheim/pyfair.svg?branch=master)
 

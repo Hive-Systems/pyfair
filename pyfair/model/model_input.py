@@ -8,11 +8,11 @@ from ..utility.beta_pert import FairBetaPert
 
 
 class FairDataInput(object):
-    '''Data entry and validation.
+    """Data entry and validation.
     
-    TODO: confirm accuracy of these function mappings.
+
     
-    '''
+    """
     
     def __init__(self):
         # These targets must be less than or equal to one

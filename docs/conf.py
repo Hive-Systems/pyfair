@@ -30,6 +30,9 @@ release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------
 
+# User defined HMTL Logo
+html_logo = '../static/logo.PNG'
+
 # If your documentation needs a minimal Sphinx version, state it here.
 #
 # needs_sphinx = '1.0'
