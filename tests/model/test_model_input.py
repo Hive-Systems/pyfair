@@ -7,6 +7,17 @@ from pyfair.utility.fair_exception import FairException
 class TestFairModelInput(unittest.TestCase):
 
     _input = None
+    _COUNT = 100
+    _MULTI = {
+            'Reputational': {
+                'Secondary Loss Event Frequency': {'constant': 4000}, 
+                'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},
+            },
+            'Legal': {
+                'Secondary Loss Event Frequency': {'constant': 2000}, 
+                'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},        
+            }
+    }
 
     def setUp(self):
         self._input = FairDataInput()
@@ -54,21 +65,42 @@ class TestFairModelInput(unittest.TestCase):
         self._input._check_parameters(self._input._gen_bernoulli, p=.2) 
         with self.assertRaises(FairException):
             self._input._check_parameters(self._input._gen_bernoulli, mean=4) 
+        # Check that negative numbers raise error
+        with self.assertRaises(FairException):
+            self._input._check_parameters(self._input._gen_bernoulli, p=-1) 
 
     def test_check_pert(self):
         """Ensure PERT checks are accuate"""
-        pass
-        #with self.assertRaises(FairException):
-            #self._input._check_pert(low=-2, mode=
+        # Check low > mode
+        with self.assertRaises(FairException):
+            self._input._check_pert(low=5, mode=2, high=10)
+        # Check mode > high
+        with self.assertRaises(FairException):
+            self._input._check_pert(low=5, mode=12, high=10)
 
     def test_check_generation(self):
-        pass
+        """Run generation tests"""
+        # Run basic PERT
+        result = self._input.generate('Loss Event Frequency', self._COUNT, low=0, mode=10, high=20)
+        self.assertTrue(len(result) == self._COUNT)
+        # Basic normal
+        result = self._input.generate('Loss Event Frequency', self._COUNT, mean=20, stdev=5)
+        self.assertTrue(len(result) == self._COUNT)
+        # Basic bernoulli
+        result = self._input.generate('Vulnerability', self._COUNT, p=.5)
+        self.assertTrue(len(result) == self._COUNT)
+        # Basic constant
+        result = self._input.generate('Loss Event Frequency', self._COUNT, constant=50)
+        self.assertAlmostEqual(result.mean(), 50)
+        # Make sure items are clipped at 0 and 1 where approprriate
+        result = self._input.generate('Action', self._COUNT, mean=.5, stdev=2)
+        self.assertTrue(max(result) <= 1)
+        self.assertTrue(min(result) >= 0)
+
     
     def test_check_generation_multi(self):
-        pass
-    
-    def test_gen_curve(self):
-        pass
+        """Multi was such a terrible idea."""
+        self._input.generate_multi('multi_Secondary Loss', self._COUNT, self._MULTI)
 
 
 if __name__ == '__main__':

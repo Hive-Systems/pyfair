@@ -1,3 +1,5 @@
+'''This module contains an input object for sanitizing and checking data.'''
+
 import scipy.stats
 
 import numpy as np
@@ -8,9 +10,23 @@ from ..utility.beta_pert import FairBetaPert
 
 
 class FairDataInput(object):
-    """Data entry and validation.
-    
+    """A captive class for checking and routing data inputs.
 
+    An instance of this class is created when a FairModel is instantiated.
+    It is used during the lifetime of the FairModel to take inputs, raise
+    errors if the inputs are improper, route those inputs to the
+    appropriate functions, and then create random variates using the
+    keywords supplied.
+
+    The shape of the distribution for the random variates is inferred from
+    the keywords (self._parameter_map), and the restrictions around whether
+    numbers are inferred from the the targets (self._le_1_targets). These
+    are both analyzed when an external actor triggers generate(). Other
+    checks are run as necessary.
+    
+    All the inputs for a model are stored in the self._supplied_values
+    dictionary, which is important because it is the only record of what
+    is stored when converting to JSON or another serialization format.
     
     """
     
@@ -42,7 +58,17 @@ class FairDataInput(object):
         self._supplied_values = {}
 
     def get_supplied_values(self):
-        '''Fetch params'''
+        '''Simple getter to return
+        
+        Returns
+        -------
+        dict
+            A dictinoary of the values supplied to generate function. The
+            keys for the dict will be the target node as a string (e.g. 
+            'Loss Event Frequency') and the values will be a sub-dictionary 
+            of keyword arguments ({'low': 50, 'mode}: 51, 'high': 52}).
+        
+        '''
         return self._supplied_values
     
     def _check_le_1(self, target, **kwargs):
@@ -51,8 +77,11 @@ class FairDataInput(object):
         for key, value in kwargs.items():
             # If key is in specified list
             if target in self._le_1_targets:
+                # We don't care about stdev
+                if key == 'stdev':
+                    pass
                 # Check if value is less than or equal to 1
-                if 0.0 <= value <= 1.0:
+                elif 0.0 <= value <= 1.0:
                     pass
                 # If not, raise error
                 else:
@@ -60,6 +89,15 @@ class FairDataInput(object):
 
     def _check_parameters(self, target_function, **kwargs):
         '''Look up keywords based on function type'''
+        # Ensure all arguments are =< 0 where relevant
+        for keyword, value in kwargs.items():
+            # Two conditions
+            value_is_less_than_zero = value < 0
+            keyword_is_relevant = keyword in ['p', 'mean', 'constant', 'low', 'mode', 'high']
+            # Test conditions
+            if keyword_is_relevant and value_is_less_than_zero:
+                raise FairException('"{}" is less than zero.'.format(keyword))
+        # Check that all required keywords are provided
         required_keywords = self._required_keywords[target_function]
         for required_keyword in required_keywords:
             if required_keyword in kwargs.keys():
@@ -68,7 +106,11 @@ class FairDataInput(object):
                 raise FairException('"{}" is missing "{}".'.format(str(target_function), required_keyword))
 
     def generate(self, target, count, **kwargs):
-        '''Function for dispatching a generation request'''
+        '''Function for dispatching a generation request
+        
+        This function triggers a number of subroutines.
+        
+        '''
         # Generate result
         result = self._generate_single(target, count, **kwargs)
         # Explicitly insert optional keywords for model storage
@@ -94,6 +136,9 @@ class FairDataInput(object):
             self._check_parameters(func, **kwargs)
             # Run the function
             results = func(count, **kwargs)
+        # Clip if in le_1_targets
+        if target in self._le_1_targets:
+            results = np.clip(results, 0.0, 1.0)
         return results
 
     def generate_multi(self, prefixed_target, count, kwargs_dict):
@@ -150,9 +195,7 @@ class FairDataInput(object):
     def _gen_normal(self, count, **kwargs):
         normal = scipy.stats.norm(loc=kwargs['mean'], scale=kwargs['stdev'])
         rvs = normal.rvs(count)
-        # Clip out of range values
-        clipped_rvs = np.clip(rvs, 0.0, 1.0)
-        return clipped_rvs
+        return rvs
     
     def _gen_pert(self, count, **kwargs):
         self._check_pert(**kwargs)
