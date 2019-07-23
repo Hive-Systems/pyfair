@@ -50,7 +50,7 @@ class FairDataInput(object):
         # For every keyword argument
         for key, value in kwargs.items():
             # If key is in specified list
-            if key in self._le_1_keywords:
+            if target in self._le_1_targets:
                 # Check if value is less than or equal to 1
                 if 0.0 <= value <= 1.0:
                     pass
