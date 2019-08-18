@@ -96,10 +96,9 @@ class TestFairModelInput(unittest.TestCase):
         result = self._input.generate('Action', self._COUNT, mean=.5, stdev=2)
         self.assertTrue(max(result) <= 1)
         self.assertTrue(min(result) >= 0)
-
     
     def test_check_generation_multi(self):
-        """Multi was such a terrible idea."""
+        """Multi was such a terrible idea"""
         self._input.generate_multi('multi_Secondary Loss', self._COUNT, self._MULTI)
 
 

@@ -72,7 +72,7 @@ class FairDataInput(object):
         return self._supplied_values
     
     def _check_le_1(self, target, **kwargs):
-        '''Checks if certain keyword arguments are less than 1'''
+        '''Ensures certain keyword arguments are between one and zero'''
         # For every keyword argument
         for key, value in kwargs.items():
             # If key is in specified list
@@ -88,7 +88,12 @@ class FairDataInput(object):
                     raise FairException('"{}" must have "{}" value between zero and one.'.format(target, key))
 
     def _check_parameters(self, target_function, **kwargs):
-        '''Look up keywords based on function type'''
+        '''Run parameter checks
+        
+        This includes a determination that the value is equal to or
+        greater than zero, and a check that all required keywords for a given
+
+        '''
         # Ensure all arguments are =< 0 where relevant
         for keyword, value in kwargs.items():
             # Two conditions

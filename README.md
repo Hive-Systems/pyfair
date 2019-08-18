@@ -13,6 +13,12 @@ This is based in large part on:
 1) [the Technical Standard published by the Open Group](http://pubs.opengroup.org/onlinepubs/9699919899/toc.pdf); and,
 2) [Measuring and Managing Information Risk](https://www.amazon.com/Measuring-Managing-Information-Risk-Approach-ebook/dp/B00N9YPW5C/ref=sr_1_1?keywords=Measuring+and+Managing+Information+Risk%3A+A+FAIR+Approach&qid=1559271904&s=gateway&sr=8-1).
 
+## Installation
+
+pyfair is available on [PyPI](https://pypi.org/project/pyfair/). To use pyfair with your Python installation, you can run:
+
+`pip install pyfair`
+
 ## Documentation
 
 Documentation can be found at the [Read the Docs site](https://pyfair.readthedocs.io/en/latest/).
