@@ -234,7 +234,7 @@ class FairModel(object):
         return self
 
     def input_multi_data(self, target, kwargs_dict):
-        """Input data for multiple items that roll up into an aggrgate
+        """Input data for multiple items that roll up into an aggregate
 
         As of now, this is only used for Secondary Loss when calculating
         mutliple secondary loss line items (e.g. 'Reputation' has a
@@ -322,7 +322,7 @@ class FairModel(object):
     def calculate_all(self):
         """Runs all outstanding calculations for uncalculated nodes.
 
-        This is done by obtaining a list of all 'calculatble' nodes.
+        This is done by obtaining a list of all 'calculable' nodes.
         If it is not ready for a complete calculation, it throws an
         error. It goes through all the calculable nodes and calculates
         them using the private _calculate_node() method.
@@ -454,7 +454,7 @@ class FairModel(object):
         return json_data
 
     def export_params(self):
-        """Export params as a dictioanry.
+        """Export params as a dictionary.
 
         Returns
         -------

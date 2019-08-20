@@ -1,4 +1,4 @@
-'''This module contains an input object for sanitizing and checking data.'''
+"""This module contains an input object for sanitizing / checking data."""
 
 import scipy.stats
 
@@ -58,21 +58,21 @@ class FairDataInput(object):
         self._supplied_values = {}
 
     def get_supplied_values(self):
-        '''Simple getter to return
+        """Simple getter to return the supplied values
         
         Returns
         -------
         dict
-            A dictinoary of the values supplied to generate function. The
+            A dictionary of the values supplied to generate function. The
             keys for the dict will be the target node as a string (e.g. 
             'Loss Event Frequency') and the values will be a sub-dictionary 
             of keyword arguments ({'low': 50, 'mode}: 51, 'high': 52}).
         
-        '''
+        """
         return self._supplied_values
     
     def _check_le_1(self, target, **kwargs):
-        '''Ensures certain keyword arguments are between one and zero'''
+        """Raises error if not between one and zero"""
         # For every keyword argument
         for key, value in kwargs.items():
             # If key is in specified list
@@ -88,12 +88,13 @@ class FairDataInput(object):
                     raise FairException('"{}" must have "{}" value between zero and one.'.format(target, key))
 
     def _check_parameters(self, target_function, **kwargs):
-        '''Run parameter checks
+        """Runs parameter checks
         
         This includes a determination that the value is equal to or
-        greater than zero, and a check that all required keywords for a given
+        greater than zero, and a check that all required keywords for a
+        given
 
-        '''
+        """
         # Ensure all arguments are =< 0 where relevant
         for keyword, value in kwargs.items():
             # Two conditions
@@ -111,11 +112,41 @@ class FairDataInput(object):
                 raise FairException('"{}" is missing "{}".'.format(str(target_function), required_keyword))
 
     def generate(self, target, count, **kwargs):
-        '''Function for dispatching a generation request
+        """Executes request, records parameters, and return random values
+
+        More specifically this triggers the `_generate_single()`
+        subroutine, records the appropriate keywords in the 
+        `_supplied_values` member, and returns a pandas Series of random
+        values.
+
+        Parameters
+        ----------
+        target : str
+            The node for which the data is being generated (e.g. "Loss
+            Event Frequency").
+        count : int
+            The number of random numbers generated (or alternatively, the
+            length of the Series returned).
+        **kwargs
+            Keyword arguments with one of the following values: {`mean`, 
+            `stdev`, `p`, `low`, `mode`, `high`, `gamma`, or `constant`}.
+
+        Raises
+        ------
+        pyfair.utility.fair_exception.FairException
+            Raised if subroutine errors bubble up for reasons such as: 1)
+            parameters are missing/incompatible, 2) parameters do not fall
+            within proscribed value ranges, or 3) numbers supplied cannot
+            be used to create meaningful distributions.
+
+        Returns
+        -------
+        pd.Series
+            A series of length `count` composed of random values. These
+            values are consistent with a particular distribution type
+            (Normal, BetaPert, Bernoulli, or constant).
         
-        This function triggers a number of subroutines.
-        
-        '''
+        """
         # Generate result
         result = self._generate_single(target, count, **kwargs)
         # Explicitly insert optional keywords for model storage
@@ -127,7 +158,14 @@ class FairDataInput(object):
         return result
     
     def _generate_single(self, target, count, **kwargs):
-        '''Internal function for single request'''
+        """Internal workhorse function for single request
+
+        Where applicable this includes a check that parameters are less
+        than or equal to one, determines the appropriate RNG funtion,
+        checks the parameters for that function, clips the value range
+        of the result of the RNG function, and returns the result.
+
+        """
         # If destined for a le_1_target, check validity.
         if target in self._le_1_targets:
             self._check_le_1(target, **kwargs)
@@ -147,13 +185,72 @@ class FairDataInput(object):
         return results
 
     def generate_multi(self, prefixed_target, count, kwargs_dict):
+        """Generates aggregate risk data for multiple targets
+
+        .. deprecated:: 0.1-alpha.1
+           `generate_multi()` will be removed in future versions because
+           it was a terrible idea to begin with.
+
+        This function essentially creates a small simulation for each key
+        in the dictionary. For example, with the following data:
+
+        `
+        {
+            'Reputational': {
+                'Secondary Loss Event Frequency': {'constant': 4000}, 
+                'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},
+            },
+            'Legal': {
+                'Secondary Loss Event Frequency': {'constant': 2000}, 
+                'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},        
+            }
+        }
+        `
+
+        Two separate simulations for "Reputational" and "Legal" will be run
+        using the information supplied. Each of these simulations will be
+        composed of random values with distributions based on the
+        parameters supplied. Those simulations are then calculated
+        independently, and then summed to yield aggregate risk.
+
+        Parameters
+        ----------
+        prefixed_target : str
+            The node for which the data is being generated (e.g. "Loss
+            Event Frequency").
+        count : int
+            The number of random numbers generated (or alternatively, the
+            length of the Series returned).
+        kwargs_dict : dict
+            This is an actual dictionary (and not an expanded **kwargs)
+            keyword list.
+
+        .. warning:: unlike other functions, this does not take **kwargs--
+           rather it takes a dictionary
+
+        Raises
+        ------
+        pyfair.utility.fair_exception.FairException
+            Raised if subroutine errors bubble up for reasons such as: 1)
+            parameters are missing/incompatible, 2) parameters do not fall
+            within proscribed value ranges, or 3) numbers supplied cannot
+            be used to create meaningful distributions.
+
+        Returns
+        -------
+        pd.Series
+            A series of length `count` composed of aggregate risk dollar
+            amounts.
+
+        """
+
         # Remove prefix from target
         final_target = prefixed_target.lstrip('multi_')
         # Create a container for dataframes
         df_dict = {target: pd.DataFrame() for target in kwargs_dict.keys()}
         # For each target
         for target, column_dict in kwargs_dict.items():
-            # For each column in that garget
+            # For each column in that target
             for column, params in column_dict.items():
                 # Gen data
                 data = self._generate_single(target, count, **params)
@@ -171,7 +268,7 @@ class FairDataInput(object):
         return summed
             
     def _determine_func(self, **kwargs):
-        '''This function takes keywords and determines function'''
+        """Checks keywords and returns the appropriate function object."""
         # Check whether keys are recognized
         for key in kwargs.keys():
             if not key in self._parameter_map.keys():
@@ -189,26 +286,31 @@ class FairDataInput(object):
             return function
 
     def _gen_bernoulli(self, count, **kwargs):
+        """Generates a random Bernoulli-distributed array"""
         # No check required as 0 to 1 is already esablished
         bernoulli = scipy.stats.bernoulli(**kwargs)
         rvs = bernoulli.rvs(count)
         return rvs
     
     def _gen_constant(self, count, **kwargs):
+        """Generates constant array of size `count`"""
         return np.full(count, kwargs['constant'])
     
     def _gen_normal(self, count, **kwargs):
+        """Geneates random normally-distributed array of size `count`"""
         normal = scipy.stats.norm(loc=kwargs['mean'], scale=kwargs['stdev'])
         rvs = normal.rvs(count)
         return rvs
     
     def _gen_pert(self, count, **kwargs):
+        """Checks parameters, creates BetaPert, returns random values"""
         self._check_pert(**kwargs)
         pert = FairBetaPert(**kwargs)
         rvs = pert.random_variates(count)
         return rvs
     
     def _check_pert(self, **kwargs):
+        """Does the work of ensuring BetaPert distribution is valid"""
         conditions = {
             'mode >= low'  : kwargs['mode'] >= kwargs['low'],
             'high >= mode' : kwargs['high'] >= kwargs['mode'],
