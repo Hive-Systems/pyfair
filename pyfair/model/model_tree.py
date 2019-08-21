@@ -72,9 +72,6 @@ class FairDependencyTree(object):
         # If there's required values return False
         if 'Required' in self._node_statuses.values():
             return False
-        # Or if it has already been calculated return False
-        elif self._root.status == 'Calculated':
-            return False
         # Otherwise true
         else:
             return True

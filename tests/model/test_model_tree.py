@@ -24,9 +24,8 @@ class TestFairDependencyTree(unittest.TestCase):
         # Assert that it is ready for calculation but not complete
         self.assertTrue(tree.ready_for_calculation())
         self.assertFalse(tree.calculation_completed())
-        # Now mimic calculation and assert that calculated but not ready for calculation
+        # Now mimic calculation and assert complete
         tree.update_status('Risk', 'Calculated')
-        self.assertFalse(tree.ready_for_calculation())
         self.assertTrue(tree.calculation_completed())   
 
     def test_downward_propogation(self):

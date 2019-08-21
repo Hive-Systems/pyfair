@@ -8,7 +8,7 @@ from pyfair.utility.fair_exception import FairException
 
 class TestFairMetaModel(unittest.TestCase):
 
-    _RISK_TABLE_COLUMN_COUNT = 13
+    _RISK_TABLE_COLUMN_COUNT = 2
     _N_SAMPLES = 100
     _MODEL_JSON = '{     "Loss Event Frequency": {         "low": 20,         "mode": 100,         "high": 900     },     "Loss Magnitude": {         "low": 3000000,         "mode": 3500000,         "high": 5000000     },     "name": "Regular Model 1",     "n_simulations": 10000,     "random_seed": 42,     "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",     "type": "FairModel",     "creation_date": "2019-07-06 17:23:43.647370" }'
     _META_MODEL_JSON = '{     "Regular Model 1": {         "Loss Event Frequency": {             "low": 20,             "mode": 100,             "high": 900         },         "Loss Magnitude": {             "low": 3000000,             "mode": 3500000,             "high": 5000000         },         "name": "Regular Model 1",         "n_simulations": 10000,         "random_seed": 42,         "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",         "type": "FairModel",         "creation_date": "2019-07-06 17:23:43.647370"     },     "Regular Model 2": {         "Loss Event Frequency": {             "mean": 0.3,             "stdev": 0.1         },         "Loss Magnitude": {             "low": 2000000000,             "mode": 3000000000,             "high": 5000000000         },         "name": "Regular Model 2",         "n_simulations": 10000,         "random_seed": 42,         "model_uuid": "b6ca98a4-a03c-11e9-8ce0-f26e0bbd6dbc",         "type": "FairModel",         "creation_date": "2019-07-06 17:23:43.672336"     },     "name": "My Meta Model!",     "model_uuid": "b6cce298-a03c-11e9-b79f-f26e0bbd6dbc",     "creation_date": "2019-07-06 17:23:43.687336",     "type": "FairMetaModel" }'
@@ -28,28 +28,24 @@ class TestFairMetaModel(unittest.TestCase):
         attributes = [
             self._meta._name,
             self._meta._params,
-            self._meta._risk_table,
             self._meta._model_uuid,
             self._meta._creation_date,
         ]
         for attribute in attributes:
             self.assertTrue(attribute)
 
-        # Check that the table is of proper
+        # Check that the table is of proper-ish
         self.assertEqual(
             len(self._meta._risk_table.columns), 
             self._RISK_TABLE_COLUMN_COUNT
         )
 
-    """
     def test_read_json(self):
-        '''Test static method for reading JSON'''
-        # Instantiate model
-        model = FairModel.read_json(self.MODEL_JSON)
-        self.assertTrue(model)
+        """setUp covers most, so just test Model JSON fails"""
         # Ensure metamodel fails
-        self.assertRaises(FairException, FairModel.read_json, self.META_MODEL_JSON)
+        self.assertRaises(FairException, FairMetaModel.read_json, self.META_MODEL_JSON)
 
+    """
     def test_inspection(self):
         '''Check the inspection methods'''
         # Build model
