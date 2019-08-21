@@ -23,7 +23,7 @@ class FairDependencyNode(object):
         A list of the child nodes below the node in the tree (default
         is an empty list).
     status : {'Required', 'Not Required', 'Supplied', 'Calculable',
-    'Calculated'}
+        'Calculated'}
         An identifier that gives the status of the node (default is
         'Required').
 

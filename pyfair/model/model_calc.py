@@ -1,10 +1,18 @@
+"""This module contains rudementary calculation logic."""
+
+
 class FairCalculations(object):
-    '''A class to perform calculations'''
+    """A captive class to perform calculations
+
+    This class is called via the FairModel in which it is contained via its
+    calculate() method. It then returns a series that is transformed via
+    1) a step function, 2) an addition function, or 3) a multiplication
+    function.
+
+    """
     
-    # TODO confirm accuracy of these calculations.
     def __init__(self):
-        self._data = None
-        # Lookup table (no leaf nodes required)
+        # Lookup table for functions (no leaf nodes required)
         self._function_dict = {
             'Risk'                   : self._calculate_multiplication,
             'Loss Event Frequency'   : self._calculate_multiplication,
@@ -16,19 +24,46 @@ class FairCalculations(object):
         }
 
     def calculate(self, parent_name, child_1_data, child_2_data):
-        '''General function for dispatching calculations'''
+        """General function for dispatching calculations
+        
+        Parameters
+        ----------
+        parent_name : str
+            A string describing a node, which is used with the
+            _function_dict member to look up the appropriate function.
+        
+        child_1_data : pd.Series
+            An input vector that is combined with child_2_data with a step,
+            addtion, or multiplication function.
+
+        child_2_data : pd.Series
+            An input vector that is combined with child_1_data with a step,
+            addtion, or multiplication function.
+
+        .. warning:: the order of child_1_data and child_2_data does not
+            matter for addition or multiplication, but it does for the
+            stepwise function.
+
+        Returns
+        -------
+        pd.Series
+            A single series that is the product of the child data inputs
+            and the function chose by the parent_name.
+
+        """
+
         target_function = self._function_dict[parent_name]
-        calculated_result = target_function(parent_name, child_1_data, child_2_data)
+        calculated_result = target_function(child_1_data, child_2_data)
         return calculated_result
     
-    def _calculate_step(self, parent_name, child_1_data, child_2_data):
-        '''Create a bool series, which can be multiplied as 0/1 value'''
+    def _calculate_step(self, child_1_data, child_2_data):
+        """Create a bool series, which can be multiplied as 0/1 value"""
         return child_1_data > child_2_data
     
-    def _calculate_addition(self, parent_name, child_1_data, child_2_data):
-        '''Calculate sum of two columns'''
+    def _calculate_addition(self, child_1_data, child_2_data):
+        """Calculate sum of two columns"""
         return child_1_data + child_2_data
     
-    def _calculate_multiplication(self, parent_name, child_1_data, child_2_data):
-        '''Calculate product of two columns'''
+    def _calculate_multiplication(self, child_1_data, child_2_data):
+        """Calculate product of two columns"""
         return child_1_data * child_2_data
