@@ -146,9 +146,9 @@ class FairModel(object):
         model.calculate_all()
         return model
 
-    ##########################################################################
+    #######################################################################
     # Inspection Methods
-    ##########################################################################
+    #######################################################################
     #
     # <screed>
     #    I know. I know. Getters and setters have no place in Python.
@@ -158,7 +158,7 @@ class FairModel(object):
     #    It's better to just have a simple export function.
     # </screed>
     #
-    ##########################################################################
+    #######################################################################
 
     def get_node_statuses(self):
         '''Public method access private node status information in ._tree
@@ -344,9 +344,10 @@ class FairModel(object):
         ...     'Loss Event Frequency': {'mean': 90, 'stdev': 100},
         ...     'Loss Magnitude': {'constant': 4000}, 
         ... })
-        ... model.calculate_all)()
+        ... model.calculate_all()
 
         """
+        
         # If required data has not been input, raise error
         ready_for_calculation = self._tree.ready_for_calculation()
         if not(ready_for_calculation):
