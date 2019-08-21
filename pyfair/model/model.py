@@ -39,8 +39,17 @@ class FairModel(object):
     creation_date : str, optional
         Creation date (default is None, meaning one will be assigned)
 
-        .. warning:: Do not supply your own UUID/creation date unless
-           you want to break things.
+    Examples
+    --------
+    >>> model = pyfair.model.FairModel(name='Data Loss')
+    >>> model.input_data('Loss Magnitude', mean=20, stdev=10)
+    >>> model.input_data('Loss Event Frequency', constant=5)
+    >>> model.calculate_all()
+    >>> model.export_results()
+
+
+    .. warning:: Do not supply your own UUID/creation date unless
+        you want to break things.
 
     """
 
@@ -347,7 +356,7 @@ class FairModel(object):
         ... model.calculate_all()
 
         """
-        
+
         # If required data has not been input, raise error
         ready_for_calculation = self._tree.ready_for_calculation()
         if not(ready_for_calculation):

@@ -1,3 +1,5 @@
+"""This module contains a class for creating composite FAIR models."""
+
 import datetime
 import json
 import uuid
@@ -10,11 +12,37 @@ from .model import FairModel
 
 
 class FairMetaModel(object):
-    '''An aggregation of models used to add up risk.
+    """A class for aggregating FAIR models.
     
-    DO NOT SUPPLY YOUR OWN UUID/CREATION DATE UNLESS YOU WANT TO BREAK THINGS.
-    
-    '''
+    An instance of this class is created by taking multiple FAIR models and
+    rolling the total risk into a collection, or MetaModel. A user creates
+    a metamodel from inputs, calls calculate_all() to perform the requisite
+    calculations, and then uses the metamodel for reporting.
+
+    Parameters
+    ----------
+    name : str
+        A human-readable designation for identification
+    models : list of FairModels
+        The sub-models that roll up into the aggregate MetaModel risk
+        calculation.
+    model_uuid : str, optional
+        uuid.uuid4 string (default is None, meaning one will be assigned)
+    creation_date : str, optional
+        Creation date (default is None, meaning one will be assigned)
+
+    Examples
+    --------
+    >>> m1 = pyfair.model.FairModel.from_json('model_1.json')
+    >>> m2 = pyfair.model.FairModel.from_json('model_2.json')
+    >>> meta1  = pyfair.model.FairMetaModel('Name', [m1, m2])
+    >>> meta1.calculate_all()
+    >>> meta1.export_results()
+
+    .. warning:: Do not supply your own UUID/creation date unless you
+        want to break things.
+
+    """
 
     def __init__(self, name=None, models=None, model_uuid=None, creation_date=None):
         self._name = name
@@ -26,8 +54,11 @@ class FairMetaModel(object):
             if type(model) == FairModel:
                 self._load_model(model)
             # If metamodel, load components.
-            if type(model) == type(self):
+            elif type(model) == type(self):
                 self._load_meta_model(model)
+            else:
+                err = f'Input {model} is not a FairModel or FairMetaModel.'
+                raise FairException(err)
         # Assign UUID
         if model_uuid and creation_date:
             self._model_uuid = model_uuid
