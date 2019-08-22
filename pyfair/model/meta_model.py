@@ -44,7 +44,7 @@ class FairMetaModel(object):
 
     """
 
-    def __init__(self, name=None, models=None, model_uuid=None, creation_date=None):
+    def __init__(self, name, models, model_uuid=None, creation_date=None):
         self._name = name
         self._params = {}
         self._risk_table = pd.DataFrame()
@@ -68,15 +68,56 @@ class FairMetaModel(object):
             self._creation_date = str(datetime.datetime.now())
 
     def get_name(self):
+        """Returns the model name.
+
+        Returns
+        -------
+        str
+            The name of the model.
+        
+        """
+
         return self._name
 
     def get_uuid(self):
+        """Returns the model's unique ID.
+
+        Returns
+        -------
+        str
+            The UUID of the model.
+        
+        """
+
         return self._model_uuid
 
     @staticmethod
     def read_json(json_data):
-        # TODO this is inefficient and convoluted
-        # TODO Support metamodels inside of metamodels
+        """Static method to create a metamodel from a JSON string
+
+        Parameters
+        ----------
+        json_data : str
+            a UTF-8 encoded JSON string containing model data
+
+        Returns
+        -------
+        pyfair.model.FairMetaModel
+            A meta model instance using the JSON parameters supplied
+
+        Raises
+        ------
+        pyfair.fair_exception.FairException
+            If model JSON is supplied erroneously
+
+        Example
+        -------
+        >>> with open('serialized_metamodel.json') as f:
+        ...     json_text = f.read()
+        ...
+        >>> metamodel = pyfair.model.FairMetaModel.read_json(json_text)
+
+        """
         data = json.loads(json_data)
         # Check type of JSON
         if data['type'] != 'FairMetaModel':
@@ -106,12 +147,12 @@ class FairMetaModel(object):
         return meta_model
     
     def _load_model(self, model):
-        '''Loads an individual model into the metamodel'''
+        """Loads an individual model into the metamodel"""
         self._record_params(model)
         self._calculate_model(model)
     
     def _load_meta_model(self, meta_model):
-        '''Loads a metamodel into the metamodel'''
+        """Loads a metamodel into the metamodel"""
         params = meta_model.export_params()
         params = {
             key: value
@@ -127,11 +168,13 @@ class FairMetaModel(object):
             self._load_model(model)
 
     def _record_params(self, model):
+        """Record the params used for later serialization"""
         model_params = json.loads(model.to_json())
         model_name = model_params['name']
         self._params[model_name] = model_params
     
     def _calculate_model(self, model):
+        """Calculate a component models"""
         # For each model, calculate and put output results in dataframe.
         model_json = json.loads(model.to_json())
         name = model_json['name']
@@ -140,9 +183,27 @@ class FairMetaModel(object):
         self._risk_table[name] = results['Risk']
 
     def export_params(self):
+        """Returns the parameters used to generate the metamodel
+
+        Returns
+        -------
+        dict
+            The metamodel and component model parameters.
+        
+        """
+
         return self._params
 
     def calculate_all(self):
+        """Calculate all the component models and the metamodel itself
+
+        Returns
+        -------
+        pyfair.model.FairMetaModel
+            Reference to current instance.
+        
+        """
+
         sum_vector = self._risk_table.sum(axis=1)
         self._risk_table['Risk'] = sum_vector
         # Check for NaN values in sum_vector
@@ -152,9 +213,31 @@ class FairMetaModel(object):
         return self
 
     def export_results(self):
+        """Returns the aggregate risk calculations
+
+        Returns
+        -------
+        pd.DataFrame
+            A dataframe with columns of risk outputs for the various
+            models, along with total sum of the risk for all the models
+            taken together.
+        
+        """
+
         return self._risk_table
     
     def to_json(self):
+        """Returns serialized, JSON-formatted data suitable for storage
+
+        Returns
+        -------
+        str
+            JSON-formatted data and meta data that contains everything
+            (parameters including random seed) needed to reproduce the
+            model.
+        
+        """
+        
         data = {**self._params}
         data['name'] = str(self._name)
         data['model_uuid'] = self._model_uuid
@@ -167,7 +250,16 @@ class FairMetaModel(object):
         return json_data
 
     def calculation_completed(self):
-        '''Check if calculations are complete'''
+        """Checks if the calculation is complete.
+
+        Returns
+        -------
+        bool
+            Returns True if the aggregation calculation has already been
+            conducted. Otherwise False.
+        
+        """
+        
         if 'Risk' in self._risk_table.columns:
             return True
         else:

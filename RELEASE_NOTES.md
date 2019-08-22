@@ -12,3 +12,10 @@
 
 * Additional documentation for items in `report` and `utility` modules.
  
+
+ ## Version 0.1-alpha.2
+
+ ###
+
+ * Testing and documentation completed for the `model` module.
+ 

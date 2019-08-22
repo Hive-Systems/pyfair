@@ -1,6 +1,6 @@
 '''PyFair is an open-source implementation of the Factor Analysis of Information Risk (FAIR) methodology.'''
 
-VERSION = '0.1-alpha.1'
+VERSION = '0.1-alpha.2'
 
 
 from . import model

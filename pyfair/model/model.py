@@ -123,6 +123,7 @@ class FairModel(object):
         >>> model = FairModel.read_json(json_text)
 
         """
+        
         data = json.loads(param_json)
         # Check type of JSON
         if data['type'] != 'FairModel':
