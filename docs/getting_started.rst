@@ -1,18 +1,124 @@
 Generally
 =========
 
+Overview
+--------
+
 If you are already familiar with FAIR, please skip to "Usage".
 
 `Factor Analysis for Information Risk ("FAIR")
 <https://en.wikipedia.org/wiki/Factor_analysis_of_information_risk>`_
-is a methodology for analyzing cybersecurity risk by breaking risk
-into its individual components. These components can then be measured
-or estimated individually, allowing for a quantitiative calculation of
-the risk as a whole.
+is a methodology for analyzing cybersecurity risk. In a general sense, it
+work by breaking risk into its individual components. These components can
+then be measured or estimated numerically, allowing for a quantitiative 
+calculation of risk as a whole.
 
-FAIR recognizes the following types of components:
+.. note::
 
-TREE DIAGRAM
+    "Risk" in FAIR is defined as the total dollar amount of expected loss
+    for a given time frame. If you come from a traditional risk management
+    background, you likely refer to this as the more commonly accepted term
+    "Loss Exposure". This documentation will use the FAIR nomenclature.
+
+The actual calculation for Risk most often takes the form of a `Monte Carlo
+model <https://en.wikipedia.org/wiki/Monte_Carlo_method>`_. This Monte
+Carlo model supplies random inputs for our model (usually in the hundreds
+or thousands of inputs for each item). This model then transforms them in
+accordance with FAIR calculation rules, and provides outputs. These outputs
+can then be analyzed to determine what the potential range of Risk values
+are. pyfair's purpose is to simplify and automate these Monte Carlo
+simulations.
+
+A Quick Monte Carlo Example
+---------------------------
+
+Say we know the average height and average weight of an American male looks
+like, but we don't know what the average `Body Mass Index (BMI)
+<https://en.wikipedia.org/wiki/Body_mass_index>`_ looks like:
+
+<TODO HEIGHT, WEIGHT, ? Distribuiotns 1.75M Stdev  80 kilos>
+
+We can use these distrubitons to randomly generate 3 height samples and
+3 weights samples. For each of these samples, we calculate the BMI:
+
+<TODO SIMs down arrow> output ...>
+
+Once we hav these BMIs, we can calculate the mean and spread of these BMIs.
+With samples, this doesn't give us a lot of data, but if we run thousands
+of samples, we get a distribution like the following:
+
+<TODO Distribution>
+
+Nodes
+-----
+
+Risk in FAIR (and by extention Risk in our Monte Carlo simulation) is
+broken down into a series of what pyfair calls "nodes" for calculation.
+The user supplies two or more of these nodes to generate random data, which
+in turn will allow us to calculate the mean, max, min, and standard
+deviation of the Risk and other nodes.
+
+The nodes are as follows:
+
+<TODO TREE DIAGRAM>
+
+The nodes can be described as follows:
+
+1. **Risk**
+
+    Description: the final output of the model in 
+    dollars/euros/yuan/rupees/etc.
+
+    Restrictions: must be positive
+
+    Derivation: multiply Loss Event Frequency and Loss Magnitude
+
+    Example: $20,000,000
+
+2. **Loss Event Frequency**
+
+    Description: the number of times a particular loss occurs during a 
+    given time frame (generally one year)
+
+    Restrictions: must be positive
+
+    Derivation: multiply Threat Event Frequency by Vulnerability
+
+    Example: 500 breaches that resulted in data exfiltration
+
+3. **Threat Event Frequency**
+
+    Description: the number of times a particular threat occurs, whether or
+    not it results in a loss
+
+
+
+* Vulnerability
+* Contact Frequency
+* Probability of Action
+* Threat Capability
+* Control Strength
+* Loss Magnitude
+* Primary Loss
+* Secondary Loss Event Frequency
+* Secondary Loss Event Magnitude
+
+We supply data for these nodes as necessary, which allows us to run our
+simulation.
+
+Relationships and Dependencies
+------------------------------
+
+
+
+
+FAIR by Example
+---------------
+
+
+
+pyfair, as you will see later on, makes this considerably easier. You
+should be able to acchieve similar results with 5 to 10 lines of code.
 
 
 
@@ -20,47 +126,8 @@ TREE DIAGRAM
 
 
 
-
-
-FAIR Background
-===============
-
-Components
-----------
-TODO: Tree here.
-Risk
-Loss Event Frequency
-Threat Event Frequency
-Vulnerability
-Contact Frequency
-Probability of Action
-Threat Capability
-Control Strength
-Loss Magnitude
-Primary Loss
-Secondary Loss Event Frequency
-Secondary Loss Event Magnitude
-
-
-Relationships
--------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Getting Started
-===============
+Getting Started With pyfair
+===========================
 
 Usage
 -----
@@ -68,6 +135,12 @@ Usage
 This section relates to how to use pyfair. If you are not familiar with the
 FAIR methodology, please skip to "Generally"<LINK TODO>. It covers the Main
 API objects that are most commonly used.
+
+In general you will supply your inputs, calculate your model, and then do
+something with the data (e.g. store it, create a report, or feed it into
+another calcluation).
+
+Here is how you can use these pyfair tools to do that.
 
 FairModel
 ~~~~~~~~~
@@ -106,9 +179,11 @@ random data values, and provided 10,000 entries into "Loss Magnitude" of
 calculate_all(), after which we can export the results or examine the
 object however we wish.
 
-A quick side node: pyfair uses pandas heavily for data manipulation, and
-conseqeuntly your results will be exported as easy-to-manipulate DataFrames
-unless otherwise specified.
+.. note::
+
+    pyfair uses pandas heavily for data manipulation, and conseqeuntly your 
+    results will be exported as easy-to-manipulate DataFrames unless 
+    otherwise specified.
 
 While there are various ways to create these modesl (from serialized JSON
 models, from a database, uploading groups of parameters at the same time)
