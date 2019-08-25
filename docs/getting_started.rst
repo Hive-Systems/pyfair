@@ -246,25 +246,156 @@ be calculable or supplied.
 FAIR by Example
 ---------------
 
-This is a quick example of how one might conduct a FAIR calculation by hand
-in order to provide a concrete example how everything works. For the
-purposes of this simulation we are going to keep it simple. We are running
-a Monte Carlo model with 3 simulations, and we are using tow nodes (Loss
-Event Frequency and Loss Magnitude).
+This is a quick example of how one might conduct a FAIR calculation by
+hand. You will likely never need to do this, but it does provide a concrete
+example of how everything works.
 
-We start by generating our data.
+For the purposes of this demonstration, we will keep it simple. We will run
+a Monte Carlo model composed of three separate simulations and using three
+nodes (Threat Event Frequency, Vulnerability, and Loss Magnitude). We will
+use this simulation to estimate the Risk associated with allowing all
+ports to remain open.
 
+We start by generating our data. We will generate 3 values for Threat Event
+Frequency (TEF), 3 values for Vulnerability (V), and 3 values for Loss
+Magnitude (LM). Most often in FAIR you will see BetaPert distributed random
+variates. For the sake of simplicity this example will use normally
+distributed random variates.
 
+First we will estimate TDF. Recall that TDF is the number of threats that
+occur whether or not it result in a loss (which is represented by a
+positive number). Here we estimate that if leave these ports open, we will 
+see around 50,000 attempted intrusions with a standard deviation of 10,000
+events. We will then generate three normally distributed random numbers 
+from a curve with a mean of 50,000 and a standard deviation of 10,000.
 
++------------+--------------------+
+| Mean       | Standard Deviation |
++============+====================+
+| 50,000     | 10,000             |
++------------+--------------------+
+
+**Generates random TEF values**
+
++------------+--------+
+| Simulation | TEF    |
++============+========+
+| 1          | 53,091 |
++------------+--------+
+| 2          | 38,759 |
++------------+--------+
+| 3          | 44,665 |
++------------+--------+ 
+
+Second we will estimate our Vulnerability. Recall that V is simply whether
+or not an event results in a loss (which is represented as a 0 if no loss
+occurs, and a 1 if a loss occurs. We estimate that roughly 2/3 of attacks
+will succeed and turn into loss events. We will then generate three
+random 0 or 1 values with a ratio of .66.
+
++------------------+
+| Probability of 1 |
++==================+
+| .66              | 
++------------------+
+
+**Generates random V values**
+
++------------+---+
+| Simulation | V |
++============+===+
+| 1          | 1 |
++------------+---+
+| 2          | 0 |
++------------+---+
+| 3          | 1 |
++------------+---+ 
+
+Third we will estimate our loss magnitude. Recall that LM is the amount of
+loss for each Loss Event (represented by a positive number). We estimate 
+that on average each loss will result in an average of a $100 loss, with a
+standard deviation of $50. We then generate three normally distributed
+random numbers from a curbe with a mean of 100 and a standard deviation
+of 50.
+
++---------------------------+
+| Mean | Standard Deviation |
++======+====================+
+| 100  | 50                 |
++------+--------------------+
+
+**Generates random LM values**
+
++------------+-----+
+| Simulation | LM  |
++============+=====+
+| 1          | 198 |
++------------+-----+
+| 2          | 150 |
++------------+-----+
+| 3          | 86  |
++------------+-----+ 
+
+As a brief reminder, this is an illustration of what nodes can be combined
+with other nodes, and how to do so.
+
+<TODO Calc Image>
+
+As you can likely see, we can use our 3 TEFs and 3 Vs and multiply them
+together element-by-element. This will give us 3 LEF values. 
+
++------------+--------+---+-------------------+
+| Simulation | TEF    | V | LEF (TEF times V) |
++============+========+===+===================+
+| 1          | 53,091 | 1 | 53,091            |
++------------+--------+---+-------------------+
+| 2          | 38,759 | 0 | 0                 |
++------------+--------+---+-------------------+
+| 3          | 44,665 | 1 | 44,665            |
++------------+--------+---+-------------------+
+
+This follows with what we known know about Loss Event Frequency. It is the
+amount of loss that actually occurs. We have a three potential losses, and
+two of those losses actually occur. The others do not occur, so the amount
+of loss is zero.
+
+Now that we have an LEF and an LM, we can calculate our final Risk, R. R is
+calculated by taking the total number of loss events and multiplying them
+by the amount lost for each event.
+
++------------+--------+-----+------------------+
+| Simulation | LEF    | LM  | R (LEF times LM) |
++============+========+=====+==================+
+| 1          | 53,091 | 198 | 10,512,018       |
++------------+--------+-----+------------------+
+| 2          | 0      | 150 | 0                |
++------------+--------+-----+------------------+
+| 3          | 44,665 | 86  | 3,841,190        |
++------------+--------+-----+------------------+
+
+By using our random inputs and putting them through our Monte Carlo model
+we were able to calculate Risk for three simulations. The resulting Risk
+from these simulations is $10,512,018, $0, and $4,841,190. Now that we have
+conducted our simulation we've learned that with our estimates we can
+expect our Risk to be
+
+ with our estimates, we ca
+
++------------+-------------------------+
+| Risk Mean  | Risk Standard Deviation |
++============+=========================+
+| $4,784,402 | $5,319,104              |
++------------+-------------------------+
+
+.. note::
+
+    You've probably noticed that the standard deviation is really, really
+    high. That's a result of conducting a limited number of simulations (we
+    set the number of simulations to n=3 whereas pyfair defaults to
+     n=10,000.
 
 pyfair, as you will see later on, makes this considerably easier. You
 should be able to acchieve similar results with 5 to 10 lines of code.
-
-
-
-
-
-
 
 Getting Started With pyfair
 ===========================
