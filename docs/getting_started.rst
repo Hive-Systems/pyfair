@@ -4,12 +4,12 @@ Generally
 Overview
 --------
 
-If you are already familiar with FAIR, please skip to "Usage".
+If you are already familiar with FAIR, please skip to "Usage". <TODO LINK>
 
 `Factor Analysis for Information Risk ("FAIR")
 <https://en.wikipedia.org/wiki/Factor_analysis_of_information_risk>`_
 is a methodology for analyzing cybersecurity risk. In a general sense, it
-work by breaking risk into its individual components. These components can
+works by breaking risk into its individual components. These components can
 then be measured or estimated numerically, allowing for a quantitiative 
 calculation of risk as a whole.
 
@@ -58,9 +58,15 @@ The user supplies two or more of these nodes to generate random data, which
 in turn will allow us to calculate the mean, max, min, and standard
 deviation of the Risk and other nodes.
 
+.. note::
+
+    While we refer to the data in these nodes, it is important to remember
+    that we are talking about a single simulation within the Monte Carlo
+    model. This will become more clear in the <TODO FAIR BY EXAMPLE SEC>
+
 The nodes are as follows:
 
-<TODO TREE DIAGRAM>
+<TODO TREE DIAGRAM WITH RELATIONSHIP MAP>
 
 The nodes can be described as follows:
 
@@ -71,9 +77,10 @@ The nodes can be described as follows:
 
     Restrictions: must be positive
 
-    Derivation: multiply Loss Event Frequency and Loss Magnitude
+    Derivation: supplied directly, or multiply Loss Event Frequency and
+    Loss Magnitude
 
-    Example: $20,000,000
+    Example: 20,000,000 (dollars for a given year)
 
 2. **Loss Event Frequency**
 
@@ -82,38 +89,171 @@ The nodes can be described as follows:
 
     Restrictions: must be positive
 
-    Derivation: multiply Threat Event Frequency by Vulnerability
+    Derivation: supplied directly, or multiply Threat Event Frequency by
+    Vulnerability
 
-    Example: 500 breaches that resulted in data exfiltration
+    Example: 500 (breaches resulting in data exfiltration (in a given year)
 
 3. **Threat Event Frequency**
 
     Description: the number of times a particular threat occurs, whether or
     not it results in a loss
 
+    Restrictions: must be positive
 
+    Derivation: supplied directly, or multiply Contact Frequency and 
+    Probability of Action
 
-* Vulnerability
-* Contact Frequency
-* Probability of Action
-* Threat Capability
-* Control Strength
-* Loss Magnitude
-* Primary Loss
-* Secondary Loss Event Frequency
-* Secondary Loss Event Magnitude
+    Example: 500 (cross-site scripting attempts in a given month)
 
-We supply data for these nodes as necessary, which allows us to run our
-simulation.
+4 **Vulnerability**
+
+    Description: whether a potential threat actually results in a loss,
+    with True being representied by 1 and False being represented by 0
+
+    Restrictions: must be exactly 0 or exactly 1
+
+    Derivation: supplied directly, or `step function
+    <https://en.wikipedia.org/wiki/Step_function>`_ which is equal to 0 if
+    Control Strength is greater or equal to Threat Capability, and 1 if
+    Threat Capability is greater than Control Strength
+
+    Example: 1 (True, indicating vulnerable)
+
+5. **Contact Frequency**
+
+    Description: the number of threat actor contacts that could potentially 
+    yield a threat within a given timeframe
+
+    Restrictions: must be a positive number
+
+    Derivation: None (this must be supplied, not calculated)
+
+    Example: 20,000 (scans of a vulnerable port within a given year)
+
+* **Probability of Action**
+
+    Description: the probability that a threat actor will proceed when
+    coming upon a given 
+
+    Restrictions: must be number from 0.0 to 1.0
+
+    Derivation: None (this must be supplied, not calculated)
+
+    Example: .45 (percent that actor will proceed with potential SSH login)
+
+* **Threat Capability**
+
+    Description: a unitless number that describes the relative level of
+    expertise and resources of a threat actor
+
+    Restrictions: must be a number from 0.0 to 1.0
+
+    Derivation: None (this must be supplied, not calculated)
+
+    Example: .25 (unitless)
+
+* **Control Strength**
+
+    Description: a unitless number that descibes the relative strength of
+    the control environment a threat actor is trying to exploit
+
+    Restrictions: must be a number from 0.0 to 1.0
+
+    Derivation: None (this must be supplied, not calculated)
+
+    Example: .40 (unitless)
+
+* **Loss Magnitude**
+
+    Description: the total loss for a given Loss Event
+
+    Restrictions: must be positive
+
+    Derivation: supplied directly, or the sum of the Primary Loss and
+    Secondary Loss
+
+    Example: 10,000,000 (dollars for each database breach)
+
+* **Primary Loss**
+
+    Description: the amount of the loss directly attributable to the threat
+
+    Restrictions: must be a positive number
+
+    Derivation: None (this must be supplied, not calculated)
+
+    Example: 25,000,000 (dollars in funds stolen)
+
+.. note::
+
+    As implemented by pyfair, Seocndary Loss is an aggregate field that is
+    create using a vectors of values. This is an exception to the single
+    value per simulation condition we discussed earlier.
+
+* **Secondary Loss**
+
+    Description: the amount of loss incurred as a secondary consequence of
+    the loss
+
+    Restrictions: must be a positive number
+
+    Derivation: supplied directly, or the aggregate sum of the Secondary
+    Loss Event Frequency and Secondary Loss Event Magnitude vectors
+    multiplied together
+
+    Example: 5,000,000 (dollars worth of data research/cleanup post-breach)
+
+* **Secondary Loss Event Frequency**
+
+    Description: the probability that a given secondary loss could occur
+
+    Restrictions: must be a vector of numbers from 0.0 to 1.0
+
+    Derivation: None (this must be supplied, not calculated)
+
+    Example: [.25, .80, 1.0] (probabilities of loss for 3 loss types)
+
+* **Secondary Loss Event Magnitude**
+
+    Description: the amount of the secondary loss that could occur
+
+    Restrictions: must be a vector of positive numbers
+
+    Derivation: None (this must be supplied, not calculated)
+
+    Example: [100, 900, 200] (magnitude of loss for 3 loss types)
 
 Relationships and Dependencies
 ------------------------------
 
+One of the benefits of FAIR is the flexibility that comes with being able
+to pick and choose the data you supply. If you want to supply Loss Event
+Frequency, and Loss Magnitude, you can do that.
 
+<LEF AND LM EXAMPLE>
 
+If you want to supply Threat Event Frequency, Threat Capability, Control
+Strength, Primary Loss, and Secondary Loss, you can do that to.
+
+<TDF, TC, CS, PL, SL EXAMPLE>
+
+As you can likely see from the above examples, you only need to supply the
+bare minimum to complete the calculation. The general rule with pyfair is
+that to properly calculate any node, the node's child nodes need to either
+be calculable or supplied.
 
 FAIR by Example
 ---------------
+
+This is a quick example of how one might conduct a FAIR calculation by hand
+in order to provide a concrete example how everything works. For the
+purposes of this simulation we are going to keep it simple. We are running
+a Monte Carlo model with 3 simulations, and we are using tow nodes (Loss
+Event Frequency and Loss Magnitude).
+
+We start by generating our data.
+
 
 
 
