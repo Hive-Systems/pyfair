@@ -51,6 +51,7 @@ class FairBaseReport(object):
             'css'   : self._static_location / 'fair.css',
             'simple': self._static_location / 'simple.html'
         }
+        self._param_cols = ['low', 'mode', 'high', 'p', 'constant', 'mean', 'stdev']
         self._caller_source = self._set_caller_source()
 
     def _set_caller_source(self):
@@ -206,7 +207,10 @@ class FairBaseReport(object):
             }
             fs = self._format_strings
             param_df = pd.DataFrame(params).T
-            param_df = param_df[['low', 'mode', 'high']]
+            for column in self._param_cols:
+                if column not in param_df.columns:
+                    param_df[column] = np.NaN
+            param_df = param_df[self._param_cols]
             param_df['mean'] = model.export_results().mean(axis=0)
             param_df['stdev'] = model.export_results().std(axis=0)
             param_df['min'] = model.export_results().min(axis=0)

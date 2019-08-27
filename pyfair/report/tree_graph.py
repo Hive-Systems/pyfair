@@ -122,8 +122,8 @@ class FairTreeGraph(object):
             ])
         elif supplied:
             # Get rid of value less items and rename
-            data = row.reindex(['high', 'mode', 'low', 'mean', 'stdev'])
-            data.index = ['↑', '-', '↓', 'μ', 'σ']
+            data = row.reindex(['high', 'mode', 'low', 'mean', 'stdev', 'p'])
+            data.index = ['↑', '-', '↓', 'μ', 'σ', 'p']
             data = data.dropna()
             # Format string
             data = data.map(lambda x: fmt.format(x))

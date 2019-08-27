@@ -191,7 +191,19 @@ class FairModel(object):
         
         '''
         return self._name
-    
+
+    def get_uuid(self):
+        """Returns the model's unique ID.
+
+        Returns
+        -------
+        str
+            The UUID of the model.
+        
+        """
+
+        return self._model_uuid
+
     def calculation_completed(self):
         '''Public method to check completion status of dependency tree
         

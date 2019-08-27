@@ -11,7 +11,7 @@ With pyfair`_.
 <https://en.wikipedia.org/wiki/Factor_analysis_of_information_risk>`_
 is a methodology for analyzing cybersecurity risk. In a general sense, it
 works by breaking risk into its individual components. These components can
-then be measured or estimated numerically, allowing for a quantitiative 
+then be measured or estimated numerically, allowing for a quantitative 
 calculation of risk as a whole.
 
 .. note::
@@ -32,18 +32,24 @@ Carlo simulations.
 A Quick Monte Carlo Example
 ---------------------------
 
+Generally speaking, Monte Carlo experiments are a class of techniques that 
+solve problems using random sampling. Within the context of FAIR they are
+used to estimate loss by performing calculations on random inputs. This is
+a brief demonstration of how you can use a Monte Carlo method without
+knowing anything about FAIR.
+
 Say we know the average height and average weight a certain population
 looks like, but we don't know what the average `Body Mass Index (BMI)
 <https://en.wikipedia.org/wiki/Body_mass_index>`_ looks like:
 
 .. image:: ./_static/before_monte_carlo_bmi.png
 
-We can use the weight and height distrubitons from the data we do know to 
+We can use the weight and height distributions from the data we do know to 
 randomly generate 3 height samples and 3 weights samples.
 
 +--------+-------------+-------------+
 | Sample | Weight (kg) | Height (cm) |
-+========+============+==============+
++========+=============+=============+
 | 1      | 41          | 107         |
 +--------+-------------+-------------+
 | 2      | 52          | 139         |
@@ -64,15 +70,15 @@ we calculate the samples' BMI using the following formula:
 
 +--------+-------------+-------------+-----+
 | Sample | Weight (kg) | Height (cm) | BMI |
-+========+============+==============+=====+
++========+=============+=============+=====+
 | 1      | 41          | 107         | 36  |
 +--------+-------------+-------------+-----+
 | 2      | 52          | 139         | 27  |
 +--------+-------------+-------------+-----+
 | 3      | 85          | 131         | 50  |
-+--------+-------------+-------------+-----* 
++--------+-------------+-------------+-----+ 
 
-Once we hav these BMIs, we can calculate the mean and spread of these BMIs.
+Once we have these BMIs, we can calculate the mean and spread of these BMIs.
 With 3 samples, this doesn't give us a lot of data, but if we were to run
 10,000 or so samples, we would get a distribution like this:
 
@@ -87,7 +93,7 @@ looks like.
 Nodes
 -----
 
-Risk in FAIR (and by extention Risk in our Monte Carlo simulation) is
+Risk in FAIR (and by extension Risk in our Monte Carlo simulation) is
 broken down into a series of what pyfair calls "nodes" for calculation.
 The user supplies two or more of these nodes to generate random data, which
 in turn will allow us to calculate the mean, max, min, and standard
@@ -97,7 +103,7 @@ deviation of the Risk and other nodes.
 
     While we refer to the data in these nodes, it is important to remember
     that we are talking about a single simulation within the Monte Carlo
-    model. This will become more clear in the <TODO FAIR BY EXAMPLE SEC>
+    model. This will become more clear in the `FAIR by Example`_.
 
 The nodes are as follows:
 
@@ -141,7 +147,7 @@ The nodes can be described as follows:
 
     Example: 500 (cross-site scripting attempts in a given month)
 
-4 **Vulnerability**
+4. **Vulnerability**
 
     Description: whether a potential threat actually results in a loss,
     with True being representied by 1 and False being represented by 0
@@ -166,7 +172,7 @@ The nodes can be described as follows:
 
     Example: 20,000 (scans of a vulnerable port within a given year)
 
-* **Probability of Action**
+6. **Probability of Action**
 
     Description: the probability that a threat actor will proceed when
     coming upon a given 
@@ -177,7 +183,7 @@ The nodes can be described as follows:
 
     Example: .45 (percent that actor will proceed with potential SSH login)
 
-* **Threat Capability**
+7. **Threat Capability**
 
     Description: a unitless number that describes the relative level of
     expertise and resources of a threat actor
@@ -188,7 +194,7 @@ The nodes can be described as follows:
 
     Example: .25 (unitless)
 
-* **Control Strength**
+8. **Control Strength**
 
     Description: a unitless number that descibes the relative strength of
     the control environment a threat actor is trying to exploit
@@ -199,7 +205,7 @@ The nodes can be described as follows:
 
     Example: .40 (unitless)
 
-* **Loss Magnitude**
+9. **Loss Magnitude**
 
     Description: the total loss for a given Loss Event
 
@@ -210,7 +216,7 @@ The nodes can be described as follows:
 
     Example: 10,000,000 (dollars for each database breach)
 
-* **Primary Loss**
+10. **Primary Loss**
 
     Description: the amount of the loss directly attributable to the threat
 
@@ -222,11 +228,11 @@ The nodes can be described as follows:
 
 .. note::
 
-    As implemented by pyfair, Seocndary Loss is an aggregate field that is
+    As implemented by pyfair, Secondary Loss is an aggregate field that is
     create using a vectors of values. This is an exception to the single
     value per simulation condition we discussed earlier.
 
-* **Secondary Loss**
+11. **Secondary Loss**
 
     Description: the amount of loss incurred as a secondary consequence of
     the loss
@@ -239,7 +245,7 @@ The nodes can be described as follows:
 
     Example: 5,000,000 (dollars worth of data research/cleanup post-breach)
 
-* **Secondary Loss Event Frequency**
+12. **Secondary Loss Event Frequency**
 
     Description: the probability that a given secondary loss could occur
 
@@ -249,7 +255,7 @@ The nodes can be described as follows:
 
     Example: [.25, .80, 1.0] (probabilities of loss for 3 loss types)
 
-* **Secondary Loss Event Magnitude**
+13. **Secondary Loss Event Magnitude**
 
     Description: the amount of the secondary loss that could occur
 
@@ -266,12 +272,12 @@ One of the benefits of FAIR is the flexibility that comes with being able
 to pick and choose the data you supply. If you want to supply Loss Event
 Frequency, and Loss Magnitude, you can do that.
 
-<LEF AND LM EXAMPLE>
+.. image:: ./_static/lef_and_lm_example.png
 
 If you want to supply Threat Event Frequency, Threat Capability, Control
 Strength, Primary Loss, and Secondary Loss, you can do that to.
 
-<TDF, TC, CS, PL, SL EXAMPLE>
+.. image:: ./_static/tef_tc_cs_pl_and_sl_example.png
 
 As you can likely see from the above examples, you only need to supply the
 bare minimum to complete the calculation. The general rule with pyfair is
@@ -288,8 +294,8 @@ example of how everything works.
 For the purposes of this demonstration, we will keep it simple. We will run
 a Monte Carlo model composed of three separate simulations and using three
 nodes (Threat Event Frequency, Vulnerability, and Loss Magnitude). We will
-use this simulation to estimate the Risk associated with allowing all
-ports to remain open.
+use this simulation to estimate the Risk associated with allowing all ports
+to remain open.
 
 We start by generating our data. We will generate 3 values for Threat Event
 Frequency (TEF), 3 values for Vulnerability (V), and 3 values for Loss
@@ -374,7 +380,7 @@ of 50.
 As a brief reminder, this is an illustration of what nodes can be combined
 with other nodes, and how to do so.
 
-<TODO Calc Image>
+.. image:: ./_static/calculation_functions.png
 
 As you can likely see, we can use our 3 TEFs and 3 Vs and multiply them
 together element-by-element. This will give us 3 LEF values. 
@@ -412,9 +418,7 @@ By using our random inputs and putting them through our Monte Carlo model
 we were able to calculate Risk for three simulations. The resulting Risk
 from these simulations is $10,512,018, $0, and $4,841,190. Now that we have
 conducted our simulation we've learned that with our estimates we can
-expect our Risk to be
-
- with our estimates, we ca
+expect our Risk to have the following attributes:
 
 +------------+-------------------------+
 | Risk Mean  | Risk Standard Deviation |
@@ -427,10 +431,24 @@ expect our Risk to be
     You've probably noticed that the standard deviation is really, really
     high. That's a result of conducting a limited number of simulations (we
     set the number of simulations to n=3 whereas pyfair defaults to
-     n=10,000.
+    n=10,000.
 
 pyfair, as you will see later on, makes this considerably easier. You
-should be able to acchieve similar results with 5 to 10 lines of code.
+should be able to achieve similar results with 5 to 10 lines of code.
+
+.. code-block:: python
+
+    from pyfair import FairModel
+
+
+    # Create our model and calculate (don't worry about understanding yet)
+    model = FairModel(name='Sample')
+    model.input_data('Threat Event Frequency', mean=.50_000, stdev=10_000)
+    model.input_data('Vulerability', p=.66)
+    model.input_data('Loss Magnitude', mean=100, stdev=50)
+    model.calculate_all()
+
+.. image:: ./_static/calculation_example.png
 
 Getting Started With pyfair
 ===========================
@@ -438,9 +456,7 @@ Getting Started With pyfair
 Usage
 -----
 
-This section relates to how to use pyfair. If you are not familiar with the
-FAIR methodology, please skip to "Generally"<LINK TODO>. It covers the Main
-API objects that are most commonly used.
+This section relates to how to use pyfair.
 
 In general you will supply your inputs, calculate your model, and then do
 something with the data (e.g. store it, create a report, or feed it into
@@ -512,7 +528,7 @@ FairMetaModel
 At times you will likely want to determine what the total amount of risk is
 for a number of FairModels. Rolling these model risks up into a single unit
 is what the FairMetaModel<TODO LINK> does. These can be created in a number
- of ways, but most generally you will simply feed a list of FairModels to a
+of ways, but most generally you will simply feed a list of FairModels to a
 FairMetaModel constructor like this:
 
 .. code-block:: python
@@ -734,15 +750,15 @@ Your code will raise this error:
     Secondary Loss Event Frequency        Required
     Secondary Loss Event Magnitude        Required
 
-THe reason for this is readily apparent when looking at the calculation
+The reason for this is readily apparent when looking at the calculation
 tree:
 
-<TODO TREE GIF ONLY LEF>
+.. image:: ./_static/incomplete_example
 
 As you can see, you supplied "Loss Event Frequency". That means you do not
 need to calculate "Loss Event Frequency" ... and you also don't have to
 deal with anything underneath it because it's all superfluous. That said,
-you cannot calculate RIsk because the whole right side of the FAIR
+you cannot calculate Risk because the whole right side of the FAIR
 calculation hasn't been supplied.
 
 If you were create a new model with "Loss Magnitude" and "Loss Event
@@ -751,11 +767,6 @@ no error. Notice that you did not have to supply information for everything
 in the error above. Pyfair lists them all as required because it has no
 idea what you're going to put in next (and so it doesn't know whether it
 will be high on the tree or low on the tree).
-
-This gets slightly more complex if you have multiple inputs, but luckily
-pyair is smart enough to sort out most stuff:
-
-<TODO PUT IN COMPLEX EXAMPLE>
 
 Why do my simulation results change from run to run?
 ----------------------------------------------------
