@@ -4,9 +4,10 @@ Generally
 Overview
 --------
 
-If you are already familiar with FAIR, please skip to "Usage". <TODO LINK>
+If you are already familiar with FAIR, please skip to `Getting Started
+With pyfair`_.
 
-`Factor Analysis for Information Risk ("FAIR")
+`Factor Analysis for Information Risk (FAIR)
 <https://en.wikipedia.org/wiki/Factor_analysis_of_information_risk>`_
 is a methodology for analyzing cybersecurity risk. In a general sense, it
 works by breaking risk into its individual components. These components can
@@ -22,32 +23,66 @@ calculation of risk as a whole.
 
 The actual calculation for Risk most often takes the form of a `Monte Carlo
 model <https://en.wikipedia.org/wiki/Monte_Carlo_method>`_. This Monte
-Carlo model supplies random inputs for our model (usually in the hundreds
-or thousands of inputs for each item). This model then transforms them in
-accordance with FAIR calculation rules, and provides outputs. These outputs
-can then be analyzed to determine what the potential range of Risk values
-are. pyfair's purpose is to simplify and automate these Monte Carlo
-simulations.
+Carlo model supplies random inputs for our model. The model then transforms
+the inputs in accordance with FAIR calculation rules, and provides outputs.
+The outputs can then be analyzed to determine what the potential range of 
+Risk values are. pyfair's purpose is to simplify and automate these Monte 
+Carlo simulations.
 
 A Quick Monte Carlo Example
 ---------------------------
 
-Say we know the average height and average weight of an American male looks
-like, but we don't know what the average `Body Mass Index (BMI)
+Say we know the average height and average weight a certain population
+looks like, but we don't know what the average `Body Mass Index (BMI)
 <https://en.wikipedia.org/wiki/Body_mass_index>`_ looks like:
 
-<TODO HEIGHT, WEIGHT, ? Distribuiotns 1.75M Stdev  80 kilos>
+.. image:: ./_static/before_monte_carlo_bmi.png
 
-We can use these distrubitons to randomly generate 3 height samples and
-3 weights samples. For each of these samples, we calculate the BMI:
+We can use the weight and height distrubitons from the data we do know to 
+randomly generate 3 height samples and 3 weights samples.
 
-<TODO SIMs down arrow> output ...>
++--------+-------------+-------------+
+| Sample | Weight (kg) | Height (cm) |
++========+============+==============+
+| 1      | 41          | 107         |
++--------+-------------+-------------+
+| 2      | 52          | 139         |
++--------+-------------+-------------+
+| 3      | 85          | 131         |
++--------+-------------+-------------+ 
+
+We take these generated samples, and for each For each of these samples, 
+we calculate the samples' BMI using the following formula:
+
+.. math::
+
+    \Large{\text{BMI}} = \huge{
+        \frac
+            {\text{Weight}_{kg}}
+            {(\text{Height}_{cm} \times .01) ^2}
+    }
+
++--------+-------------+-------------+-----+
+| Sample | Weight (kg) | Height (cm) | BMI |
++========+============+==============+=====+
+| 1      | 41          | 107         | 36  |
++--------+-------------+-------------+-----+
+| 2      | 52          | 139         | 27  |
++--------+-------------+-------------+-----+
+| 3      | 85          | 131         | 50  |
++--------+-------------+-------------+-----* 
 
 Once we hav these BMIs, we can calculate the mean and spread of these BMIs.
-With samples, this doesn't give us a lot of data, but if we run thousands
-of samples, we get a distribution like the following:
+With 3 samples, this doesn't give us a lot of data, but if we were to run
+10,000 or so samples, we would get a distribution like this:
 
-<TODO Distribution>
+.. image:: ./_static/after_monte_carlo_bmi.png
+
+Most Monte Carlo simulations follow a similar process. We generate random
+inputs in accordance with a particular distribution, and we then run these
+inputs through complex or arbitrary formulae we cannot analyze otherwise. 
+The output can then be used to infer what an expected output population
+looks like.
 
 Nodes
 -----
