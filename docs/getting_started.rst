@@ -101,7 +101,7 @@ deviation of the Risk and other nodes.
 
 The nodes are as follows:
 
-<TODO TREE DIAGRAM WITH RELATIONSHIP MAP>
+.. image:: ./_static/calculation_functions.png
 
 The nodes can be described as follows:
 
