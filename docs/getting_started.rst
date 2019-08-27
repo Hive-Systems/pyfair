@@ -111,7 +111,7 @@ The nodes are as follows:
 
 The nodes can be described as follows:
 
-1. **Risk**
+1. **Risk ("R")**
 
     Description: the final output of the model in 
     dollars/euros/yuan/rupees/etc.
@@ -123,7 +123,7 @@ The nodes can be described as follows:
 
     Example: 20,000,000 (dollars for a given year)
 
-2. **Loss Event Frequency**
+2. **Loss Event Frequency ("LEF")**
 
     Description: the number of times a particular loss occurs during a 
     given time frame (generally one year)
@@ -135,7 +135,7 @@ The nodes can be described as follows:
 
     Example: 500 (breaches resulting in data exfiltration (in a given year)
 
-3. **Threat Event Frequency**
+3. **Threat Event Frequency ("TEF")**
 
     Description: the number of times a particular threat occurs, whether or
     not it results in a loss
@@ -147,10 +147,10 @@ The nodes can be described as follows:
 
     Example: 500 (cross-site scripting attempts in a given month)
 
-4. **Vulnerability**
+4. **Vulnerability ("V")**
 
     Description: whether a potential threat actually results in a loss,
-    with True being representied by 1 and False being represented by 0
+    with True being represented by 1 and False being represented by 0
 
     Restrictions: must be exactly 0 or exactly 1
 
@@ -161,7 +161,7 @@ The nodes can be described as follows:
 
     Example: 1 (True, indicating vulnerable)
 
-5. **Contact Frequency**
+5. **Contact Frequency ("C")**
 
     Description: the number of threat actor contacts that could potentially 
     yield a threat within a given timeframe
@@ -172,7 +172,7 @@ The nodes can be described as follows:
 
     Example: 20,000 (scans of a vulnerable port within a given year)
 
-6. **Probability of Action**
+6. **Probability of Action ("A")**
 
     Description: the probability that a threat actor will proceed when
     coming upon a given 
@@ -183,7 +183,7 @@ The nodes can be described as follows:
 
     Example: .45 (percent that actor will proceed with potential SSH login)
 
-7. **Threat Capability**
+7. **Threat Capability ("TC")**
 
     Description: a unitless number that describes the relative level of
     expertise and resources of a threat actor
@@ -194,9 +194,9 @@ The nodes can be described as follows:
 
     Example: .25 (unitless)
 
-8. **Control Strength**
+8. **Control Strength ("CS")**
 
-    Description: a unitless number that descibes the relative strength of
+    Description: a unitless number that describes the relative strength of
     the control environment a threat actor is trying to exploit
 
     Restrictions: must be a number from 0.0 to 1.0
@@ -205,7 +205,7 @@ The nodes can be described as follows:
 
     Example: .40 (unitless)
 
-9. **Loss Magnitude**
+9. **Loss Magnitude ("LM")**
 
     Description: the total loss for a given Loss Event
 
@@ -216,7 +216,7 @@ The nodes can be described as follows:
 
     Example: 10,000,000 (dollars for each database breach)
 
-10. **Primary Loss**
+10. **Primary Loss ("PL")**
 
     Description: the amount of the loss directly attributable to the threat
 
@@ -232,7 +232,7 @@ The nodes can be described as follows:
     create using a vectors of values. This is an exception to the single
     value per simulation condition we discussed earlier.
 
-11. **Secondary Loss**
+11. **Secondary Loss ("SL")**
 
     Description: the amount of loss incurred as a secondary consequence of
     the loss
@@ -245,7 +245,7 @@ The nodes can be described as follows:
 
     Example: 5,000,000 (dollars worth of data research/cleanup post-breach)
 
-12. **Secondary Loss Event Frequency**
+12. **Secondary Loss Event Frequency ("SLEF")**
 
     Description: the probability that a given secondary loss could occur
 
@@ -255,7 +255,7 @@ The nodes can be described as follows:
 
     Example: [.25, .80, 1.0] (probabilities of loss for 3 loss types)
 
-13. **Secondary Loss Event Magnitude**
+13. **Secondary Loss Event Magnitude ("SLEM")**
 
     Description: the amount of the secondary loss that could occur
 
@@ -356,7 +356,7 @@ Third we will estimate our loss magnitude. Recall that LM is the amount of
 loss for each Loss Event (represented by a positive number). We estimate 
 that on average each loss will result in an average of a $100 loss, with a
 standard deviation of $50. We then generate three normally distributed
-random numbers from a curbe with a mean of 100 and a standard deviation
+random numbers from a curve with a mean of 100 and a standard deviation
 of 50.
 
 +---------------------------+
@@ -503,11 +503,11 @@ object however we wish.
 
 .. note::
 
-    pyfair uses pandas heavily for data manipulation, and conseqeuntly your 
+    pyfair uses pandas heavily for data manipulation, and consequently your 
     results will be exported as easy-to-manipulate DataFrames unless 
     otherwise specified.
 
-While there are various ways to create these modesl (from serialized JSON
+While there are various ways to create these models (from serialized JSON
 models, from a database, uploading groups of parameters at the same time)
 ... the general approach will almost always be the same. You will create 
 the model, you will input your data, and you will calculate your model 
@@ -561,7 +561,8 @@ calculate our data, and we export the results.
 FairModelFactory
 ~~~~~~~~~~~~~~~~
 
-Related to the metamodel is the FairModelFactor object <TODOLINK>. Often
+Related to the metamodel is the
+`FairModelFactory<pyfair.model.model.FairModelFactory>`_ object. Often
 you will want to create a group of models that are identical except for one
 or two minor differences. For example, if you want to create a model for an
 entire threat community, you may wish to create a model for "Threat Group
@@ -600,7 +601,7 @@ will change. An example is below:
 FairSimpleReport
 ~~~~~~~~~~~~~~~~
 
-The FairSimpleReport <TODO LINK> is a mechanism to create a basic
+The `FairSimpleReport<pyfair.report.simple.FairSimpleReport>`_ is a mechanism to create a basic
 HTML-based report. It can take Models, MetaModels, or a list of Models and
 MetaModels like so:
 
@@ -678,7 +679,7 @@ General rules:
 The following nodes must have values from 0 to 1:
 * TC: Threat Capability
 * CS: Control Strength
-* A: Action
+* A: Probability of Action
 
 The following nodes must have a value of exactly 0 or 1:
 * V: Vulnerability
@@ -707,7 +708,9 @@ Keywords must be used as follows:
 Why are my calculation dependencies unresolved?
 -----------------------------------------------
 
-pyfair uses the following structure for calculations: <TODO LEAF NODE BRANCH TREE>
+pyfair uses the following structure for calculations:
+
+.. image:: ./_static/calculation_functions.png
 
 As you can see, this takes the form of tree composed of nodes. A the
 bottom there are "leaf" nodes. These nodes can only be supplied with data
@@ -756,7 +759,7 @@ tree:
 .. image:: ./_static/incomplete_example
 
 As you can see, you supplied "Loss Event Frequency". That means you do not
-need to calculate "Loss Event Frequency" ... and you also don't have to
+need to calculate "Loss Event Frequency"--and you also don't have to
 deal with anything underneath it because it's all superfluous. That said,
 you cannot calculate Risk because the whole right side of the FAIR
 calculation hasn't been supplied.
