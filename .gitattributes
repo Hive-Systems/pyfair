@@ -6,3 +6,6 @@
 
 # Linguist vendoring
 static/* linguist-vendored
+
+# Linguist coersion
+*.ipynb linguist-language=Python
