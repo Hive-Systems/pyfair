@@ -14,62 +14,14 @@ Welcome to pyfair's documentation!
 
 .. include:: getting_started.rst
 
-Main API Classes
-================
-
-FairModel
----------
+Model Classes
+=============
 
 .. autoclass:: pyfair.model.model.FairModel 
     :members:
 
-FairMetaModel
--------------
-
 .. autoclass:: pyfair.model.meta_model.FairMetaModel 
     :members:
-
-FairSimpleReport
-----------------
-
-.. autoclass:: pyfair.report.simple_report.FairSimpleReport
-    :members:
-
-FairDatabase
-------------
-
-.. autoclass:: pyfair.utility.database.FairDatabase
-    :members:
-
-FairModelFactory
-----------------
-
-.. autoclass:: pyfair.utility.factory.FairModelFactory
-    :members:
-
-Utility Classes
-===============
-
-FairException
--------------
-
-.. autoexception:: pyfair.utility.fair_exception.FairException
-    :members:
-
-FairBetaPert
--------------
-
-.. autoclass:: pyfair.utility.beta_pert.FairBetaPert
-    :members:
-
-FairSimpleParser
-----------------
-
-.. autoclass:: pyfair.utility.parser.FairSimpleParser
-    :members:
-
-Model Classes
-=============
 
 .. autoclass:: pyfair.model.model_calc.FairCalculations
     :members:
@@ -86,10 +38,13 @@ Model Classes
 Report Classes
 ==============
 
-.. autoclass:: pyfair.report.base_curve.FairBaseCurve
+.. autoclass:: pyfair.report.simple_report.FairSimpleReport
     :members:
 
 .. autoclass:: pyfair.report.base_report.FairBaseReport
+    :members:
+
+.. autoclass:: pyfair.report.base_curve.FairBaseCurve
     :members:
 
 .. autoclass:: pyfair.report.distribution.FairDistributionCurve
@@ -102,6 +57,24 @@ Report Classes
     :members:
 
 .. autoclass:: pyfair.report.violin.FairViolinPlot
+    :members:
+
+Utility Classes
+===============
+
+.. autoexception:: pyfair.utility.fair_exception.FairException
+    :members:
+
+.. autoclass:: pyfair.utility.beta_pert.FairBetaPert
+    :members:
+
+.. autoclass:: pyfair.utility.parser.FairSimpleParser
+    :members:
+
+.. autoclass:: pyfair.utility.factory.FairModelFactory
+    :members:
+
+.. autoclass:: pyfair.utility.database.FairDatabase
     :members:
 
 Indices and tables
