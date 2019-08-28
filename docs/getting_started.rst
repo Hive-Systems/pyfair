@@ -21,13 +21,13 @@ calculation of risk as a whole.
     background, you likely refer to this as the more commonly accepted term
     "Loss Exposure". This documentation will use the FAIR nomenclature.
 
-The actual calculation for Risk most often takes the form of a `Monte Carlo
-model <https://en.wikipedia.org/wiki/Monte_Carlo_method>`_. This Monte
-Carlo model supplies random inputs for our model. The model then transforms
+The actual calculation for Risk often takes the form of a `Monte Carlo
+method <https://en.wikipedia.org/wiki/Monte_Carlo_method>`_. This Monte
+Carlo method supplies random inputs for our model. The model then transforms
 the inputs in accordance with FAIR calculation rules, and provides outputs.
 The outputs can then be analyzed to determine what the potential range of 
 Risk values are. pyfair's purpose is to simplify and automate these Monte 
-Carlo simulations.
+Carlo methods.
 
 A Quick Monte Carlo Example
 ---------------------------
@@ -78,9 +78,9 @@ we calculate the samples' BMI using the following formula:
 | 3      | 85          | 131         | 50  |
 +--------+-------------+-------------+-----+ 
 
-Once we have these BMIs, we can calculate the mean and spread of these BMIs.
-With 3 samples, this doesn't give us a lot of data, but if we were to run
-10,000 or so samples, we would get a distribution like this:
+Once we have these BMIs, we can calculate the mean and spread of these
+BMIs. With 3 samples, this doesn't give us a lot of data, but if we were to 
+run 10,000 or so samples, we would get a distribution like this:
 
 .. image:: ./_static/after_monte_carlo_bmi.png
 
@@ -443,7 +443,7 @@ should be able to achieve similar results with 5 to 10 lines of code.
 
     # Create our model and calculate (don't worry about understanding yet)
     model = FairModel(name='Sample')
-    model.input_data('Threat Event Frequency', mean=.50_000, stdev=10_000)
+    model.input_data('Threat Event Frequency', mean=50_000, stdev=10_000)
     model.input_data('Vulerability', p=.66)
     model.input_data('Loss Magnitude', mean=100, stdev=50)
     model.calculate_all()
@@ -467,7 +467,7 @@ Here is how you can use these pyfair tools to do that.
 FairModel
 ~~~~~~~~~
 
-The most basic element of PyFair is the FairModel <LINK TODO>. This
+The most basic element of PyFair is the FairModel. This
 FairModel is used to create basic Monte Carlo simulations as follows:
 
 .. code-block:: python
@@ -513,7 +513,7 @@ models, from a database, uploading groups of parameters at the same time)
 the model, you will input your data, and you will calculate your model 
 before using the results.
 
-Pyfair will take care of most of the "under the hood" unpleasantness
+pyfair will take care of most of the "under the hood" unpleasantness
 associated with the Monte Carlo generation and FAIR calculation. You simply
 supply the targets and the distribution types (mean/stdev for normal,
 low/mode/high for BetaPert, constant for constants, and p for binomial). 
@@ -527,8 +527,8 @@ FairMetaModel
 
 At times you will likely want to determine what the total amount of risk is
 for a number of FairModels. Rolling these model risks up into a single unit
-is what the FairMetaModel<TODO LINK> does. These can be created in a number
-of ways, but most generally you will simply feed a list of FairModels to a
+is what the FairMetaModel does. These can be created in a number of ways,
+but most generally you will simply feed a list of FairModels to a 
 FairMetaModel constructor like this:
 
 .. code-block:: python
@@ -601,9 +601,8 @@ will change. An example is below:
 FairSimpleReport
 ~~~~~~~~~~~~~~~~
 
-The `FairSimpleReport<pyfair.report.simple.FairSimpleReport>`_ is a mechanism to create a basic
-HTML-based report. It can take Models, MetaModels, or a list of Models and
-MetaModels like so:
+The FairSimpleReport is a mechanism to create a basic HTML-based report. It 
+can take Models, MetaModels, or a list of Models and MetaModels like so:
 
 .. code-block:: python
 
@@ -632,10 +631,10 @@ the report to an HTML document.
 FairDatabase
 ~~~~~~~~~~~~
 
-The FairDatabase object <TODO CONTENT> exists to store models so that they
-can be loaded at a later date. For the sake of space, pyfair does not store
-all model results. Rather it stores parameters for simulations, which are
-run anew each time. Though because the random seeds for your random number
+The FairDatabase object exists in order to store models so that they can
+be loaded at a later date. For the sake of space, pyfair does not store all 
+model results. Rather it stores parameters for simulations, which are run 
+anew each time. Though because the random seeds for your random number
 generation stay the same, your results will be reproducible. This works as
 follows:
 
@@ -756,7 +755,7 @@ Your code will raise this error:
 The reason for this is readily apparent when looking at the calculation
 tree:
 
-.. image:: ./_static/incomplete_example
+.. image:: ./_static/incomplete_example.png
 
 As you can see, you supplied "Loss Event Frequency". That means you do not
 need to calculate "Loss Event Frequency"--and you also don't have to
@@ -767,7 +766,7 @@ calculation hasn't been supplied.
 If you were create a new model with "Loss Magnitude" and "Loss Event
 Frequency" you'd cover both branches of the FAIR model and would receive
 no error. Notice that you did not have to supply information for everything
-in the error above. Pyfair lists them all as required because it has no
+in the error above. pyfair lists them all as required because it has no
 idea what you're going to put in next (and so it doesn't know whether it
 will be high on the tree or low on the tree).
 
