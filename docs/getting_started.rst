@@ -62,11 +62,9 @@ we calculate the samples' BMI using the following formula:
 
 .. math::
 
-    \Large{\text{BMI}} = \huge{
-        \frac
+    \text{BMI} = \frac
             {\text{Weight}_{kg}}
             {(\text{Height}_{cm} \times .01) ^2}
-    }
 
 +--------+-------------+-------------+-----+
 | Sample | Weight (kg) | Height (cm) | BMI |
