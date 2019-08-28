@@ -426,13 +426,6 @@ expect our Risk to have the following attributes:
 | $4,784,402 | $5,319,104              |
 +------------+-------------------------+
 
-.. note::
-
-    You've probably noticed that the standard deviation is really, really
-    high. That's a result of conducting a limited number of simulations (we
-    set the number of simulations to n=3 whereas pyfair defaults to
-    n=10,000.
-
 pyfair, as you will see later on, makes this considerably easier. You
 should be able to achieve similar results with 5 to 10 lines of code.
 
