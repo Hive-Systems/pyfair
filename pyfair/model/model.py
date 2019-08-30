@@ -376,7 +376,11 @@ class FairModel(object):
             status_str = str(pd.Series(self._tree.get_node_statuses()))
             raise FairException('Not ready for calculation. See statuses: \n{}'.format(status_str))
         status = pd.Series(self._tree.get_node_statuses())
-        calculable_nodes = status[status == 'Calculable'].index.values.tolist()
+        # Needs to be string to avoid weird numpy error with empty status array
+        # https://stackoverflow.com/questions/40659212/futurewarning-elementwise-comparison-failed-returning-scalar-but-in-the-futur
+        calculable_nodes = (status.loc[status.astype(str) == 'Calculable']
+                                  .index.values.tolist()
+        )
         # Go through all the nodes and update them if possible.
         while calculable_nodes:
             # Avoid mutating while iterating.

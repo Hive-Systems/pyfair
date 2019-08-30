@@ -61,6 +61,7 @@ FairSimpleReport
 
 .. autoclass:: pyfair.report.simple_report.FairSimpleReport
     :members:
+    :inherited-members:
 
 FairBaseReport
 -------------
@@ -79,12 +80,14 @@ FairDistributionCurve
 
 .. autoclass:: pyfair.report.distribution.FairDistributionCurve
     :members:
+    :inherited-members:
 
 FairExceedenceCurves
 -------------
 
 .. autoclass:: pyfair.report.exceedence.FairExceedenceCurves
     :members:
+    :inherited-members:
 
 FairTreeGraph
 -------------

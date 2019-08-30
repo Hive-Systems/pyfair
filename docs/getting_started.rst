@@ -224,12 +224,6 @@ The nodes can be described as follows:
 
     Example: 25,000,000 (dollars in funds stolen)
 
-.. note::
-
-    As implemented by pyfair, Secondary Loss is an aggregate field that is
-    create using a vectors of values. This is an exception to the single
-    value per simulation condition we discussed earlier.
-
 11. **Secondary Loss ("SL")**
 
     Description: the amount of loss incurred as a secondary consequence of
@@ -262,6 +256,12 @@ The nodes can be described as follows:
     Derivation: None (this must be supplied, not calculated)
 
     Example: [100, 900, 200] (magnitude of loss for 3 loss types)
+
+.. note::
+
+    As implemented by pyfair, Secondary Loss is an aggregate field that is
+    create using a vectors of values. This is an exception to the single
+    value per simulation condition we discussed earlier.
 
 Relationships and Dependencies
 ------------------------------
@@ -301,7 +301,7 @@ Magnitude (LM). Most often in FAIR you will see BetaPert distributed random
 variates. For the sake of simplicity this example will use normally
 distributed random variates.
 
-First we will estimate TDF. Recall that TDF is the number of threats that
+First we will estimate TEF. Recall that TEF is the number of threats that
 occur whether or not it result in a loss (which is represented by a
 positive number). Here we estimate that if leave these ports open, we will 
 see around 50,000 attempted intrusions with a standard deviation of 10,000
@@ -664,17 +664,21 @@ Value Range
 ~~~~~~~~~~~
 
 General rules:
+
 * No argument can be less than 0
 
 The following nodes must have values from 0 to 1:
+
 * TC: Threat Capability
 * CS: Control Strength
 * A: Probability of Action
 
 The following nodes must have a value of exactly 0 or 1:
+
 * V: Vulnerability
 
 Pert distributions:
+
 * High parameter must be equal to or greater than Mode parameter
 * Mode parameter must be equal to or greater than Low parameter
 
@@ -690,6 +694,7 @@ Parameter Mismatch
 ------------------
 
 Keywords must be used as follows:
+
 * constant: must be the only parameter used for a given node
 * p: may only be used for Vulnerability
 * low, mode, and high: must be used together (gamma is optional)

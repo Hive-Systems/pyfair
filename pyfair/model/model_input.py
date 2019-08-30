@@ -194,24 +194,31 @@ class FairDataInput(object):
         This function essentially creates a small simulation for each key
         in the dictionary. For example, with the following data:
 
-        `
-        {
-            'Reputational': {
-                'Secondary Loss Event Frequency': {'constant': 4000}, 
-                'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},
-            },
-            'Legal': {
-                'Secondary Loss Event Frequency': {'constant': 2000}, 
-                'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},        
+        .. code:: python
+            
+            {
+                'Reputational': {
+                    'Secondary Loss Event Frequency': {'constant': 4000}, 
+                    'Secondary Loss Event Magnitude': {
+                        'low': 10, 'mode': 20, 'high': 100
+                    },
+                },
+                'Legal': {
+                    'Secondary Loss Event Frequency': {'constant': 2000}, 
+                    'Secondary Loss Event Magnitude': {
+                        'low': 10, 'mode': 20, 'high': 100
+                    },        
+                }
             }
-        }
-        `
-
+            
         Two separate simulations for "Reputational" and "Legal" will be run
         using the information supplied. Each of these simulations will be
         composed of random values with distributions based on the
         parameters supplied. Those simulations are then calculated
         independently, and then summed to yield aggregate risk.
+
+        .. warning:: unlike other functions, this does not take **kwargs--
+           rather it takes a dictionary
 
         Parameters
         ----------
@@ -224,9 +231,6 @@ class FairDataInput(object):
         kwargs_dict : dict
             This is an actual dictionary (and not an expanded **kwargs)
             keyword list.
-
-        .. warning:: unlike other functions, this does not take **kwargs--
-           rather it takes a dictionary
 
         Raises
         ------
@@ -243,7 +247,6 @@ class FairDataInput(object):
             amounts.
 
         """
-
         # Remove prefix from target
         final_target = prefixed_target.lstrip('multi_')
         # Create a container for dataframes

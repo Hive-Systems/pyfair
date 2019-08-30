@@ -17,12 +17,14 @@ from .violin import FairViolinPlot
 
 
 class FairBaseReport(object):
-    '''A base report class with boilerplate.
+    """A base class for creating FairModel and FairMetaModel reports
     
-    TODO: make an HTML generator. This class is bloated.
-    TODO: this should capture errors and warnings in a sep table.
-    '''
-
+    This class exists to provide a common base for mutliple report types.
+    It carries with it formatting data, file paths, and a variety of 
+    methods for creating report components. It is not intended to be
+    instantiated on its own.
+    
+    """
     def __init__(self):
         # Add formatting strings
         self._model_or_models = None
@@ -55,6 +57,7 @@ class FairBaseReport(object):
         self._caller_source = self._set_caller_source()
 
     def _set_caller_source(self):
+        """Set source code of Python script running the report"""
         frame = inspect.getouterframes(inspect.currentframe())[-1]
         filename = frame[1]
         name = pathlib.Path(filename)
@@ -66,9 +69,18 @@ class FairBaseReport(object):
             return 'Report was not called from a script file.'
 
     def _get_caller_source(self):
+        """Get source code of calling script after _set_caller_source()"""
         return self._caller_source
 
     def _input_check(self, value):
+        """Check input value for report is appropriate
+        
+        Raises
+        ------
+        FairException
+            If an inappropriate object or iterable of objects is supplied
+        
+        """
         # If it's a model or metamodel, plug it in a dict.
         rv = {}
         if value.__class__.__name__ in ['FairModel', 'FairMetaModel']:
@@ -86,10 +98,47 @@ class FairBaseReport(object):
         return rv
 
     def get_format_strings(self):
+        """Returns the format strings for respective nodes
+
+        Returns
+        -------
+        dict
+            Containing keys with node names and values with the formatting
+            string appropriate for those nodes
+
+        """
         return self._format_strings
 
     def base64ify(self, image, alternative_text='', options=''):
-        '''Loads an image into a base64 embeddable <img> tag'''
+        """Binary data into embeddable <img> tag with base64 data
+        
+        To avoid having separate image files, pyfair simply embeds report
+        images as base64 image tags. base64ify() is a convenience function
+        that creates these tags.
+
+        image : [bytes, str, pathlib.Path]
+            The binary data, path string, or pathlib.Path containing either
+            the data itself or a file of data.
+        
+        alternative_text: str, optional
+            Alternative text to be showed in the event the image does not
+            properly render
+
+        options : str, optional
+            A string containing additional HTML attributes to be placed
+            between "<image " and " src="
+
+        Returns
+        -------
+        str
+            An HTML <img> tag with base64 data and appropriate attributes
+
+        Raises
+        ------
+        TypeError
+            If the image parameter supplied is of an inappropriate type
+
+        """
         # If path, open and read.
         if type(image) == str or isinstance(image, pathlib.Path):
             with open(image, 'rb') as f:
@@ -106,17 +155,28 @@ class FairBaseReport(object):
         return tag
 
     def _construct_output(self):
-        '''Defined by subclass'''
+        """Stub to be overridden by subclass to generate report"""
         # Get report
         raise NotImplementedError()
 
     def to_html(self, output_path):
+        """Writes HTML report data to a file
+
+        This is a public method that simply obtains the output of the
+        _construct_output() method and writes it to a file.
+
+        Parameters
+        ----------
+        output_path : str or pathlib.Path
+            The output path to which the HTML data is written
+
+        """
         output = self._construct_output()
         with open(output_path, 'w+') as f:
             f.write(output)
 
     def _fig_to_img_tag(self, fig):
-        '''Convert fig to base64 encoded img tag'''
+        """Converts matplotlib fig to base64 encoded img tag"""
         data = io.BytesIO()
         fig.savefig(data, format='png', transparent=True)
         data.seek(0)
@@ -124,6 +184,7 @@ class FairBaseReport(object):
         return img_tag
 
     def _get_data_table(self, model):
+        """Takes model and gnerates HTML table from the model's results"""
         data = model.export_results().dropna(axis=1)
         table = data.to_html(
             border=0, 
@@ -133,12 +194,17 @@ class FairBaseReport(object):
         return table
 
     def _get_parameter_table(self, model):
+        """Visitorish function to inspect a model's parameters"""
         data = model.export_parameters()
         return data       
 
     def _get_metadata_table(self):
-        '''Do not put model-specific data in here.'''
-            # Add metadata
+        """Generate table of metadata to attach to top of model.
+        
+        Do not put model-specific data in here.
+        
+        """
+        # Add metadata
         metadata = pd.Series({
             'Author': os.environ['USERNAME'],
             'Created': str(pd.datetime.now()).partition('.')[0],
@@ -148,122 +214,149 @@ class FairBaseReport(object):
         return metadata    
 
     def _get_tree(self, model):
+        """Create base64 image string using FairTreeGraph"""
         ftg = FairTreeGraph(model, self._format_strings)
         fig, ax = ftg.generate_image()
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
 
     def _get_distribution(self, model_or_models):
+        """Create base64 image string using FairDistributionCurve"""
         fdc = FairDistributionCurve(model_or_models)
         fig, ax = fdc.generate_image()
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
 
     def _get_distribution_icon(self, model, target):
+        """Create base64 icon string using FairDistributionCurve"""
         fdc = FairDistributionCurve(model)
         fig, ax = fdc.generate_icon(model.get_name(), target)        
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
 
     def _get_exceedence_curves(self, model_or_models):
+        """Create base64 image string using FairExceedenceCurves"""
         fec = FairExceedenceCurves(model_or_models)
         fig, ax = fec.generate_image()
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
     
     def _get_violins(self, metamodel):
+        """Create base64 image string using FairViolinPlot"""
         vplot = FairViolinPlot(metamodel)
         fig, ax = vplot.generate_image()
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
     
     def _get_overview_table(self, model_or_models):
+        """Create a risk overview table using a model or list of models"""
+        # Get final Risk vectors for all models
         risk_results = pd.DataFrame({
             name: model.export_results()['Risk']
             for name, model 
             in model_or_models.items()
         })
+        # Get aggregate statistics and set titles
         risk_results = risk_results.agg([np.mean, np.std, np.min, np.max])
         risk_results.index = ['Mean', 'Stdev', 'Minimum', 'Maximum']
+        # Format risk results into dataframe
         overview_df = risk_results.applymap(lambda x: self._format_strings['Risk'].format(x))
         overview_df.loc['Simulations'] = [
             '{0:,.0f}'.format(len(model.export_results())) 
             for model 
             in model_or_models.values()
         ]
+        # Add data
         overview_df.loc['Identifier'] = [model.get_uuid() for model in model_or_models.values()]
         overview_df.loc['Model Type'] = [model.__class__.__name__ for model in model_or_models.values()]
+        # Export df to HTML and return
         overview_html = overview_df.to_html(border=0, header=True, justify='left', classes='fair_table')
         return overview_html
 
     def _get_model_parameter_table(self, model):
-            params = dict(**model.export_params())
-            # Remove items we don't want.
-            params = {
-                key: value 
-                for key, value 
-                in params.items() 
-                if key in self._format_strings.keys()
-            }
-            fs = self._format_strings
-            param_df = pd.DataFrame(params).T
-            for column in self._param_cols:
-                if column not in param_df.columns:
-                    param_df[column] = np.NaN
-            param_df = param_df[self._param_cols]
-            param_df['mean'] = model.export_results().mean(axis=0)
-            param_df['stdev'] = model.export_results().std(axis=0)
-            param_df['min'] = model.export_results().min(axis=0)
-            param_df['max'] = model.export_results().max(axis=0)
-            param_df = param_df.apply(
-                lambda row: pd.Series(
-                    [
-                        fs[row.name].format(item) 
-                        for item 
-                        in row
-                    ],
-                    index=row.index.values
-                ),
-                axis=1,
-            )
-            # Do not truncate our base64 images.
-            pd.set_option('display.max_colwidth', -1)
-            param_df['distribution'] = [
-                self._get_distribution_icon(model, target)
-                for target 
-                in param_df.index.values
-            ]
-            detail_table = param_df.to_html(
-                border=0, 
-                header=True, 
-                justify='left', 
-                classes='fair_table',
-                escape=False
-            )
-            return detail_table
+        """Generate a table with parameter statistics and icons"""
+        params = dict(**model.export_params())
+        # Remove items we don't want.
+        params = {
+            key: value 
+            for key, value 
+            in params.items() 
+            if key in self._format_strings.keys()
+        }
+        # Set up alias and dataframe
+        fs = self._format_strings
+        param_df = pd.DataFrame(params).T
+        # For possible param column name
+        for column in self._param_cols:
+            # If the column is not present in param_df
+            if column not in param_df.columns:
+                # Add that column in with null data
+                param_df[column] = np.NaN
+        # Create descriptive statistics from parameter df
+        param_df = param_df[self._param_cols]
+        param_df['mean'] = model.export_results().mean(axis=0)
+        param_df['stdev'] = model.export_results().std(axis=0)
+        param_df['min'] = model.export_results().min(axis=0)
+        param_df['max'] = model.export_results().max(axis=0)
+        # Transform param_df in place
+        param_df = param_df.apply(
+            lambda row: pd.Series(
+                [
+                    # ... by getting the format string and formatting
+                    fs[row.name].format(item)
+                    # For each item
+                    for item 
+                    in row
+                ],
+                # And keep the index
+                index=row.index.values
+            ),
+            # On a column basis
+            axis=1,
+        )
+        # Do not truncate our base64 images.
+        pd.set_option('display.max_colwidth', -1)
+        # Create our distribution icons as strings in table
+        param_df['distribution'] = [
+            self._get_distribution_icon(model, target)
+            for target 
+            in param_df.index.values
+        ]
+        # Export table to html
+        detail_table = param_df.to_html(
+            border=0, 
+            header=True, 
+            justify='left', 
+            classes='fair_table',
+            escape=False
+        )
+        return detail_table
     
     def _get_metamodel_parameter_table(self, metamodel):
-            risk_df = metamodel.export_results().T
-            risk_df = pd.DataFrame({
-                'mean' : risk_df.mean(axis=1),
-                'stdev': risk_df.std(axis=1),
-                'min'  : risk_df.min(axis=1),
-                'max'  : risk_df.max(axis=1),
-            })
-            risk_df = risk_df.apply(
-                lambda row: pd.Series(
-                    [self._format_strings['Risk'].format(item) for item in row],
-                    index=row.index.values
-                ),
-                axis=1,
-            )
-            # Do not truncate our base64 images.
-            detail_table = risk_df.to_html(
-                border=0, 
-                header=True, 
-                justify='left', 
-                classes='fair_table',
-                escape=False
-            )
-            return detail_table
+        """Create table for metamodel"""
+        # Create our table, transpose it, get descriptive statistics
+        risk_df = metamodel.export_results().T
+        risk_df = pd.DataFrame({
+            'mean' : risk_df.mean(axis=1),
+            'stdev': risk_df.std(axis=1),
+            'min'  : risk_df.min(axis=1),
+            'max'  : risk_df.max(axis=1),
+        })
+        # Format the risk DF with the appropraite strings
+        risk_df = risk_df.apply(
+            lambda row: pd.Series(
+                [self._format_strings['Risk'].format(item) for item in row],
+                index=row.index.values
+            ),
+            axis=1,
+        )
+        # Do not truncate our base64 images.
+        detail_table = risk_df.to_html(
+            border=0, 
+            header=True, 
+            justify='left', 
+            classes='fair_table',
+            escape=False
+        )
+        return detail_table
         

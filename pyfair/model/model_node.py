@@ -1,5 +1,5 @@
 class FairDependencyNode(object):
-    """Represents the status of a given calculation for FairTree
+    """Represents the status of a given calculation for FairDependencyTree
     
     FairModel has a captive FairDependencyTree, and a FairDependencyTree
     is made of FairDependencyNodes. It is a simple structure that holds a
