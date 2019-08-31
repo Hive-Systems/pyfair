@@ -12,6 +12,7 @@ class FairSimpleParser(object):
     '''Horific parser.'''
     
     def __init__(self, workbook_path):
+        raise NotImplementedError()
         self._path          = workbook_path
         self._names         = list()
         self._raw_data      = dict()

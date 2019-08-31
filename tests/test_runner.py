@@ -18,6 +18,7 @@ import model.test_model_tree
 import model.test_model
 import report.test_base_curve
 import report.test_base_report
+import report.test_distribution
 
 
 # List test modules
@@ -32,7 +33,7 @@ test_modules = [
     # Report Module
     report.test_base_curve,
     report.test_base_report,
-    #report.distribution,
+    report.test_distribution,
     #report.exceedence,
     #report.simple_report,
     #report.tree_graph,
