@@ -109,7 +109,7 @@ The nodes are as follows:
 
 The nodes can be described as follows:
 
-1. **Risk ("R")**
+#. **Risk ("R")**
 
     Description: the final output of the model in 
     dollars/euros/yuan/rupees/etc.
@@ -120,7 +120,7 @@ The nodes can be described as follows:
 
     Example: 20,000,000 (dollars for a given year)
 
-2. **Loss Event Frequency ("LEF")**
+#. **Loss Event Frequency ("LEF")**
 
     Description: the number of times a particular loss occurs during a 
     given time frame (generally one year)
@@ -132,7 +132,7 @@ The nodes can be described as follows:
 
     Example: 500 (breaches resulting in data exfiltration (for given year))
 
-3. **Threat Event Frequency ("TEF")**
+#. **Threat Event Frequency ("TEF")**
 
     Description: the number of times a particular threat occurs, whether or
     not it results in a loss
@@ -144,7 +144,7 @@ The nodes can be described as follows:
 
     Example: 500 (cross-site scripting attempts in a given month)
 
-4. **Vulnerability ("V")**
+#. **Vulnerability ("V")**
 
     Description: whether a potential threat actually results in a loss,
     with True being represented by 1 and False being represented by 0
@@ -158,7 +158,7 @@ The nodes can be described as follows:
 
     Example: 1 (True, indicating vulnerable)
 
-5. **Contact Frequency ("C")**
+#. **Contact Frequency ("C")**
 
     Description: the number of threat actor contacts that could potentially 
     yield a threat within a given timeframe
@@ -169,7 +169,7 @@ The nodes can be described as follows:
 
     Example: 20,000 (scans of a vulnerable port within a given year)
 
-6. **Probability of Action ("A")**
+#. **Probability of Action ("A")**
 
     Description: the probability that a threat actor will proceed when
     coming upon a given 
@@ -180,7 +180,7 @@ The nodes can be described as follows:
 
     Example: .45 (percent that actor will proceed with potential SSH login)
 
-7. **Threat Capability ("TC")**
+#. **Threat Capability ("TC")**
 
     Description: a unitless number that describes the relative level of
     expertise and resources of a threat actor
@@ -191,7 +191,7 @@ The nodes can be described as follows:
 
     Example: .25 (unitless)
 
-8. **Control Strength ("CS")**
+#. **Control Strength ("CS")**
 
     Description: a unitless number that describes the relative strength of
     the control environment a threat actor is trying to exploit
@@ -202,7 +202,7 @@ The nodes can be described as follows:
 
     Example: .40 (unitless)
 
-9. **Loss Magnitude ("LM")**
+#. **Loss Magnitude ("LM")**
 
     Description: the total loss for a given Loss Event
 
@@ -213,7 +213,7 @@ The nodes can be described as follows:
 
     Example: 10,000,000 (dollars for each database breach)
 
-10. **Primary Loss ("PL")**
+#. **Primary Loss ("PL")**
 
     Description: the amount of the loss directly attributable to the threat
 
@@ -223,7 +223,7 @@ The nodes can be described as follows:
 
     Example: 25,000,000 (dollars in funds stolen)
 
-11. **Secondary Loss ("SL")**
+#. **Secondary Loss ("SL")**
 
     Description: the amount of loss incurred as a secondary consequence of
     the loss
@@ -236,7 +236,7 @@ The nodes can be described as follows:
 
     Example: 5,000,000 (dollars worth of data research/cleanup post-breach)
 
-12. **Secondary Loss Event Frequency ("SLEF")**
+#. **Secondary Loss Event Frequency ("SLEF")**
 
     Description: the probability that a given secondary loss could occur
 
@@ -246,7 +246,7 @@ The nodes can be described as follows:
 
     Example: [.25, .80, 1.0] (probabilities of loss for 3 loss types)
 
-13. **Secondary Loss Event Magnitude ("SLEM")**
+#. **Secondary Loss Event Magnitude ("SLEM")**
 
     Description: the amount of the secondary loss that could occur
 
@@ -302,6 +302,9 @@ The general approach will be as follows:
 * Step 2: Multiply your TEF and V values to calculate LEF
 * Step 3: Multiply your LEF and LM to calculate Risk
 * Step 4: Analyze your Risk outputs
+
+Step 1: Generate Our Random Inputs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We start by generating our data. We will generate 3 values for Threat Event
 Frequency (TEF), 3 values for Vulnerability (V), and 3 values for Loss
@@ -383,10 +386,8 @@ of 50.
 | 3          | 86  |
 +------------+-----+ 
 
-As a brief reminder, this is an illustration of what nodes can be combined
-with other nodes, and how to do so.
-
-.. image:: ./_static/calculation_functions.png
+Step 2: Calculate LEF Using TDF and V
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As you can likely see, we can use our 3 TEFs and 3 Vs and multiply them
 together element-by-element. This will give us 3 LEF values. 
@@ -406,6 +407,9 @@ amount of loss that actually occurs. We have a three potential losses, and
 two of those losses actually occur. The others do not occur, so the amount
 of loss is zero.
 
+Step 3: Calculate Our R Using LEF and LM
+~~~~~~~~~~~~~~~~~~~~~~~~~~--------------
+
 Now that we have an LEF and an LM, we can calculate our final Risk, R. R is
 calculated by taking the total number of loss events and multiplying them
 by the amount lost for each event.
@@ -419,6 +423,9 @@ by the amount lost for each event.
 +------------+--------+-----+------------------+
 | 3          | 44,665 | 86  | 3,841,190        |
 +------------+--------+-----+------------------+
+
+Step 4: Analyze Our Risk Outputs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By using our random inputs and putting them through our Monte Carlo model
 we were able to calculate Risk for three simulations. The resulting Risk
@@ -514,8 +521,17 @@ before using the results.
 
 pyfair will take care of most of the "under the hood" unpleasantness
 associated with the Monte Carlo generation and FAIR calculation. You simply
-supply the targets and the distribution types (mean/stdev for normal,
-low/mode/high for BetaPert, constant for constants, and p for binomial). 
+supply the targets and the distribution types. These targets are:
+
+    * BetaPert: low, mode, and high (and optionally gamma)
+    * Bernoulli/Binomial: p
+    * Normal: mean, stdev
+
+.. warning::
+
+    You cannot mix these parameters. If you give a function a "constant"
+    parameter, a "low" parameter, and a "mean" parameter, it will throw an
+    error.
 
 If you don't supply the right nodes to create a proper calculation, pyfair
 will tell you what you're missing. If you don't supply the right arguments,
@@ -560,17 +576,16 @@ calculate our data, and we export the results.
 FairModelFactory
 ~~~~~~~~~~~~~~~~
 
-Related to the metamodel is the
-`FairModelFactory<pyfair.model.model.FairModelFactory>`_ object. Often
-you will want to create a group of models that are identical except for one
-or two minor differences. For example, if you want to create a model for an
-entire threat community, you may wish to create a model for "Threat Group
-1", "Threat Group 2", and "Threat Group 3" before aggregating the risk into
-a single metamodel. FairModelFactory allows this by taking the parameters
+Related to the metamodel is the FairModelFactory object. Often you will
+want to create a group of models that are identical except for one or two 
+minor differences. For example, if you want to create a model for an entire
+threat community, you may wish to create a model for "Threat Group 1", 
+"Threat Group 2", and "Threat Group 3" before aggregating the risk into a 
+single metamodel. FairModelFactory allows this by taking the parameters
 that will not change, and then putting in a list of the parameters that
 will change. An example is below:
 
-.. code-bock:: python
+.. code-block:: python
 
     from pyfair import FairMetaModel, FairModelFactory
 
@@ -680,9 +695,6 @@ The following nodes must have values from 0 to 1:
 * TC: Threat Capability
 * CS: Control Strength
 * A: Probability of Action
-
-The following nodes must have a value of exactly 0 or 1:
-
 * V: Vulnerability
 
 Pert distributions:
@@ -739,7 +751,7 @@ This is clearer when looking at an example. Say you run the following code:
     
 Your code will raise this error:
 
-.. code-block::
+.. code-block:: python
 
     FairException: Not ready for calculation. See statuses: 
     Risk                                  Required

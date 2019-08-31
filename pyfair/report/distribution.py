@@ -10,13 +10,44 @@ from pyfair.report.base_curve import FairBaseCurve
 
 
 class FairDistributionCurve(FairBaseCurve):
-    '''A shiny distribution curve to lend credibility to our guesstimates.'''
+    """A shiny distribution curve to lend credibility to guesstimates.
     
+    This object is used to generate two separarate distributions: 1) a main
+    distribution curve with pdf to analyze Risk distribution, and 2) a
+    miniature distribution which covers the spread of an individual
+    input argument.
+
+    Parameters
+    ----------
+    model_or_iterable : FairModel, FairMetaModel, or list of 
+    FairModels/FairMetaModels
+
+    Examples
+    --------
+    >>> m = pyfair.model.FairModel.from_json('model_1.json')
+    >>> dc = pyfair.report.FairDistributionCurve(m) 
+    
+    """
     def __init__(self, model_or_iterable):
         self._input = self._input_check(model_or_iterable)
         
     def generate_icon(self, model_name, target):
-        '''Minimalist histogram (not for comparisons)'''
+        """Generate a minimalist histogram for for a given model/parameter
+        
+        Parameters
+        ----------
+        model_name : str
+            The name of the model for which to generate the histogram
+
+        target : str
+            The name of the parameter for which to generate the histogram
+
+        Examples
+        --------
+        >>> m = pyfair.model.FairModel.from_json('model_1.json')
+        >>> dc = pyfair.report.FairDistributionCurve(m) 
+
+        """
         model = self._input[model_name]
         data = model.export_results().loc[:, target]
         # Set up ax and params
