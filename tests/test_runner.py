@@ -1,3 +1,4 @@
+'''Script to create and run a test suite.'''
 import pathlib
 import sys
 import unittest

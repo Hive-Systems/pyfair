@@ -89,6 +89,8 @@ class FairBaseReport(object):
         # Check for iterable.
         if not hasattr(value, '__iter__'):
             raise FairException('Input is not a FairModel, FairMetaModel, or an iterable.')
+        if len(value) == 0:
+            raise FairException('Empty iterable where iterable of models expected.')
         # Iterate and process remainder.
         for proported_model in value:
             if proported_model.__class__.__name__ in ['FairModel', 'FairMetaModel']:
