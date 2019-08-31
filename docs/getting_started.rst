@@ -116,8 +116,7 @@ The nodes can be described as follows:
 
     Restrictions: must be positive
 
-    Derivation: supplied directly, or multiply Loss Event Frequency and
-    Loss Magnitude
+    Derivation: multiply Loss Event Frequency and Loss Magnitude
 
     Example: 20,000,000 (dollars for a given year)
 
@@ -131,7 +130,7 @@ The nodes can be described as follows:
     Derivation: supplied directly, or multiply Threat Event Frequency by
     Vulnerability
 
-    Example: 500 (breaches resulting in data exfiltration (in a given year)
+    Example: 500 (breaches resulting in data exfiltration (for given year))
 
 3. **Threat Event Frequency ("TEF")**
 
@@ -291,9 +290,18 @@ example of how everything works.
 
 For the purposes of this demonstration, we will keep it simple. We will run
 a Monte Carlo model composed of three separate simulations and using three
-nodes (Threat Event Frequency, Vulnerability, and Loss Magnitude). We will
-use this simulation to estimate the Risk associated with allowing all ports
-to remain open.
+inputs. These inputs will be Threat Event Frqeuency (TEF), Vulnerability
+(V), and Loss Magnitude (LM). We will use this simulation to estimate the 
+Risk associated with allowing all ports to remain open.
+
+The general approach will be as follows:
+
+.. image:: ./_static/fair_by_example.png
+
+* Step 1: Generate random values to supply TEF, V, and LM
+* Step 2: Multiply your TEF and V values to calculate LEF
+* Step 3: Multiply your LEF and LM to calculate Risk
+* Step 4: Analyze your Risk outputs
 
 We start by generating our data. We will generate 3 values for Threat Event
 Frequency (TEF), 3 values for Vulnerability (V), and 3 values for Loss
@@ -357,7 +365,7 @@ standard deviation of $50. We then generate three normally distributed
 random numbers from a curve with a mean of 100 and a standard deviation
 of 50.
 
-+---------------------------+
++------+--------------------+
 | Mean | Standard Deviation |
 +======+====================+
 | 100  | 50                 |
