@@ -6,11 +6,8 @@
 Welcome to pyfair's documentation!
 ==================================
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Contents:
-
 .. contents:: Table of Contents
+   :depth: 1
 
 .. include:: getting_started.rst
 

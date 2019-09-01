@@ -408,7 +408,7 @@ two of those losses actually occur. The others do not occur, so the amount
 of loss is zero.
 
 Step 3: Calculate Our R Using LEF and LM
-~~~~~~~~~~~~~~~~~~~~~~~~~~--------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now that we have an LEF and an LM, we can calculate our final Risk, R. R is
 calculated by taking the total number of loss events and multiplying them

@@ -45,7 +45,8 @@ class FairDistributionCurve(FairBaseCurve):
         Examples
         --------
         >>> m = pyfair.model.FairModel.from_json('model_1.json')
-        >>> dc = pyfair.report.FairDistributionCurve(m) 
+        >>> dc = pyfair.report.FairDistributionCurve(m)
+        >>> fig, ax = dc.generate_icon()
 
         """
         model = self._input[model_name]
