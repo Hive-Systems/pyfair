@@ -16,14 +16,11 @@ Welcome to pyfair's documentation!
 Model Classes
 =============
 
-.. automodule:: pyfair.model
+FairModel
+-------------
+
+.. autoclass:: pyfair.model.model.FairModel
     :members:
-
-    FairModel
-    -------------
-
-    .. autoclass:: pyfair.model.model.FairModel
-        :members:
 
 FairMetaModel
 -------------
