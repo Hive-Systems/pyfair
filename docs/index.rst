@@ -18,6 +18,8 @@ Model Classes
 
 .. py:module:: pyfair.model
 
+    .. currentmodule:: pandas
+
 FairModel
 -------------
 
@@ -57,7 +59,7 @@ FairDependencyTree
 Report Classes
 ==============
 
-.. py:module:: report
+.. py:module:: pyfair.report
 
 FairSimpleReport
 -------------
@@ -107,7 +109,7 @@ FairViolinPlot
 Utility Classes
 ===============
 
-.. py:module:: utility
+.. py:module:: pyfair.utility
 
 FairException
 -------------
