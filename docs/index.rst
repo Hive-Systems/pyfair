@@ -55,6 +55,8 @@ FairDependencyTree
 Report Classes
 ==============
 
+.. py:module:: report
+
 FairSimpleReport
 -------------
 
@@ -132,9 +134,6 @@ FairDatabase
 
 .. autoclass:: pyfair.utility.database.FairDatabase
     :members:
-
-Release Notes
-=============
 
 .. include:: ../RELEASE_NOTES.rst
 
