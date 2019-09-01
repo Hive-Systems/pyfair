@@ -16,9 +16,7 @@ Welcome to pyfair's documentation!
 Model Classes
 =============
 
-.. py:module:: pyfair.model
-
-    .. currentmodule:: pyfair
+.. automodule::  pyfair.model
 
 FairModel
 -------------
