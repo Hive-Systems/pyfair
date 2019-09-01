@@ -18,11 +18,11 @@ Model Classes
 
 .. automodule::  pyfair.model
 
-FairModel
--------------
+    FairModel
+    -------------
 
-.. autoclass:: pyfair.model.model.FairModel
-    :members:
+    .. autoclass:: pyfair.model.model.FairModel
+        :members:
 
 FairMetaModel
 -------------
