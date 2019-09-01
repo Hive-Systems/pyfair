@@ -16,10 +16,12 @@ Welcome to pyfair's documentation!
 Model Classes
 =============
 
+.. py:module:: model
+
 FairModel
 -------------
 
-.. autoclass:: pyfair.model.model.FairModel
+.. autoclass:: FairModel
     :members:
 
 FairMetaModel
@@ -104,6 +106,8 @@ FairViolinPlot
 
 Utility Classes
 ===============
+
+.. py:module:: utility
 
 FairException
 -------------
