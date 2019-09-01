@@ -18,7 +18,7 @@ Model Classes
 
 .. py:module:: pyfair.model
 
-    .. currentmodule:: pandas
+    .. currentmodule:: pyfair
 
 FairModel
 -------------
