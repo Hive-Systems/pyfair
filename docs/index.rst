@@ -6,8 +6,10 @@
 Welcome to pyfair's documentation!
 ==================================
 
+.. toctree::
+
 .. contents:: Table of Contents
-   :depth: 1
+   :depth: 2
 
 .. include:: getting_started.rst
 
@@ -130,6 +132,11 @@ FairDatabase
 
 .. autoclass:: pyfair.utility.database.FairDatabase
     :members:
+
+Release Notes
+=============
+
+.. include:: ../RELEASE_NOTES.rst
 
 Indices and tables
 ==================
