@@ -19,6 +19,8 @@ import model.test_model
 import report.test_base_curve
 import report.test_base_report
 import report.test_distribution
+import report.test_exceedence
+import report.test_simple_report
 
 
 # List test modules
@@ -34,8 +36,8 @@ test_modules = [
     report.test_base_curve,
     report.test_base_report,
     report.test_distribution,
-    #report.exceedence,
-    #report.simple_report,
+    report.test_exceedence,
+    report.test_simple_report,
     #report.tree_graph,
     #report.violin,
     # Utility Module

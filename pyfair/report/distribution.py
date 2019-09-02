@@ -42,6 +42,11 @@ class FairDistributionCurve(FairBaseCurve):
         target : str
             The name of the parameter for which to generate the histogram
 
+        Returns
+        -------
+        (matplotlib.figure, matplotlib.ax)
+            A tuple containing the figure and axis generated
+
         Examples
         --------
         >>> m = pyfair.model.FairModel.from_json('model_1.json')
@@ -73,7 +78,20 @@ class FairDistributionCurve(FairBaseCurve):
         return (fig, ax)
     
     def generate_image(self):
-        '''Provides histogram(s) with PDF curve(s)'''
+        """Provides histogram(s) with PDF curve(s)
+        
+        Returns
+        -------
+        (matplotlib.figure, matplotlib.ax)
+            A tuple containing the figure and axis generated
+
+        Examples
+        --------
+        >>> m = pyfair.model.FairModel.from_json('model_1.json')
+        >>> dc = pyfair.report.FairDistributionCurve(m)
+        >>> fig, ax = dc.generate_image()
+        
+        """
         # Setup plots
         fig, ax = plt.subplots(figsize=(16, 6))
         plt.subplots_adjust(bottom=.2)

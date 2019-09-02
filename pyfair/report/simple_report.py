@@ -12,10 +12,7 @@ class FairSimpleReport(FairBaseReport):
         self._template = self._template_paths['simple'].read_text()
         
     def _construct_output(self):
-        '''Function called by FairBaseReport.to_html()
-        
-        TODO: Change base report so all helper functions take same inputs
-        '''
+        """HTML creation Ffnction called by FairBaseReport.to_html()"""
         
         # Alias
         t = self._template

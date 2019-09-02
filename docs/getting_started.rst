@@ -296,7 +296,7 @@ Risk associated with allowing all ports to remain open.
 
 The general approach will be as follows:
 
-.. image:: ./_static/fair_by_example.png
+.. image:: ./_static/fair_by_example_with_numbers.png
 
 * Step 1: Generate random values to supply TEF, V, and LM
 * Step 2: Multiply your TEF and V values to calculate LEF

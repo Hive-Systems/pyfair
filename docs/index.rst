@@ -7,7 +7,6 @@ Welcome to pyfair's documentation!
 ==================================
 
 .. toctree::
-   :maxdepth: 1
 
 .. contents:: Table of Contents
    :depth: 1
