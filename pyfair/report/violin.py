@@ -8,8 +8,14 @@ from .base_curve import FairBaseCurve
 
 
 class FairViolinPlot(FairBaseCurve):
-    '''Area plot of metamodels'''
+    """Provides a violin-style area plot to summarize MetaModels.
+
+    Parameters
+    ----------
+    metamodel : FairMetaModel
+        The metamodel being analyzed
     
+    """
     def __init__(self, metamodel):
         # If it's just a model, make it a list.
         super().__init__()
@@ -18,7 +24,14 @@ class FairViolinPlot(FairBaseCurve):
         self._metamodel = metamodel
     
     def generate_image(self):
-        '''Main function for generating plots'''
+        """Main function for generating plots
+        
+        Returns
+        -------
+        tuple(matplotlib.figure, matplotlib.axis)
+            The figure and axis associated with the FairTreeGraph
+
+        """
         # Setup plots
         fig, ax = plt.subplots(figsize=(16, 8))
         # For each model, calculate and plot.

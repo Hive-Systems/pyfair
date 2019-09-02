@@ -13,7 +13,7 @@ from .model import FairModel
 
 class FairMetaModel(object):
     """A class for aggregating FAIR models.
-    
+
     An instance of this class is created by taking multiple FAIR models and
     rolling the total risk into a collection, or MetaModel. A user creates
     a metamodel from inputs, calls calculate_all() to perform the requisite

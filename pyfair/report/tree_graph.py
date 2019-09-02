@@ -10,28 +10,42 @@ from matplotlib.collections import PatchCollection
 
 class FairTreeGraph(object):
     '''Provides a pretty tree diagram to summarize calculations.
-    
-    TODO: Magic numbers galore.
-    
+
+    This tree class provides an image that descirbes those nodes that have
+    been calculated, those nodes that have had data supplied, and those
+    nodes which are not required.
+
+    Parameters
+    ----------
+    model : FairModel
+        The model which is being described by the tree
+    format_strings : dict of str
+        A dict with string keys describing the nodes, and string values
+        providing a formatting string for numbers of that type
+
     '''
-    
-    # Class attribute
-    DIMENSIONS = pd.DataFrame.from_dict({
-    'Contact'                       : ['C'   ,    0,    0,  600,  800],
-    'Threat Event Frequency'        : ['TEF' ,  600,  800, 1800, 1600],
-    'Action'                        : ['A'   , 1200,    0,  600,  800],
-    'Threat Capability'             : ['TC'  , 2400,    0, 3000,  800],
-    'Vulnerability'                 : ['V'   , 3000,  800, 1800, 1600],
-    'Control Strength'              : ['CS'  , 3600,    0, 3000,  800],
-    'Loss Magnitude'                : ['LM'  , 6600, 1600, 4200, 2400],
-    'Loss Event Frequency'          : ['LEF' , 1800, 1600, 4200, 2400],
-    'Risk'                          : ['R'   , 4200, 2400, 4200, 5000],
-    'Primary Loss'                  : ['PL'  , 5400,  800, 6600, 1600],
-    'Secondary Loss'                : ['SL'  , 7800,  800, 6600, 1600],
-    'Secondary Loss Event Frequency': ['SLEF', 7200,    0, 7800,  800],
-    'Secondary Loss Event Magnitude': ['SLEM', 8400,    0, 7800,  800],
-}, orient='index', columns=['tag', 'self_x', 'self_y', 'parent_x', 'parent_y'])
-    
+
+    # Class attribute with magic numbers galore
+    _DIMENSIONS = pd.DataFrame.from_dict(
+        {
+            'Contact'                       : ['C'   ,    0,    0,  600,  800],
+            'Threat Event Frequency'        : ['TEF' ,  600,  800, 1800, 1600],
+            'Action'                        : ['A'   , 1200,    0,  600,  800],
+            'Threat Capability'             : ['TC'  , 2400,    0, 3000,  800],
+            'Vulnerability'                 : ['V'   , 3000,  800, 1800, 1600],
+            'Control Strength'              : ['CS'  , 3600,    0, 3000,  800],
+            'Loss Magnitude'                : ['LM'  , 6600, 1600, 4200, 2400],
+            'Loss Event Frequency'          : ['LEF' , 1800, 1600, 4200, 2400],
+            'Risk'                          : ['R'   , 4200, 2400, 4200, 5000],
+            'Primary Loss'                  : ['PL'  , 5400,  800, 6600, 1600],
+            'Secondary Loss'                : ['SL'  , 7800,  800, 6600, 1600],
+            'Secondary Loss Event Frequency': ['SLEF', 7200,    0, 7800,  800],
+            'Secondary Loss Event Magnitude': ['SLEM', 8400,    0, 7800,  800],
+        }, 
+        orient='index', 
+        columns=['tag', 'self_x', 'self_y', 'parent_x', 'parent_y']
+    )
+
     def __init__(self, model, format_strings):
         self._colormap = {'Not Required': 'grey', 'Supplied': 'green', 'Calculated': 'blue'}
         self._results = model.export_results().T
@@ -50,7 +64,7 @@ class FairTreeGraph(object):
         # Tack all data together
         self._data = pd.concat([
             self._statuses, 
-            self.DIMENSIONS, 
+            self._DIMENSIONS, 
             self._result_summary,
             self._params
         ], axis=1, sort=True)
@@ -58,12 +72,13 @@ class FairTreeGraph(object):
         self._data['formatter'] = pd.Series(self._format_strings)
 
     def _process_statuses(self):
-        '''Turn dict into df and add color column'''
+        """Turn dict into df and add color column"""
         self._statuses = pd.DataFrame.from_records([self._statuses]).T
         self._statuses.columns = ['status']
         self._statuses['color'] = self._statuses['status'].map(self._colormap)
-        
+
     def _tweak_axes(self, ax):
+        """Add title and run common changes"""
         # Set limits
         ax.set_title('Calculation Dependency Tree', fontsize=20)
         ax.set_xlim(0, 9_400)
@@ -74,9 +89,9 @@ class FairTreeGraph(object):
         for spine_name in ['left', 'right', 'top', 'bottom']:
             ax.spines[spine_name].set_visible(False)
         return ax
-    
+
     def _generate_rects(self, ax):
-        '''Cannot be done via apply'''
+        """Generate rectangles, which cannot be done via apply"""
         patches = []
         patch_colors = []
         for index, row in self._data.iterrows():
@@ -91,9 +106,9 @@ class FairTreeGraph(object):
         collection = PatchCollection(patches, facecolor=patch_colors, alpha=.3)
         ax.add_collection(collection)
         return ax
-    
+
     def _generate_text(self, row, ax):
-        '''Apply-able function'''
+        """Apply-able function to gnereate text in rectangles"""
         # Draw header
         plt.text(
             row['self_x'] + 500, 
@@ -147,7 +162,7 @@ class FairTreeGraph(object):
         )
 
     def _generate_lines(self, row, ax):
-        '''Generate lines between boxes'''
+        """Generate lines between boxes"""
         if (row['color'] != 'grey') and row.name != 'Risk':
             ax.annotate(
                 None,
@@ -162,13 +177,28 @@ class FairTreeGraph(object):
                     linewidth=3
                 ),
             )
-            
+
     def _generate_legend(self, ax):
+        """Simply function to generate legend"""
         # Gen legend
         patches = [Patch(color=color, label=label, alpha=.3) for label, color in self._colormap.items()]
         plt.legend(handles=patches, frameon=False)
 
     def generate_image(self):
+        """Function to orchestate image and axis generation for the tree
+        
+        Specifically, this creates the axes, tweaks them as necessary,
+        creates node text, creates rectangles for the nodes, generates the
+        lines, and then generates the legend. It takes no arguments as it
+        obtains the majority of this information from data passed to the
+        FairTreeGraph object.
+
+        Returns
+        -------
+        tuple(matplotlib.figure, matplotlib.axis)
+            The figure and axis associated with the FairTreeGraph
+
+        """
         fig, ax = plt.subplots()
         fig.set_size_inches(20,6)
         ax = self._tweak_axes(ax)

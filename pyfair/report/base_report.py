@@ -253,11 +253,14 @@ class FairBaseReport(object):
     def _get_overview_table(self, model_or_models):
         """Create a risk overview table using a model or list of models"""
         # Get final Risk vectors for all models
-        risk_results = pd.DataFrame({
-            name: model.export_results()['Risk']
-            for name, model 
-            in model_or_models.items()
-        })
+        try:
+            risk_results = pd.DataFrame({
+                name: model.export_results()['Risk']
+                for name, model 
+                in model_or_models.items()
+            })
+        except KeyError:
+            raise FairException("No 'Risk' key. Model likely uncalculated.")
         # Get aggregate statistics and set titles
         risk_results = risk_results.agg([np.mean, np.std, np.min, np.max])
         risk_results.index = ['Mean', 'Stdev', 'Minimum', 'Maximum']

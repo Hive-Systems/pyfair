@@ -21,6 +21,8 @@ import report.test_base_report
 import report.test_distribution
 import report.test_exceedence
 import report.test_simple_report
+import report.test_tree_graph
+import report.test_violin
 
 
 # List test modules
@@ -38,13 +40,13 @@ test_modules = [
     report.test_distribution,
     report.test_exceedence,
     report.test_simple_report,
-    #report.tree_graph,
-    #report.violin,
+    report.test_tree_graph,
+    report.test_violin,
     # Utility Module
-    #utility.beta_pert,
-    #utility.database,
-    #utility.factory,
-    #utility.fair_exception,
+    utility.test_beta_pert,
+    #utility.test_database,
+    #utility.test_factory,
+    #utility.test_fair_exception,
     #utility.parser
 ]
 

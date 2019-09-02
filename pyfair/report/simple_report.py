@@ -4,16 +4,33 @@ from .base_report import FairBaseReport
 
 
 class FairSimpleReport(FairBaseReport):
-    
+    """A subclass for creating the report HTML
+
+    This class is responsible for implementing the _construct_output()
+    method. The method is takes the template and css for the simple report
+    and plugs in the appropriate data base on the models supplied.
+
+    Examples
+    --------
+    >>> m1 = pyfair.model.FairModel.from_json('model_1.json')
+    >>> m2 = pyfair.model.FairModel.from_json('model_2.json')
+    >>> fsr = FairSimpleReport([m1, m2])
+    >>> fsr.generate_html('output.html')
+
+    """
     def __init__(self, model_or_models):
         super().__init__()
         self._model_or_models = self._input_check(model_or_models)
         self._css = self._template_paths['css'].read_text()
         self._template = self._template_paths['simple'].read_text()
-        
+
     def _construct_output(self):
-        """HTML creation Ffnction called by FairBaseReport.to_html()"""
-        
+        """HTML creation function called by FairBaseReport.to_html()
+
+        This is responsible for creating all of the HTML for a given report
+        type.
+
+        """
         # Alias
         t = self._template
         # Add css
@@ -27,15 +44,15 @@ class FairSimpleReport(FairBaseReport):
         # Overview Table
         overview_html = self._get_overview_table(self._model_or_models)
         t = t.replace('{OVERVIEW_DATAFRAME}', overview_html)
-        
+
         # Overview Hist
         hist = self._get_distribution(self._model_or_models.values())
         t = t.replace('{HIST}', hist)
-        
+
         # Overview Exceedence Curves
         exceed = self._get_exceedence_curves(self._model_or_models.values())
         t = t.replace('{EXCEEDENCE}', exceed)
-        
+
         # Create parameter html
         parameter_html = ''
         for name, model in self._model_or_models.items():
@@ -47,12 +64,12 @@ class FairSimpleReport(FairBaseReport):
                 parameter_html += self._get_tree(model)
             if model.__class__.__name__ == 'FairMetaModel':
                 parameter_html += self._get_violins(model)
-            
+
             parameter_html += "</div>"
-            
+
             # Create table
             parameter_html += "<div class='flex_row'>"
-            
+
             # Create tables which differ based on type
             if model.__class__.__name__ == 'FairModel':
                 parameter_html += self._get_model_parameter_table(model)
@@ -63,7 +80,7 @@ class FairSimpleReport(FairBaseReport):
 
         # TODO Text wrap
         t = t.replace('{PARAMETER_HTML}', parameter_html)
-        
+
         # JSON and Source
         json = ''
         for name, model in self._model_or_models.items():
@@ -75,5 +92,5 @@ class FairSimpleReport(FairBaseReport):
         source = self._get_caller_source()
         source.replace('<', '').replace('>','')
         t = t.replace('{SOURCE}', source)
-        
+
         return t
