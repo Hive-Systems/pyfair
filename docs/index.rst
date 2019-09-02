@@ -55,8 +55,6 @@ FairDependencyTree
 Report Classes
 ==============
 
-.. py:module:: pyfair.report
-
 FairSimpleReport
 -------------
 
@@ -105,8 +103,6 @@ FairViolinPlot
 Utility Classes
 ===============
 
-.. py:module:: pyfair.utility
-
 FairException
 -------------
 
@@ -117,12 +113,6 @@ FairBetaPert
 -------------
 
 .. autoclass:: pyfair.utility.beta_pert.FairBetaPert
-    :members:
-
-FairSimpleParser
--------------
-
-.. autoclass:: pyfair.utility.parser.FairSimpleParser
     :members:
 
 FairModelFactory
