@@ -13,11 +13,11 @@ from ..model.model import FairModel
 
 class FairDatabase(object):
     '''JSON database antipattern.'''
-    
+
     def __init__(self, path):
         self._path = pathlib.Path(path)
         self._initialize()
-    
+
     def _initialize(self):
         '''Initialize if necessary.'''
         with sqlite3.connect(self._path) as conn:
@@ -32,7 +32,6 @@ class FairDatabase(object):
                                                                 min real NOT NULL, 
                                                                 max real NOT NULL, 
                                                                 CONSTRAINT results_pk PRIMARY KEY (uuid));''')
-
     
     def _dict_factory(self, cursor, row):
         '''Convenience function for sqlite'''
@@ -41,7 +40,7 @@ class FairDatabase(object):
         for idx, col in enumerate(cursor.description):
             d[col[0]] = row[idx]
         return d
-    
+
     def load(self, name_or_uuid):
         '''Take a name or UUID and dispatch to appropriate function'''
         # If it is a valid UUID
@@ -68,7 +67,7 @@ class FairDatabase(object):
             # Use model UUID query to load via _load_uuid function
             model = self._load_uuid(result['uuid'])
             return model
-    
+
     def _load_uuid(self, uuid):
         '''Load model or metamodel based on ID'''
         # Get models and metamodels
@@ -91,7 +90,7 @@ class FairDatabase(object):
             else:
                 raise FairException('Unrecognized model type.')
         return model
-    
+
     def store(self, model_or_metamodel):
         '''Take a model or metamodel and store in db'''
         m = model_or_metamodel
@@ -120,7 +119,7 @@ class FairDatabase(object):
         conn.execute("VACUUM")
         conn.commit()
         conn.close()
-    
+
     def query(self, query, params=None):
         '''Allow queries on underlying database'''
         with sqlite3.connect(self._path) as conn:

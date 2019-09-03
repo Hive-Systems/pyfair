@@ -23,7 +23,8 @@ import report.test_exceedence
 import report.test_simple_report
 import report.test_tree_graph
 import report.test_violin
-
+import utility.test_beta_pert
+import utility.test_database
 
 # List test modules
 test_modules = [
@@ -44,7 +45,7 @@ test_modules = [
     report.test_violin,
     # Utility Module
     utility.test_beta_pert,
-    #utility.test_database,
+    utility.test_database,
     #utility.test_factory,
     #utility.test_fair_exception,
     #utility.parser
