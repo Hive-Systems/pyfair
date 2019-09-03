@@ -43,11 +43,18 @@ class FairBetaPert(object):
 
         \alpha 
         =
-        (\text{mean} - \text{low}) 
-        \times
         \frac
-            {2 \times \text{mode} - \text{low} -\text{high}}
-            {(\text{mode} - \text{mean}) \times (\text{high} - \text{low})}
+            {\text{mean} - \text{low}}
+            {\text{high} - \text{low}}
+        \times
+        \left\{
+            (\text{mean} - \text{low})
+            \times
+            \frac
+                {\text{high} - \text{mean}}
+                {\text{stdev}^2}
+            - 1
+        \right\}
 
     .. math::
 
@@ -160,25 +167,18 @@ class FairBetaPert(object):
 
     def _generate_alpha(self):
         """Generate alpha parameter for beta distrubtions"""
-        group_1 = self._mean - self._low
-        group_2_numerator = 2 * self._mode - self._low - self._high
-        group_2_denominator = (
-            (self._mode - self._mean) 
-            *
-            (self._high - self._low)
+        group_1 = (self._mean - self._low) / (self._high - self._low)
+        group_2 = ((self._mean - self._low) * (self._high - self._mean) 
+                  / 
+                  (self._stdev ** 2)
         )
-        group_2 = group_2_numerator / group_2_denominator
-        alpha = group_1 * group_2
-        return alpha
+        return group_1 * (group_2 - 1)
 
     def _generate_beta(self):
         """Generate beta parameter for beta distribution"""
-        beta_numerator   = self._high - self._mean
+        beta_numerator   = self._alpha * (self._high - self._mean)
         beta_denominator = self._mean - self._low
-        group_1 = self._alpha
-        group_2 = beta_numerator / beta_denominator
-        beta = group_1 * group_2
-        return beta
+        return beta_numerator / beta_denominator
     
     def random_variates(self, count):
         """Get n PERT-distributed random numbers
