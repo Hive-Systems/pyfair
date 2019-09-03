@@ -30,9 +30,9 @@ class FairBetaPert(object):
 
     Notes
     -----
-    `PERT distributions <https://en.wikipedia.org/wiki/PERT_distribution>`
+    `PERT distributions <https://en.wikipedia.org/wiki/PERT_distribution>`_
     are a subset of `Beta distributions
-    <https://en.wikipedia.org/wiki/Beta_distribution>` that are often used
+    <https://en.wikipedia.org/wiki/Beta_distribution>`_ that are often used
     in FAIR analysis for a variety of reasons. Scipy has the ability to
     create four parameter beta distributions (alpha, beta, low, and range),
     but it requires that these parameters be constructed in advance. The
@@ -160,18 +160,25 @@ class FairBetaPert(object):
 
     def _generate_alpha(self):
         """Generate alpha parameter for beta distrubtions"""
-        group_1 = (self._mean - self._low) / (self._high - self._low)
-        group_2 = ((self._mean - self._low) * (self._high - self._mean) 
-                  / 
-                  (self._stdev ** 2)
+        group_1 = self._mean - self._low
+        group_2_numerator = 2 * self._mode - self._low - self._high
+        group_2_denominator = (
+            (self._mode - self._mean) 
+            *
+            (self._high - self._low)
         )
-        return group_1 * (group_2 - 1)
+        group_2 = group_2_numerator / group_2_denominator
+        alpha = group_1 * group_2
+        return alpha
 
     def _generate_beta(self):
         """Generate beta parameter for beta distribution"""
-        beta_numerator   = self._alpha * (self._high - self._mean)
+        beta_numerator   = self._high - self._mean
         beta_denominator = self._mean - self._low
-        return beta_numerator / beta_denominator
+        group_1 = self._alpha
+        group_2 = beta_numerator / beta_denominator
+        beta = group_1 * group_2
+        return beta
     
     def random_variates(self, count):
         """Get n PERT-distributed random numbers

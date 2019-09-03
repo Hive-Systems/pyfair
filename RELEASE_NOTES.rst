@@ -23,4 +23,9 @@ Version 0.1-alpha.2
 -------------------
 
 * Testing and documentation completed for the `model` module.
- 
+
+Version 0.1-alpha.3
+-------------------
+
+* Testing and documentation completed for the `utility` and `report`
+  modules.
