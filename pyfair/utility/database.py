@@ -24,18 +24,18 @@ class FairDatabase(object):
         '''Initialize if necessary.'''
         with sqlite3.connect(self._path) as conn:
             conn.execute('''CREATE TABLE IF NOT EXISTS model (
-                uuid string,                                               
-                name string, 
+                uuid string,                                           
+                name string,
                 creation_date text NOT NULL,
                 json string NOT NULL,
                 CONSTRAINT model_pk PRIMARY KEY (uuid));
             ''')
             conn.execute('''CREATE TABLE IF NOT EXISTS results (
                 uuid string,
-                mean real NOT NULL, 
-                stdev real NOT NULL, 
-                min real NOT NULL, 
-                max real NOT NULL, 
+                mean real NOT NULL,
+                stdev real NOT NULL,
+                min real NOT NULL,
+                max real NOT NULL,
                 CONSTRAINT results_pk PRIMARY KEY (uuid));
             ''')
 
