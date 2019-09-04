@@ -43,7 +43,6 @@ class FairMetaModel(object):
         want to break things.
 
     """
-
     def __init__(self, name, models, model_uuid=None, creation_date=None):
         self._name = name
         self._params = {}
@@ -74,7 +73,7 @@ class FairMetaModel(object):
         -------
         str
             The name of the model.
-        
+
         """
 
         return self._name
@@ -86,7 +85,7 @@ class FairMetaModel(object):
         -------
         str
             The UUID of the model.
-        
+
         """
 
         return self._model_uuid
@@ -145,12 +144,12 @@ class FairMetaModel(object):
             creation_date=data['creation_date']
         )
         return meta_model
-    
+
     def _load_model(self, model):
         """Loads an individual model into the metamodel"""
         self._record_params(model)
         self._calculate_model(model)
-    
+
     def _load_meta_model(self, meta_model):
         """Loads a metamodel into the metamodel"""
         params = meta_model.export_params()
@@ -172,7 +171,7 @@ class FairMetaModel(object):
         model_params = json.loads(model.to_json())
         model_name = model_params['name']
         self._params[model_name] = model_params
-    
+
     def _calculate_model(self, model):
         """Calculate a component models"""
         # For each model, calculate and put output results in dataframe.
@@ -189,7 +188,7 @@ class FairMetaModel(object):
         -------
         dict
             The metamodel and component model parameters.
-        
+
         """
 
         return self._params
@@ -201,7 +200,7 @@ class FairMetaModel(object):
         -------
         pyfair.model.FairMetaModel
             Reference to current instance.
-        
+
         """
 
         sum_vector = self._risk_table.sum(axis=1)
@@ -221,11 +220,11 @@ class FairMetaModel(object):
             A dataframe with columns of risk outputs for the various
             models, along with total sum of the risk for all the models
             taken together.
-        
+
         """
 
         return self._risk_table
-    
+
     def to_json(self):
         """Returns serialized, JSON-formatted data suitable for storage
 
@@ -235,9 +234,8 @@ class FairMetaModel(object):
             JSON-formatted data and meta data that contains everything
             (parameters including random seed) needed to reproduce the
             model.
-        
+
         """
-        
         data = {**self._params}
         data['name'] = str(self._name)
         data['model_uuid'] = self._model_uuid
@@ -257,9 +255,8 @@ class FairMetaModel(object):
         bool
             Returns True if the aggregation calculation has already been
             conducted. Otherwise False.
-        
+
         """
-        
         if 'Risk' in self._risk_table.columns:
             return True
         else:
