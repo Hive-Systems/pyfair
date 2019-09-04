@@ -1,3 +1,5 @@
+"""Module defining an Excel parser"""
+
 import xlrd
 
 import pandas as pd
@@ -10,7 +12,7 @@ from pyfair.utility.fair_exception import FairException
 
 class FairSimpleParser(object):
     '''Horific parser.'''
-    
+
     def __init__(self, workbook_path):
         raise NotImplementedError()
         self._path          = workbook_path
@@ -26,7 +28,7 @@ class FairSimpleParser(object):
         self._split_frames()
         self._convert_to_models()
         self._create_metamodels()
-    
+
     def to_html(self, path):
         metamodels = [item for item in self._metamodels.values() if item is not None]
         if metamodels:
@@ -34,10 +36,10 @@ class FairSimpleParser(object):
             fsr.to_html(path)
         else:
             raise FairException('Template is missing data.')
-    
+
     def export_metamodels(self):
         return [item for item in self._metamodels.values()]
-    
+
     def _create_metamodels(self):
         '''Create the metamodels'''
         for metamodel_name, model_list in self._models.items():
@@ -50,7 +52,7 @@ class FairSimpleParser(object):
                 self._metamodels[metamodel_name] = metamodel
             else:
                 self._metamodels[metamodel_name] = None
-    
+
     def _populate_object(self):
         '''Read sheet data into two huge frames'''
         # Read workbook
@@ -82,7 +84,7 @@ class FairSimpleParser(object):
                 'primary_params'  : primary_params,
                 'secondary_params': secondary_params,
             }
-            
+
     def _convert_to_models(self):
         for designation, data in self._data.items():
             model_list = []
@@ -115,7 +117,7 @@ class FairSimpleParser(object):
                 else:
                     pass
             self._models[designation] = model_list
-                
+
     def _parse_raw_frame(self, df):
         '''Take the raw data from the Excel sheet and generate 1 series and 2 frames'''
         # Groups of 12
@@ -147,8 +149,8 @@ class FairSimpleParser(object):
 
     def _convert_df_to_param_dict(self, df):
         ''' Convenience function to convert dataframe to dict.
-        Converts: 
-        
+        Converts:
+
             pd.DataFrame({
                     'col_1': ['a'   , 'b', np.NaN],
                     'col_2': [np.NaN, 'c', np.NaN]
@@ -157,7 +159,7 @@ class FairSimpleParser(object):
             )
 
         To:
-        
+
             {
                 'row_1': {'col_1': 'a'}, 
                 'row_2': {'col_1': 'b', 'col_2': 'c'}
@@ -167,6 +169,6 @@ class FairSimpleParser(object):
         df = df.dropna(how='all', axis=0)
         # Make a dict from each row of params, dropping empty entries
         param_series = df.apply(lambda row: row.dropna().to_dict(), axis=1)
-        # Make a dict from that series of dicts, giving us out multidimensional dict
+        # Make a dict from that series of dicts, giving us out multidim dict
         rv_dict = param_series.to_dict()
-        return rv_dict   
+        return rv_dict

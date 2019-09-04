@@ -8,7 +8,7 @@ from pyfair.utility.fair_exception import FairException
 
 class TestFairViolinPlot(unittest.TestCase):
 
-    _CORRECT_MEAN = 23.638573713346478
+    _CORRECT_MEAN = 23.848266752716704
 
     def setUp(self):
         np.random.seed(42)

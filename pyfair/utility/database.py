@@ -1,3 +1,5 @@
+"""This module contains a database class for storing models."""
+
 import json
 import pathlib
 import sqlite3
@@ -21,21 +23,25 @@ class FairDatabase(object):
     def _initialize(self):
         '''Initialize if necessary.'''
         with sqlite3.connect(self._path) as conn:
-            conn.execute('''CREATE TABLE IF NOT EXISTS model (uuid string, 
-                                                              name string, 
-                                                              creation_date text NOT NULL,
-                                                              json string NOT NULL,
-                                                              CONSTRAINT model_pk PRIMARY KEY (uuid));''')
-            conn.execute('''CREATE TABLE IF NOT EXISTS results (uuid string,
-                                                                mean real NOT NULL, 
-                                                                stdev real NOT NULL, 
-                                                                min real NOT NULL, 
-                                                                max real NOT NULL, 
-                                                                CONSTRAINT results_pk PRIMARY KEY (uuid));''')
-    
+            conn.execute('''CREATE TABLE IF NOT EXISTS model (
+                uuid string,                                               
+                name string, 
+                creation_date text NOT NULL,
+                json string NOT NULL,
+                CONSTRAINT model_pk PRIMARY KEY (uuid));
+            ''')
+            conn.execute('''CREATE TABLE IF NOT EXISTS results (
+                uuid string,
+                mean real NOT NULL, 
+                stdev real NOT NULL, 
+                min real NOT NULL, 
+                max real NOT NULL, 
+                CONSTRAINT results_pk PRIMARY KEY (uuid));
+            ''')
+
     def _dict_factory(self, cursor, row):
         '''Convenience function for sqlite'''
-        # https://stackoverflow.com/questions/3300464/how-can-i-get-dict-from-sqlite-query
+        # https://stackoverflow.com/questions/3300464/
         d = {}
         for idx, col in enumerate(cursor.description):
             d[col[0]] = row[idx]
@@ -96,7 +102,7 @@ class FairDatabase(object):
         m = model_or_metamodel
         # If incomplete and not ready for storage, throw error
         if not m.calculation_completed():
-            raise FairException('Model has not been calculated and will not be stored.')
+            raise FairException("Model is uncalculated and won't be stored.")
         # Export from model
         meta = json.loads(m.to_json())
         json_data = m.to_json()
@@ -107,12 +113,23 @@ class FairDatabase(object):
             # Write model data
             cursor.execute(
                 '''INSERT OR REPLACE INTO model VALUES(?, ?, ?, ?)''',
-                (meta['model_uuid'], meta['name'], meta['creation_date'], json_data)
+                (
+                    meta['model_uuid'], 
+                    meta['name'], 
+                    meta['creation_date'], 
+                    json_data
+                )
             )
             # Write cached results
             cursor.execute(
                 '''INSERT OR REPLACE INTO results VALUES(?, ?, ?, ?, ?)''',
-                (meta['model_uuid'], results.mean(axis=0), results.std(axis=0), results.min(axis=0), results.max(axis=0))
+                (
+                    meta['model_uuid'], 
+                    results.mean(axis=0), 
+                    results.std(axis=0), 
+                    results.min(axis=0), 
+                    results.max(axis=0)
+                )
             )
         # Vacuum database
         conn = sqlite3.connect(self._path)

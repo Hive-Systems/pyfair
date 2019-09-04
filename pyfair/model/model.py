@@ -47,7 +47,6 @@ class FairModel(object):
     >>> model.calculate_all()
     >>> model.export_results()
 
-
     .. warning:: Do not supply your own UUID/creation date unless
         you want to break things.
 
@@ -172,7 +171,7 @@ class FairModel(object):
 
     def get_node_statuses(self):
         '''Public method access private node status information in ._tree
-        
+
         Returns
         -------
         pandas.Series
@@ -188,7 +187,7 @@ class FairModel(object):
         -------
         str
             Name of model
-        
+
         '''
         return self._name
 
@@ -199,19 +198,18 @@ class FairModel(object):
         -------
         str
             The UUID of the model.
-        
-        """
 
+        """
         return self._model_uuid
 
     def calculation_completed(self):
         '''Public method to check completion status of dependency tree
-        
+
         Returns
         -------
         bool
             Whether the calculation dependencies are satisfied
-        
+
         '''
         status = self._tree.calculation_completed()
         return status
@@ -263,14 +261,12 @@ class FairModel(object):
         probability of A and a loss of B; 'Morale' has a probability
         of C and a loss of D, etc.).
 
-
         Parameters
         ----------
         target : str
             The name of the node for which the arguments are directed
         kwargs_dict : dict
             The arguments used to generate a distribution for the node
-
 
         Returns
         -------
@@ -290,7 +286,6 @@ class FairModel(object):
         ...         'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},        
         ...     }
         ... })
-
 
         """
         # Generate our data
@@ -369,7 +364,6 @@ class FairModel(object):
         ... model.calculate_all()
 
         """
-
         # If required data has not been input, raise error
         ready_for_calculation = self._tree.ready_for_calculation()
         if not(ready_for_calculation):
@@ -392,7 +386,7 @@ class FairModel(object):
                 if self._tree.nodes[node_name].status == 'Calculated':
                     calculable_nodes.remove(node_name)
         return self
-    
+
     def _calculate_node(self, name):
         '''Calculate node by checking parents and updating status'''
         # Alsias for data table
@@ -458,7 +452,7 @@ class FairModel(object):
         >>> model = pyfair.FairModel(name="Insider Threat")
         >>> model.bulk_import_data({
         ...     'Loss Event Frequency': {'mean': 90, 'stdev': 100},
-        ...     'Loss Magnitude': {'constant': 4000}, 
+        ...     'Loss Magnitude': {'constant': 4000},
         ... })
         ... model.calculate_all)()
         ... json_data = model.to_json()

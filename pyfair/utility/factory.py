@@ -1,3 +1,5 @@
+"""Model defining a model creator for similar iterations on models"""
+
 from ..model.model import FairModel
 
 
@@ -8,7 +10,7 @@ class FairModelFactory(object):
         self._static_arguments = static_arguments
         self._n_simulations    = n_simulations
         self._random_seed      = random_seed
-    
+
     def generate_from_partial(self, name, variable_arguments):
         '''Provide partial parameters.'''
         # Gen model
@@ -32,7 +34,7 @@ class FairModelFactory(object):
         for model in model_list:
             model.calculate_all()
         return model_list
-        
+
     def _add_arguments(self, model, argument_group):
         # Go through arguments
         for arg_name, arg_value in argument_group.items():

@@ -1,3 +1,5 @@
+"""Simple report for demonstrating aggregate risk"""
+
 import pandas as pd
 
 from .base_report import FairBaseReport

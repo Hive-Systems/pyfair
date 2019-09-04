@@ -1,3 +1,5 @@
+"""Distribution curve for histogram and PDF creation"""
+
 import warnings
 
 import numpy as np
@@ -26,14 +28,14 @@ class FairDistributionCurve(FairBaseCurve):
     --------
     >>> m = pyfair.model.FairModel.from_json('model_1.json')
     >>> dc = pyfair.report.FairDistributionCurve(m) 
-    
+
     """
     def __init__(self, model_or_iterable):
         self._input = self._input_check(model_or_iterable)
-        
+
     def generate_icon(self, model_name, target):
         """Generate a minimalist histogram for for a given model/parameter
-        
+
         Parameters
         ----------
         model_name : str
@@ -76,10 +78,10 @@ class FairDistributionCurve(FairBaseCurve):
         plt.vlines(data.mean(), 0, plt.ylim()[1], linestyle='--')
         plt.tight_layout()
         return (fig, ax)
-    
+
     def generate_image(self):
         """Provides histogram(s) with PDF curve(s)
-        
+
         Returns
         -------
         (matplotlib.figure, matplotlib.ax)
@@ -90,7 +92,7 @@ class FairDistributionCurve(FairBaseCurve):
         >>> m = pyfair.model.FairModel.from_json('model_1.json')
         >>> dc = pyfair.report.FairDistributionCurve(m)
         >>> fig, ax = dc.generate_image()
-        
+
         """
         # Setup plots
         fig, ax = plt.subplots(figsize=(16, 6))

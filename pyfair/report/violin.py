@@ -1,3 +1,5 @@
+"""Violin plot for plotting metamodel risk"""
+
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -14,7 +16,7 @@ class FairViolinPlot(FairBaseCurve):
     ----------
     metamodel : FairMetaModel
         The metamodel being analyzed
-    
+
     """
     def __init__(self, metamodel):
         # If it's just a model, make it a list.
@@ -22,10 +24,10 @@ class FairViolinPlot(FairBaseCurve):
         if not metamodel.__class__.__name__ == 'FairMetaModel':
             raise FairException('This requires a metamodel')
         self._metamodel = metamodel
-    
+
     def generate_image(self):
         """Main function for generating plots
-        
+
         Returns
         -------
         tuple(matplotlib.figure, matplotlib.axis)

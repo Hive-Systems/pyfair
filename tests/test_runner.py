@@ -5,8 +5,8 @@ import unittest
 
 # Add pyfair directory to path
 this_file = pathlib.Path(__file__).absolute()
-repo_dir  = this_file.parents[1]
-path      = str(repo_dir)
+repo_dir = this_file.parents[1]
+path = str(repo_dir)
 sys.path.append(path)
 
 # Import test modules
@@ -25,6 +25,9 @@ import report.test_tree_graph
 import report.test_violin
 import utility.test_beta_pert
 import utility.test_database
+#import utility.test_factory
+#import utility.test_fair_exception
+#import utility.test_parser
 
 # List test modules
 test_modules = [
@@ -53,7 +56,7 @@ test_modules = [
 
 # Create loader and suite
 loader = unittest.TestLoader()
-suite  = unittest.TestSuite()
+suite = unittest.TestSuite()
 
 # Add to suite
 for test_module in test_modules:

@@ -1,3 +1,5 @@
+"""Base report class for creating HTML reports"""
+
 import base64
 import inspect
 import io
@@ -74,12 +76,12 @@ class FairBaseReport(object):
 
     def _input_check(self, value):
         """Check input value for report is appropriate
-        
+
         Raises
         ------
         FairException
             If an inappropriate object or iterable of objects is supplied
-        
+
         """
         # If it's a model or metamodel, plug it in a dict.
         rv = {}
@@ -198,13 +200,13 @@ class FairBaseReport(object):
     def _get_parameter_table(self, model):
         """Visitorish function to inspect a model's parameters"""
         data = model.export_parameters()
-        return data       
+        return data
 
     def _get_metadata_table(self):
         """Generate table of metadata to attach to top of model.
-        
+
         Do not put model-specific data in here.
-        
+
         """
         # Add metadata
         metadata = pd.Series({
@@ -242,14 +244,14 @@ class FairBaseReport(object):
         fig, ax = fec.generate_image()
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
-    
+
     def _get_violins(self, metamodel):
         """Create base64 image string using FairViolinPlot"""
         vplot = FairViolinPlot(metamodel)
         fig, ax = vplot.generate_image()
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
-    
+
     def _get_overview_table(self, model_or_models):
         """Create a risk overview table using a model or list of models"""
         # Get final Risk vectors for all models
@@ -336,7 +338,7 @@ class FairBaseReport(object):
             escape=False
         )
         return detail_table
-    
+
     def _get_metamodel_parameter_table(self, metamodel):
         """Create table for metamodel"""
         # Create our table, transpose it, get descriptive statistics
@@ -364,4 +366,3 @@ class FairBaseReport(object):
             escape=False
         )
         return detail_table
-        

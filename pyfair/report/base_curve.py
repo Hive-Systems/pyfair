@@ -1,9 +1,11 @@
+"""This contains a subclass for curves used in reporting"""
+
 from ..utility.fair_exception import FairException
 
 
 class FairBaseCurve(object):
     '''Base class useful only for the ._input_check() method
-    
+
     The distribution curve and exceedence curves provided in the report module
     both have a private _input_check() function and a public generate_image()
     function. The _input_check() function is shared and is consequently defined
@@ -14,13 +16,13 @@ class FairBaseCurve(object):
 
     def _input_check(self, value):
         """Checks the input for compatability with curve
-        
+
         Raises
         ------
         FairException
             Where the input is not a 1) FairModel, 2) FairMetaModel, or 3) an 
             iterable containing solely FairModels or FairMetaModels.
-        
+
         """
         # If it's a model or metamodel, plug it in a dict.
         rv = {}
@@ -44,12 +46,12 @@ class FairBaseCurve(object):
 
     def generate_image(self):
         """Stub that raises a NotImpelmentedError
-        
+
         Raises
         ------
         NotImplementedError
             In all circumstances because this function should be defined by the
             subclass.
-        
+
         """
         raise NotImplementedError()

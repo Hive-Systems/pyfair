@@ -1,3 +1,5 @@
+"""Module for generating a tree graph"""
+
 import pandas as pd
 
 import matplotlib

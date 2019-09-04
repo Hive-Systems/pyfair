@@ -1,3 +1,5 @@
+"""Module defining a BetaPERT distribution"""
+
 import scipy.stats
 import numpy as np
 import pandas as pd
@@ -58,11 +60,11 @@ class FairBetaPert(object):
 
     .. math::
 
-        \beta 
-        = 
+        \beta
+        =
         \alpha
         \times
-        \frac 
+        \frac
             {\text{high} - \text{mean}}
             {\text{mean} - \text{low}}
 
@@ -168,7 +170,7 @@ class FairBetaPert(object):
     def _generate_alpha(self):
         """Generate alpha parameter for beta distrubtions"""
         group_1 = (self._mean - self._low) / (self._high - self._low)
-        group_2 = ((self._mean - self._low) * (self._high - self._mean) 
+        group_2 = ((self._mean - self._low) * (self._high - self._mean)
                   / 
                   (self._stdev ** 2)
         )
@@ -176,13 +178,13 @@ class FairBetaPert(object):
 
     def _generate_beta(self):
         """Generate beta parameter for beta distribution"""
-        beta_numerator   = self._alpha * (self._high - self._mean)
+        beta_numerator = self._alpha * (self._high - self._mean)
         beta_denominator = self._mean - self._low
         return beta_numerator / beta_denominator
-    
+
     def random_variates(self, count):
         """Get n PERT-distributed random numbers
-        
+
         This works by simpling calling the rvs() function of the beta curve
         that is stored at self._beta_curve.
 
@@ -190,7 +192,7 @@ class FairBetaPert(object):
         ----------
         count : int
             The number of random variates that are required to be created
-        
+
         Returns
         -------
         np.array

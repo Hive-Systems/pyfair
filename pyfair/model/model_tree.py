@@ -1,4 +1,4 @@
-"""This module contains a tree class for model calculation dependency tracking."""
+"""This module contains a tree class for model dependency tracking."""
 
 from .model_node import FairDependencyNode
 
@@ -25,9 +25,8 @@ class FairDependencyTree(object):
     Notes
     -----
         http://pubs.opengroup.org/onlinepubs/9699919899/toc.pdf
-    
-    '''
-    
+
+    '''    
     def __init__(self):
         # Leaf nodes for reference
         self._leaf_nodes = []
@@ -59,10 +58,10 @@ class FairDependencyTree(object):
         self._root = self.nodes['Risk']
         self._link_nodes()
         self._obtain_leaf_nodes(self._root)
-    
+
     def ready_for_calculation(self):
         '''Ensure there are no required items remaining
-        
+
         Returns
         -------
         bool
@@ -83,16 +82,16 @@ class FairDependencyTree(object):
         -------
         bool
             True if the calculation is complete, otherwise False
-        
+
         '''
         if self._root.status == 'Calculated':
             return True
         else:
             return False
-        
+
     def update_status(self, node_name, new_status):
         '''Notify node that data was provided
-        
+
         This function notifies the node that the status has changed and
         then propogates data down the tree as necessary. For example, if
         data is supplied for a node, then all nodes underneath it are no
@@ -137,7 +136,7 @@ class FairDependencyTree(object):
             node.status = 'Calculated'
         # Update node status dict
         self._obtain_status(self._root)
-        
+
     def get_node_statuses(self):
         '''Simple getter to obtain node statuses.
 
@@ -145,7 +144,7 @@ class FairDependencyTree(object):
         -------
         dict
             A dict with keys of node names and values of node statuses
-        
+
         '''
         return self._node_statuses
 
@@ -177,13 +176,13 @@ class FairDependencyTree(object):
         # Secondary Loss Subbranch
         nodes['Secondary Loss'].add_child(nodes['Secondary Loss Event Frequency'])
         nodes['Secondary Loss'].add_child(nodes['Secondary Loss Event Magnitude'])
-            
+
     def _obtain_status(self, node):
         '''Traverse the tree and record the statuses
-        
+
         This is a helper function to update the dict of statuses after
         changes are made via update_status.
-        
+
         '''
         self._node_statuses[node.name] = node.status 
         for node in node.children:
@@ -191,10 +190,10 @@ class FairDependencyTree(object):
 
     def _obtain_leaf_nodes(self, node):
         '''Traverse the tree and record the leaf nodes. 
-        
+
         Only run once, ideally. Leaf nodes are required when updating the
         tree from the bottom.
-        
+
         '''
         if len(node.children) == 0:
             self._leaf_nodes.append(node)
@@ -208,16 +207,16 @@ class FairDependencyTree(object):
         # Recursively call for children
         for child_node in node.children:
             self._propogate_down(child_node)
-    
+
     def _propogate_up(self, node):
         '''Update parent node statuses up to root node.
-        
+
         This is considerably more complicated than _propogate_down(). The
         reason for this is that for each node where the status is required,
         it is necessary to go to the parent nodes to see if that node can
         now be calculated. It then recursively calls the function on the
         parent node (until it reaches the root, which has no parent).
-        
+
         '''
         if node.parent:
             parent_node = node.parent

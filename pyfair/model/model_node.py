@@ -1,3 +1,6 @@
+"""Contains a node class for tracking calculation dependencies."""
+
+
 class FairDependencyNode(object):
     """Represents the status of a given calculation for FairDependencyTree
     
@@ -28,14 +31,13 @@ class FairDependencyNode(object):
         'Required').
 
     """
-
     def __init__(self, name):
         self.name     = name
         self.parent   = None
         self.children = []
         # Statuses: Required, Not Required, Supplied, Calculable, Calculated
-        self.status   = 'Required' 
-        
+        self.status   = 'Required'
+
     def __repr__(self):
         return 'FairNode({}, Status={})'.format(self.name, self.status)
 
@@ -51,7 +53,7 @@ class FairDependencyNode(object):
         self.children.append(child)
         child.add_parent(self)
         return self
-    
+
     def add_parent(self, parent):
         """Add a parent to an individual node (orchestated by tree)
 

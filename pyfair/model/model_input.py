@@ -29,7 +29,6 @@ class FairDataInput(object):
     is stored when converting to JSON or another serialization format.
     
     """
-    
     def __init__(self):
         # These targets must be less than or equal to one
         self._le_1_targets = ['Action', 'Vulnerability', 'Control Strength', 'Threat Capability']
@@ -59,7 +58,7 @@ class FairDataInput(object):
 
     def get_supplied_values(self):
         """Simple getter to return the supplied values
-        
+
         Returns
         -------
         dict
@@ -67,10 +66,10 @@ class FairDataInput(object):
             keys for the dict will be the target node as a string (e.g. 
             'Loss Event Frequency') and the values will be a sub-dictionary 
             of keyword arguments ({'low': 50, 'mode}: 51, 'high': 52}).
-        
+
         """
         return self._supplied_values
-    
+
     def _check_le_1(self, target, **kwargs):
         """Raises error if not between one and zero"""
         # For every keyword argument
@@ -145,7 +144,7 @@ class FairDataInput(object):
             A series of length `count` composed of random values. These
             values are consistent with a particular distribution type
             (Normal, BetaPert, Bernoulli, or constant).
-        
+
         """
         # Generate result
         result = self._generate_single(target, count, **kwargs)
@@ -156,7 +155,7 @@ class FairDataInput(object):
         # Record and return
         self._supplied_values[target] = {**kwargs}
         return result
-    
+
     def _generate_single(self, target, count, **kwargs):
         """Internal workhorse function for single request
 
@@ -195,7 +194,7 @@ class FairDataInput(object):
         in the dictionary. For example, with the following data:
 
         .. code:: python
-            
+
             {
                 'Reputational': {
                     'Secondary Loss Event Frequency': {'constant': 4000}, 
@@ -207,10 +206,10 @@ class FairDataInput(object):
                     'Secondary Loss Event Frequency': {'constant': 2000}, 
                     'Secondary Loss Event Magnitude': {
                         'low': 10, 'mode': 20, 'high': 100
-                    },        
+                    },   
                 }
             }
-            
+
         Two separate simulations for "Reputational" and "Legal" will be run
         using the information supplied. Each of these simulations will be
         composed of random values with distributions based on the
@@ -269,7 +268,7 @@ class FairDataInput(object):
         new_target = 'multi_' + final_target
         self._supplied_values[new_target] = kwargs_dict
         return summed
-            
+
     def _determine_func(self, **kwargs):
         """Checks keywords and returns the appropriate function object."""
         # Check whether keys are recognized
@@ -294,24 +293,24 @@ class FairDataInput(object):
         bernoulli = scipy.stats.bernoulli(**kwargs)
         rvs = bernoulli.rvs(count)
         return rvs
-    
+
     def _gen_constant(self, count, **kwargs):
         """Generates constant array of size `count`"""
         return np.full(count, kwargs['constant'])
-    
+
     def _gen_normal(self, count, **kwargs):
         """Geneates random normally-distributed array of size `count`"""
         normal = scipy.stats.norm(loc=kwargs['mean'], scale=kwargs['stdev'])
         rvs = normal.rvs(count)
         return rvs
-    
+ 
     def _gen_pert(self, count, **kwargs):
         """Checks parameters, creates BetaPert, returns random values"""
         self._check_pert(**kwargs)
         pert = FairBetaPert(**kwargs)
         rvs = pert.random_variates(count)
         return rvs
-    
+
     def _check_pert(self, **kwargs):
         """Does the work of ensuring BetaPert distribution is valid"""
         conditions = {
