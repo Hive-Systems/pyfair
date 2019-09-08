@@ -1,3 +1,6 @@
+"""This module contains an exception specific to pyfair"""
+
+
 class FairException(Exception):
-    '''Vanity exception class'''
+    """pyfair-specific exception class"""
     pass

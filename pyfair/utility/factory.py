@@ -4,8 +4,34 @@ from ..model.model import FairModel
 
 
 class FairModelFactory(object):
-    '''This is a convenience class for creating small variations on models.'''
+    '''A convenience class for creating small variations on models.
+    
+    Generally this is used for creating two or more models with slight
+    variations.
 
+    Parameters
+    ----------
+    static_arguments : dict
+        A dictionary that has keys of the pyfair nodes, and values of
+        dictionaries containing the distribution arguments for that node
+    n_simulations : int, optional
+        Number of simulations created (default is 10,000)
+    random_seed : int, optional
+        Random seed for number generation (default is 42)
+
+    Examples
+    --------
+    >>> fac = FairModelFactory({'Loss Magnitude': {'constant': 5_000_000}})
+    >>> model1 =  fac.generate_from_partial(
+    ...     'model1',
+    ...    {'Threat Event Frequency': {'constant: 900}}
+    ... )
+    >>> model2 =  fac.generate_from_partial(
+    ...     'model2',
+    ...    {'Threat Event Frequency': {'constant: 10}}
+    ... )
+
+    '''
     def __init__(self, static_arguments, n_simulations=10_000, random_seed=42):
         self._static_arguments = static_arguments
         self._n_simulations    = n_simulations

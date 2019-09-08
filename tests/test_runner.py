@@ -25,9 +25,8 @@ import report.test_tree_graph
 import report.test_violin
 import utility.test_beta_pert
 import utility.test_database
-#import utility.test_factory
-#import utility.test_fair_exception
-#import utility.test_parser
+import utility.test_factory
+import utility.test_fair_exception
 
 # List test modules
 test_modules = [
@@ -49,9 +48,8 @@ test_modules = [
     # Utility Module
     utility.test_beta_pert,
     utility.test_database,
-    #utility.test_factory,
-    #utility.test_fair_exception,
-    #utility.parser
+    utility.test_factory,
+    utility.test_fair_exception,
 ]
 
 # Create loader and suite

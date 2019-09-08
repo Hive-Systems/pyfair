@@ -43,7 +43,7 @@ class FairDatabase(object):
         """Initialize database with tables if necessary."""
         with sqlite3.connect(self._path) as conn:
             conn.execute('''CREATE TABLE IF NOT EXISTS models (
-                uuid string,                                           
+                uuid string,
                 name string,
                 creation_date text NOT NULL,
                 json string NOT NULL,
@@ -179,9 +179,9 @@ class FairDatabase(object):
                 '''INSERT OR REPLACE INTO results VALUES(?, ?, ?, ?, ?)''',
                 (
                     meta['model_uuid'], 
-                    results.mean(axis=0), 
-                    results.std(axis=0), 
-                    results.min(axis=0), 
+                    results.mean(axis=0),
+                    results.std(axis=0),
+                    results.min(axis=0),
                     results.max(axis=0)
                 )
             )
@@ -192,7 +192,7 @@ class FairDatabase(object):
         conn.close()
 
     def query(self, query, params=None):
-        '''Function for querying the underlying database.
+        """Function for querying the underlying database.
 
         Parameters
         ----------
@@ -208,7 +208,7 @@ class FairDatabase(object):
         list of sqlite3.Row objects
             The raw query result from fetchall()
 
-        '''
+        """
         with sqlite3.connect(self._path) as conn:
             cursor = conn.cursor()
             if params:
