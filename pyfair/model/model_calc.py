@@ -9,8 +9,8 @@ class FairCalculations(object):
 
     This class is called via the FairModel in which it is contained via its
     calculate() method. It then returns a series that is transformed via
-    1) a step function, 2) an addition function, or 3) a multiplication
-    function.
+    1) a step function followed by an average, 2) an addition function, or 
+    3) a multiplication function.
 
     """
     def __init__(self):
@@ -53,7 +53,6 @@ class FairCalculations(object):
             and the function chose by the parent_name.
 
         """
-
         target_function = self._function_dict[parent_name]
         calculated_result = target_function(child_1_data, child_2_data)
         return calculated_result

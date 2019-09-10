@@ -21,7 +21,7 @@ class TestFairModelInput(unittest.TestCase):
 
     def setUp(self):
         self._input = FairDataInput()
-    
+
     def tearDown(self):
         self._input = None
 
@@ -61,13 +61,9 @@ class TestFairModelInput(unittest.TestCase):
         self._input._check_parameters(self._input._gen_normal, mean=4, stdev=2) 
         with self.assertRaises(FairException):
             self._input._check_parameters(self._input._gen_normal, mean=4, constant=3) 
-        # Check bernoulli
-        self._input._check_parameters(self._input._gen_bernoulli, p=.2) 
-        with self.assertRaises(FairException):
-            self._input._check_parameters(self._input._gen_bernoulli, mean=4) 
         # Check that negative numbers raise error
         with self.assertRaises(FairException):
-            self._input._check_parameters(self._input._gen_bernoulli, p=-1) 
+            self._input._check_parameters(self._input._gen_normal, mean=-1, stdev=2) 
 
     def test_check_pert(self):
         """Ensure PERT checks are accuate"""
@@ -87,7 +83,7 @@ class TestFairModelInput(unittest.TestCase):
         result = self._input.generate('Loss Event Frequency', self._COUNT, mean=20, stdev=5)
         self.assertTrue(len(result) == self._COUNT)
         # Basic bernoulli
-        result = self._input.generate('Vulnerability', self._COUNT, p=.5)
+        result = self._input.generate('Vulnerability', self._COUNT, mean=.5, stdev=.3)
         self.assertTrue(len(result) == self._COUNT)
         # Basic constant
         result = self._input.generate('Loss Event Frequency', self._COUNT, constant=50)

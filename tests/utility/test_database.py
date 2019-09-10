@@ -13,7 +13,7 @@ class TestFairDatabase(unittest.TestCase):
         'Primary Loss': {"mean": 5_000_000, "stdev": 10},
         'Secondary Loss': {"constant": 100},
         'Loss Event Frequency': {"low": 0, "mode": 80, "high": 100},
-        'Vulnerability': {"p": .20}
+        'Vulnerability': {"mean": .20, "stdev": .01}
     }
     _QUERY_STRING = '''
         SELECT 
