@@ -29,3 +29,11 @@ Version 0.1-alpha.3
 
 * Testing and documentation completed for the `utility` and `report`
   modules.
+
+Version 0.1-alpha.4
+-------------------
+
+Fixes
+~~~~~
+
+* Correct inappropriate Vulnerability calculation.

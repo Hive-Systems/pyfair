@@ -13,7 +13,7 @@ class TestFairModelCalc(unittest.TestCase):
     _CHILD_2_DATA    = pd.Series([5,4,3,2,1])
     _MULT_OUTPUT     = pd.Series([5,8,9,8,5])
     _ADD_OUTPUT      = pd.Series([6,6,6,6,6])
-    _STEP_OUTPUT     = pd.Series([False, False, False, True, True])
+    _STEP_OUTPUT     = pd.Series([.4, .4, .4, .4, .4])
 
     # Keys
     _MULTIPLICATION_ITEMS = [
@@ -52,7 +52,7 @@ class TestFairModelCalc(unittest.TestCase):
             )
             self.assertTrue(result.equals(self._ADD_OUTPUT))
 
-    def test_step(self):
+    def test_step_average(self):
         """Test step function keywords and functions"""
         for key in self._STEP_ITEMS:
             result = self._calc.calculate(
@@ -61,6 +61,7 @@ class TestFairModelCalc(unittest.TestCase):
                 self._CHILD_2_DATA
             )
             self.assertTrue(result.equals(self._STEP_OUTPUT))
+
 
 if __name__ == '__main__':
     unittest.main()

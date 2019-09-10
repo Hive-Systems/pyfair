@@ -23,11 +23,11 @@ class FairDataInput(object):
     numbers are inferred from the the targets (self._le_1_targets). These
     are both analyzed when an external actor triggers generate(). Other
     checks are run as necessary.
-    
+
     All the inputs for a model are stored in the self._supplied_values
     dictionary, which is important because it is the only record of what
     is stored when converting to JSON or another serialization format.
-    
+
     """
     def __init__(self):
         # These targets must be less than or equal to one
@@ -42,16 +42,12 @@ class FairDataInput(object):
             'gamma'   : self._gen_pert,
             'mean'    : self._gen_normal,
             'stdev'   : self._gen_normal,
-            'p'       : self._gen_bernoulli,
         }
-        # Vulnerability is bernoulli only.
-        self._bernoulli_targets = ['Vulnerability']
         # List of keywords with function keys
         self._required_keywords = {
             self._gen_constant : ['constant'],
             self._gen_pert     : ['low', 'mode', 'high'],
             self._gen_normal   : ['mean', 'stdev'],
-            self._gen_bernoulli: ['p']
         }  
         # Storage of inputs
         self._supplied_values = {}
@@ -98,7 +94,7 @@ class FairDataInput(object):
         for keyword, value in kwargs.items():
             # Two conditions
             value_is_less_than_zero = value < 0
-            keyword_is_relevant = keyword in ['p', 'mean', 'constant', 'low', 'mode', 'high']
+            keyword_is_relevant = keyword in ['mean', 'constant', 'low', 'mode', 'high']
             # Test conditions
             if keyword_is_relevant and value_is_less_than_zero:
                 raise FairException('"{}" is less than zero.'.format(keyword))
@@ -128,7 +124,7 @@ class FairDataInput(object):
             length of the Series returned).
         **kwargs
             Keyword arguments with one of the following values: {`mean`, 
-            `stdev`, `p`, `low`, `mode`, `high`, `gamma`, or `constant`}.
+            `stdev`, `low`, `mode`, `high`, `gamma`, or `constant`}.
 
         Raises
         ------
@@ -143,7 +139,7 @@ class FairDataInput(object):
         pd.Series
             A series of length `count` composed of random values. These
             values are consistent with a particular distribution type
-            (Normal, BetaPert, Bernoulli, or constant).
+            (Normal, BetaPert, or constant).
 
         """
         # Generate result
@@ -168,16 +164,12 @@ class FairDataInput(object):
         # If destined for a le_1_target, check validity.
         if target in self._le_1_targets:
             self._check_le_1(target, **kwargs)
-        # If target is bernoulli, shunt into that function.
-        if target in self._bernoulli_targets:
-            results = self._gen_bernoulli(count, **kwargs)
-        else:
-            # Otherwise figure out what function
-            func = self._determine_func(**kwargs)
-            # Check to make sure sufficient parameters exist
-            self._check_parameters(func, **kwargs)
-            # Run the function
-            results = func(count, **kwargs)
+        # Otherwise figure out what function
+        func = self._determine_func(**kwargs)
+        # Check to make sure sufficient parameters exist
+        self._check_parameters(func, **kwargs)
+        # Run the function
+        results = func(count, **kwargs)
         # Clip if in le_1_targets
         if target in self._le_1_targets:
             results = np.clip(results, 0.0, 1.0)
@@ -286,13 +278,6 @@ class FairDataInput(object):
         else:
             function = functions[0]
             return function
-
-    def _gen_bernoulli(self, count, **kwargs):
-        """Generates a random Bernoulli-distributed array"""
-        # No check required as 0 to 1 is already esablished
-        bernoulli = scipy.stats.bernoulli(**kwargs)
-        rvs = bernoulli.rvs(count)
-        return rvs
 
     def _gen_constant(self, count, **kwargs):
         """Generates constant array of size `count`"""
