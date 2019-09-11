@@ -250,7 +250,7 @@ The nodes can be described as follows:
     Description: a vector of elements with each value representing the
     probability that a potential threat actually results in a loss
 
-    Restrictions: all elements must be between zero and one
+    Restrictions: all elements must be from 0.0 to 1.0
 
     Derivation: supplied directly, or via the following operation:
     
@@ -282,19 +282,24 @@ The nodes can be described as follows:
     .. math::
 
         \begin{bmatrix}
-           0.60 \\
-           0.70 \\
-           0.10 \\
+           \text{V}_{1} \\
+           \text{V}_{2} \\
+           \vdots \\
+           \text{V}_{m}
         \end{bmatrix}
-    
-    And we have CSes:
-
-    .. math::
-
+        =
         \begin{bmatrix}
-           0.55 \\
-           0.65 \\
-           0.75 \\
+           \text{TC}_{1} \\
+           \text{TC}_{2} \\
+           \vdots \\
+           \text{TC}_{m}
+        \end{bmatrix}
+        \times
+        \begin{bmatrix}
+           \text{CS}_{1} \\
+           \text{CS}_{2} \\
+           \vdots \\
+           \text{CS}_{m}
         \end{bmatrix}
 
     For item one, TC is .60 and CS is .55. and consequently our resulting
@@ -302,38 +307,11 @@ The nodes can be described as follows:
     and CS is .65, and consequently our resulting second item will be 1
     (because it's vulnerable). For item 3, our TC is .10 and our CS is .75,
     and consequently our resulting third item will be zero (because it's
-    not vulnerable. The resulting matrix will be:
+    not vulnerable. The resulting matrix will be made of 0.66 values, 
+    which in turn means our Vulnerability vector will be a lot like a
+    scalar value.
 
-    .. math:
-
-        \begin{bmatrix}
-           1 \\
-           1 \\
-           0 \\
-        \end{bmatrix}
-
-    The average of this matrix is:
-
-    .. math:
-
-        \frac
-            {(1 + 1 + 0)}
-            {3}
-        =
-        .66
-    
-    Which in turn means our Vulnerability vector will be a lot like a
-    scalar value:
-
-    .. math:
-
-        \begin{bmatrix}
-           .66 \\
-           .66 \\
-           .66 \\
-        \end{bmatrix}
-
-    Example: the percentage of phishing attempts that result in loss
+    Example: the percentage of phishing attempts that result in loss:
 
     .. math::
 
@@ -346,58 +324,132 @@ The nodes can be described as follows:
 
 #. **Contact Frequency ("C")**
 
-    Description: the number of threat actor contacts that could potentially 
-    yield a threat within a given timeframe
+    Description: a vector with elements representing the number of threat 
+    actor contacts that could potentially  yield a threat within a given 
+    timeframe
 
-    Restrictions: must be a positive number
+    Restrictions: all elements must be a positive number
 
     Derivation: None (this must be supplied, not calculated)
 
-    Example: 20,000 (scans of a vulnerable port within a given year)
+    Example: For a given year, the number of ports scans:
+
+   .. math::
+
+        \begin{bmatrix}
+           12,000 \\
+           10,150 \\
+           \vdots \\
+           13,000 \\
+        \end{bmatrix}
 
 #. **Probability of Action ("A")**
 
-    Description: the probability that a threat actor will proceed when
-    coming upon a given 
+    Description: a vector with elements representing the probability that 
+    a threat actor will proceed after coming into contact with an
+    organization 
 
-    Restrictions: must be number from 0.0 to 1.0
+    Restrictions: all elements must be number from 0.0 to 1.0
 
     Derivation: None (this must be supplied, not calculated)
 
-    Example: .45 (percent that actor will proceed with potential SSH login)
+    Example: the percent of times that an actor will proceed to attack an
+    open SSH port:
+
+    .. math::
+
+        \begin{bmatrix}
+           0.45 \\
+           0.49 \\
+           \vdots \\
+           0.46 \\
+        \end{bmatrix} 
 
 #. **Threat Capability ("TC")**
 
-    Description: a unitless number that describes the relative level of
-    expertise and resources of a threat actor
+    Description: a vector of unitless elements that describe the relative 
+    level of expertise and resources of a threat actor (relative to a
+    Control Strength)
 
-    Restrictions: must be a number from 0.0 to 1.0
+    Restrictions: all elements must be number from 0.0 to 1.0
 
     Derivation: None (this must be supplied, not calculated)
 
-    Example: .25 (unitless)
+    Example: the relative strengths of threat actors:
+
+   .. math::
+
+        \begin{bmatrix}
+           0.99 \\
+           0.95 \\
+           \vdots \\
+           0.80 \\
+        \end{bmatrix}
 
 #. **Control Strength ("CS")**
 
-    Description: a unitless number that describes the relative strength of
-    the control environment a threat actor is trying to exploit
+    Description: a vector of unitless elements that describe the relative 
+    strength of a given control (relative to the Threat Capability of a 
+    given actor)
 
     Restrictions: must be a number from 0.0 to 1.0
 
     Derivation: None (this must be supplied, not calculated)
 
-    Example: .40 (unitless)
+    Example: the relative strength of a particular control:
+
+   .. math::
+
+        \begin{bmatrix}
+           0.80 \\
+           0.81 \\
+           \vdots \\
+           0.82 \\
+        \end{bmatrix}    
 
 #. **Loss Magnitude ("LM")**
 
-    Description: the total loss for a given Loss Event
+    Description: a vector of currency values describing the total loss for
+    a given Loss Event
 
-    Restrictions: must be positive
+    Restrictions: all elements must be positive
 
-    Derivation: supplied directly, or the sum of the Primary Loss and
-    Secondary Loss
+    Derivation: supplied directly, or the sum of the Primary Loss vector 
+    and Secondary Loss vector
 
-    Example: 10,000,000 (dollars for each database breach)
+    .. math::
+
+        \begin{bmatrix}
+            \text{LM}_{1} \\
+            \text{LM}_{2} \\
+            \vdots \\
+            \text{LM}_{m}
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            \text{PL}_{1} \\
+            \text{PL}_{2} \\
+            \vdots \\
+            \text{PL}_{m}
+        \end{bmatrix}
+        +
+        \begin{bmatrix}
+            \text{SL}_{1} \\
+            \text{SL}_{2} \\
+            \vdots \\
+            \text{SL}_{m}
+        \end{bmatrix}
+
+    Example: the monetary value for a successful breach:
+
+    .. math::
+
+        \begin{bmatrix}
+            $1,000,110 \\
+            $2,001,968 \\
+            \vdots \\
+            $1,523,100
+        \end{bmatrix}
 
 #. **Primary Loss ("PL")**
 
@@ -533,7 +585,7 @@ of whether a loss occurs.
 +============+=====+
 | 1          | .66 |
 +------------+-----+
-| 2          | .52 |
+| 2          | .67 |
 +------------+-----+
 | 3          | .68 |
 +------------+-----+ 
@@ -569,15 +621,15 @@ Step 2: Calculate LEF Using TDF and V
 As you can likely see, we can use our 3 TEFs and 3 Vs and multiply them
 together element-by-element. This will give us 3 LEF values. 
 
-+------------+--------+---+-------------------+
-| Simulation | TEF    | V | LEF (TEF times V) |
-+============+========+===+===================+
-| 1          | 53,091 | 1 | 53,091            |
-+------------+--------+---+-------------------+
-| 2          | 38,759 | 0 | 0                 |
-+------------+--------+---+-------------------+
-| 3          | 44,665 | 1 | 44,665            |
-+------------+--------+---+-------------------+
++------------+--------+-----+-------------------+
+| Simulation | TEF    | V   | LEF (TEF times V) |
++============+========+=====+===================+
+| 1          | 53,091 | .66 | 35,040            |
++------------+--------+-----+-------------------+
+| 2          | 38,759 | .67 | 25,968            |
++------------+--------+-----+-------------------+
+| 3          | 44,665 | .68 | 30,372            |
++------------+--------+-----+-------------------+
 
 This follows with what we known know about Loss Event Frequency. It is the
 amount of loss that actually occurs. We have a three potential losses, and
@@ -594,11 +646,11 @@ by the amount lost for each event.
 +------------+--------+-----+------------------+
 | Simulation | LEF    | LM  | R (LEF times LM) |
 +============+========+=====+==================+
-| 1          | 53,091 | 198 | 10,512,018       |
+| 1          | 35,040 | 198 | 6,937,920        |
 +------------+--------+-----+------------------+
-| 2          | 0      | 150 | 0                |
+| 2          | 25,968 | 150 | 3,895,200        |
 +------------+--------+-----+------------------+
-| 3          | 44,665 | 86  | 3,841,190        |
+| 3          | 30,372 | 86  | 2,612,009        |
 +------------+--------+-----+------------------+
 
 Step 4: Analyze Our Risk Outputs
@@ -613,7 +665,7 @@ expect our Risk to have the following attributes:
 +------------+-------------------------+
 | Risk Mean  | Risk Standard Deviation |
 +============+=========================+
-| $4,784,402 | $5,319,104              |
+| $4,481,709 | $2,221,794              |
 +------------+-------------------------+
 
 pyfair, as you will see later on, makes this considerably easier. You
@@ -627,7 +679,7 @@ should be able to achieve similar results with 5 to 10 lines of code.
     # Create our model and calculate (don't worry about understanding yet)
     model = FairModel(name='Sample')
     model.input_data('Threat Event Frequency', mean=50_000, stdev=10_000)
-    model.input_data('Vulerability', p=.66)
+    model.input_data('Vulerability', mean=.66, stdev=.01)
     model.input_data('Loss Magnitude', mean=100, stdev=50)
     model.calculate_all()
 
@@ -701,7 +753,7 @@ associated with the Monte Carlo generation and FAIR calculation. You simply
 supply the targets and the distribution types. These targets are:
 
     * BetaPert: low, mode, and high (and optionally gamma)
-    * Bernoulli/Binomial: p
+    * Constant: constant
     * Normal: mean, stdev
 
 .. warning::
@@ -878,14 +930,6 @@ Pert distributions:
 
 * High parameter must be equal to or greater than Mode parameter
 * Mode parameter must be equal to or greater than Low parameter
-
-Vulnerability
-~~~~~~~~~~~~~
-
-Vulnerability is weird. It can only be calculated via a step function, and
-can only be assigned using the "p" keyword. Because Vulnerability can only
-be either a 0 or a 1, a Bernoulli distribution is used with the Probability
-of activation being determined by the "p" keyword argument.
 
 Parameter Mismatch
 ------------------
