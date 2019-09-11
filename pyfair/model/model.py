@@ -69,19 +69,19 @@ class FairModel(object):
         self._random_seed = random_seed
         np.random.seed(random_seed)
         # Instantiate components
-        self._model_table  = pd.DataFrame(columns=[
-            'Risk', 
+        self._model_table = pd.DataFrame(columns=[
+            'Risk',
             'Loss Event Frequency',
-            'Threat Event Frequency', 
-            'Vulnerability', 
-            'Contact', 
-            'Action', 
-            'Threat Capability', 
-            'Control Strength', 
-            'Loss Magnitude', 
-            'Primary Loss', 
+            'Threat Event Frequency',
+            'Vulnerability',
+            'Contact',
+            'Action',
+            'Threat Capability',
+            'Control Strength',
+            'Loss Magnitude',
+            'Primary Loss',
             'Secondary Loss',
-            'Secondary Loss Event Frequency', 
+            'Secondary Loss Event Frequency',
             'Secondary Loss Event Magnitude',
         ])
         self._data_input  = FairDataInput() 
@@ -94,6 +94,27 @@ class FairModel(object):
         else:
             self._model_uuid = str(uuid.uuid1())
             self._creation_date = str(pd.datetime.now())
+        # Standardized targets for abbreviation use
+        self._target_map = {
+            'LEF' : 'Loss Event Frequency',
+            'TEF' : 'Threat Event Frequency',
+            'V'   : 'Vulnerability',
+            'C'   : 'Contact Frequency',
+            'A'   : 'Probability of Action',
+            'TC'  : 'Threat Capability',
+            'CS'  : 'Control Strength',
+            'LM'  : 'Loss Magnitude',
+            'PL'  : 'Primary Loss',
+            'SL'  : 'Secondary Loss',
+            'SLEF': 'Secondary Loss Event Frequency',
+            'SLEM': 'Secondary Loss Event Magnitude',
+        }
+        # Add lowercase versions to target map
+        self._target_map.update({
+            key.lower(): value
+            for key, value
+            in self._target_map.items()
+        })
 
     @staticmethod
     def read_json(param_json):
@@ -245,6 +266,8 @@ class FairModel(object):
         >>> model.input_data('Loss Magnitude', mean=20, stdev=10)
 
         """
+        # Standardize inputs to account for abbreviations
+        target = self._standardize_target(target)
         # Generate data via data captive class
         data = self._data_input.generate(target, self._n_simulations, **kwargs)
         # Update dependency tracker captive class
@@ -278,11 +301,11 @@ class FairModel(object):
         >>> model = pyfair.FairModel(name="Insider Threat")
         >>> model1.input_multi_data('Secondary Loss', {
         ...     'Reputational': {
-        ...         'Secondary Loss Event Frequency': {'constant': 4000}, 
+        ...         'Secondary Loss Event Frequency': {'constant': 4000},
         ...         'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},
         ...     },
         ...     'Legal': {
-        ...         'Secondary Loss Event Frequency': {'constant': 2000}, 
+        ...         'Secondary Loss Event Frequency': {'constant': 2000},
         ...         'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},        
         ...     }
         ... })
@@ -301,11 +324,11 @@ class FairModel(object):
 
     def bulk_import_data(self, param_dictionary):
         """Takes multiple inputs via nested dictionaries.
-        
+
         The function iterates through a dictionary and runs input_data()
         for each item. This allows for multiple items to be added at a 
         single time. The param dictionary will take the form:
-        
+
         {'target_1': {param_1: value_1}, 'target_2': {param_2: value_2}}
 
         Parameters
@@ -325,13 +348,20 @@ class FairModel(object):
         ...     'Loss Event Frequency': {'mean': 90, 'stdev': 100},
         ...     'Loss Magnitude': {'constant': 4000}, 
         ... })
-        
+
         """
         # Iterate through each key, value pair and run through input_data()
         for target, parameters in param_dictionary.items():
             self.input_data(target, **parameters)
         return self
-        
+
+    def _standardize_target(self, target):
+        if target in self._target_map.keys():
+            mapped_target = self._target_map[target]
+        else:
+            mapped_target = target
+        return mapped_target
+
     ##########################################################################
     # Calculation methods
     ##########################################################################

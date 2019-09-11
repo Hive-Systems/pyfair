@@ -102,7 +102,7 @@ deviation of the Risk and other nodes.
     While we refer to the data in these nodes, it is important to remember
     that we are talking about a single simulation within the Monte Carlo
     model. For example, if we have 1,000 simulations, we will have a 
-    `vector <https://en.wikipedia.org/wiki/Row_and_column_vectors>` of
+    `vector <https://en.wikipedia.org/wiki/Row_and_column_vectors>`_ of
     1,000 elements. This will become more clear in the  `FAIR by Example`_ 
     section.
 

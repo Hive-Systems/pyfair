@@ -110,7 +110,7 @@ class FairDataInput(object):
         """Executes request, records parameters, and return random values
 
         More specifically this triggers the `_generate_single()`
-        subroutine, records the appropriate keywords in the 
+        subroutine, records the appropriate keywords in the
         `_supplied_values` member, and returns a pandas Series of random
         values.
 
@@ -173,6 +173,9 @@ class FairDataInput(object):
         # Clip if in le_1_targets
         if target in self._le_1_targets:
             results = np.clip(results, 0.0, 1.0)
+        # Otherwise ensure simply above zero
+        else:
+            results = np.clip(results, 0.0, np.inf)
         return results
 
     def generate_multi(self, prefixed_target, count, kwargs_dict):
@@ -265,7 +268,7 @@ class FairDataInput(object):
         """Checks keywords and returns the appropriate function object."""
         # Check whether keys are recognized
         for key in kwargs.keys():
-            if not key in self._parameter_map.keys():
+            if key not in self._parameter_map.keys():
                 raise FairException('"{}"" is not a recognized keyword'.format(key))
         # Check whether all keys go to same function via set comprension
         functions = list(set([
