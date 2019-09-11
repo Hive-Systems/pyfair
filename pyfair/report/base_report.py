@@ -55,7 +55,7 @@ class FairBaseReport(object):
             'css'   : self._static_location / 'fair.css',
             'simple': self._static_location / 'simple.html'
         }
-        self._param_cols = ['low', 'mode', 'high', 'p', 'constant', 'mean', 'stdev']
+        self._param_cols = ['low', 'mode', 'high', 'constant', 'mean', 'stdev']
         self._caller_source = self._set_caller_source()
 
     def _set_caller_source(self):

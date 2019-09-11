@@ -23,11 +23,11 @@ calculation of risk as a whole.
 
 The actual calculation for Risk often takes the form of a `Monte Carlo
 method <https://en.wikipedia.org/wiki/Monte_Carlo_method>`_. This Monte
-Carlo method supplies random inputs for our model. The model then transforms
-the inputs in accordance with FAIR calculation rules, and provides outputs.
-The outputs can then be analyzed to determine what the potential range of 
-Risk values are. pyfair's purpose is to simplify and automate these Monte 
-Carlo methods.
+Carlo method supplies random inputs for our model. The model then
+transforms the inputs in accordance with FAIR calculation rules, and 
+provides outputs. The outputs can then be analyzed to determine what the 
+potential range of Risk values are. pyfair's purpose is to simplify and 
+automate these Monte Carlo methods.
 
 A Quick Monte Carlo Example
 ---------------------------
@@ -101,7 +101,10 @@ deviation of the Risk and other nodes.
 
     While we refer to the data in these nodes, it is important to remember
     that we are talking about a single simulation within the Monte Carlo
-    model. This will become more clear in the `FAIR by Example`_.
+    model. For example, if we have 1,000 simulations, we will have a 
+    `vector <https://en.wikipedia.org/wiki/Row_and_column_vectors>` of
+    1,000 elements. This will become more clear in the  `FAIR by Example`_ 
+    section.
 
 The nodes are as follows:
 
@@ -111,52 +114,235 @@ The nodes can be described as follows:
 
 #. **Risk ("R")**
 
-    Description: the final output of the model in 
-    dollars/euros/yuan/rupees/etc.
+    Description: a vector of currency values/elements, which represent the
+    ultimate loss for a given time period
 
-    Restrictions: must be positive
+    Restrictions: all elements must be positive
 
-    Derivation: multiply Loss Event Frequency and Loss Magnitude
+    Derivation: multiply the Loss Event Frequency vector by the Loss
+    Magnitude vector
 
-    Example: 20,000,000 (dollars for a given year)
+    .. math::
+
+        \begin{bmatrix}
+            \text{R}_{1} \\
+            \text{R}_{2} \\
+            \vdots \\
+            \text{R}_{m}
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            \text{LEF}_{1} \\
+            \text{LEF}_{2} \\
+            \vdots \\
+            \text{LEF}_{m}
+        \end{bmatrix}
+        \times
+        \begin{bmatrix}
+            \text{LM}_{1} \\
+            \text{LM}_{2} \\
+            \vdots \\
+            \text{LM}_{m}
+        \end{bmatrix}
+
+    
+    Example: For a given year the following dollar amounts:
+
+    .. math::
+
+        \begin{bmatrix}
+            \text{\$1,500,000} \\
+            \text{\$0} \\
+            \vdots \\
+            \text{\$527,000} \\
+        \end{bmatrix}
 
 #. **Loss Event Frequency ("LEF")**
 
-    Description: the number of times a particular loss occurs during a 
-    given time frame (generally one year)
+    Description: a vector of elements which represent the number of times a 
+    particular loss occurs during a given time frame (generally one year)
 
-    Restrictions: must be positive
+    Restrictions: all elements must be positive
 
-    Derivation: supplied directly, or multiply Threat Event Frequency by
-    Vulnerability
+    Derivation: supplied directly, or multiply the Threat Event Frequency 
+    vector by the Vulnerability vector
 
-    Example: 500 (breaches resulting in data exfiltration (for given year))
+    .. math::
+
+        \begin{bmatrix}
+            \text{LEF}_{1} \\
+            \text{LEF}_{2} \\
+            \vdots \\
+            \text{LEF}_{m}
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            \text{TEF}_{1} \\
+            \text{TEF}_{2} \\
+            \vdots \\
+            \text{TEF}_{m}
+        \end{bmatrix}
+        \times
+        \begin{bmatrix}
+            \text{V}_{1} \\
+            \text{V}_{2} \\
+            \vdots \\
+            \text{V}_{m}
+        \end{bmatrix}
+
+    Example: Count of breaches resulting in data loss (for given year):
+
+    .. math::
+
+        \begin{bmatrix}
+            \text{5} \\
+            \text{1} \\
+            \vdots \\
+            \text{10} \\
+        \end{bmatrix}
 
 #. **Threat Event Frequency ("TEF")**
 
-    Description: the number of times a particular threat occurs, whether or
-    not it results in a loss
+    Description: a vector of elements representing the number of times a 
+    particular threat occurs, whether or not it results in a loss
 
-    Restrictions: must be positive
+    Restrictions: all elements must be positive
 
-    Derivation: supplied directly, or multiply Contact Frequency and 
-    Probability of Action
+    Derivation: supplied directly, or multiply the Contact Frequency vector
+    and the Probability of Action vector
 
-    Example: 500 (cross-site scripting attempts in a given month)
+    .. math::
+
+        \begin{bmatrix}
+            \text{TEF}_{1} \\
+            \text{TEF}_{2} \\
+            \vdots \\
+            \text{TEF}_{m}
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            \text{C}_{1} \\
+            \text{C}_{2} \\
+            \vdots \\
+            \text{C}_{m}
+        \end{bmatrix}
+        \times
+        \begin{bmatrix}
+            \text{A}_{1} \\
+            \text{A}_{2} \\
+            \vdots \\
+            \text{A}_{m}
+        \end{bmatrix}
+
+    Example: Count of cross-site scripting attempts in a given month
+
+    .. math::
+
+        \begin{bmatrix}
+           \text{9,400} \\
+           \text{8,010} \\
+           \vdots \\
+           \text{8,200} \\
+        \end{bmatrix}
 
 #. **Vulnerability ("V")**
 
-    Description: whether a potential threat actually results in a loss,
-    with True being represented by 1 and False being represented by 0
+    Description: a vector of elements with each value representing the
+    probability that a potential threat actually results in a loss
 
-    Restrictions: must be exactly 0 or exactly 1
+    Restrictions: all elements must be between zero and one
 
-    Derivation: supplied directly, or `step function
-    <https://en.wikipedia.org/wiki/Step_function>`_ which is equal to 0 if
-    Control Strength is greater or equal to Threat Capability, and 1 if
-    Threat Capability is greater than Control Strength
+    Derivation: supplied directly, or via the following operation:
+    
+    .. math::
 
-    Example: 1 (True, indicating vulnerable)
+        \bar{V}
+        \;
+        \text{Where}
+        \;
+        V_{i}
+        =
+        \begin{cases}
+            1, & \text{if} \; \text{TC}_{i} \; \geq \text{CS}_{i}\\
+            0, & \text{if} \; \text{TC}_{i} \; \lt \text{CS}_{i}\\
+        \end{cases}
+
+    Or in other words:
+
+    For each simulation, see if Threat Capability is greater than Control
+    Strength. If TC is greater than CS, that simulation's value is 1.
+    Otherwise it is zero. After this vector of zeros and ones is created,
+    take the average of that vector. This number will be between zero and 
+    one, and will represent the percentage of the population in which TC 
+    was greater than CS (and by extension, which percentage of the
+    population we can expect to be vulnerable).
+
+    For example, say we have TCs:
+
+    .. math::
+
+        \begin{bmatrix}
+           0.60 \\
+           0.70 \\
+           0.10 \\
+        \end{bmatrix}
+    
+    And we have CSes:
+
+    .. math::
+
+        \begin{bmatrix}
+           0.55 \\
+           0.65 \\
+           0.75 \\
+        \end{bmatrix}
+
+    For item one, TC is .60 and CS is .55. and consequently our resulting
+    first item will be 1 (because it's vulnerable) For item two, TC is .70
+    and CS is .65, and consequently our resulting second item will be 1
+    (because it's vulnerable). For item 3, our TC is .10 and our CS is .75,
+    and consequently our resulting third item will be zero (because it's
+    not vulnerable. The resulting matrix will be:
+
+    .. math:
+
+        \begin{bmatrix}
+           1 \\
+           1 \\
+           0 \\
+        \end{bmatrix}
+
+    The average of this matrix is:
+
+    .. math:
+
+        \frac
+            {(1 + 1 + 0)}
+            {3}
+        =
+        .66
+    
+    Which in turn means our Vulnerability vector will be a lot like a
+    scalar value:
+
+    .. math:
+
+        \begin{bmatrix}
+           .66 \\
+           .66 \\
+           .66 \\
+        \end{bmatrix}
+
+    Example: the percentage of phishing attempts that result in loss
+
+    .. math::
+
+        \begin{bmatrix}
+           0.76 \\
+           0.89 \\
+           \vdots \\
+           0.72 \\
+        \end{bmatrix}
 
 #. **Contact Frequency ("C")**
 
@@ -337,29 +523,20 @@ from a curve with a mean of 50,000 and a standard deviation of 10,000.
 | 3          | 44,665 |
 +------------+--------+ 
 
-Second we will estimate our Vulnerability. Recall that V is simply whether
-or not an event results in a loss (which is represented as a 0 if no loss
-occurs, and a 1 if a loss occurs. We estimate that roughly 2/3 of attacks
-will succeed and turn into loss events. We will then generate three
-random 0 or 1 values with a ratio of .66.
-
-+------------------+
-| Probability of 1 |
-+==================+
-| .66              | 
-+------------------+
+Second we will estimate our Vulnerability. Recall that V is the probability
+of whether a loss occurs.
 
 **Generates random V values**
 
-+------------+---+
-| Simulation | V |
-+============+===+
-| 1          | 1 |
-+------------+---+
-| 2          | 0 |
-+------------+---+
-| 3          | 1 |
-+------------+---+ 
++------------+-----+
+| Simulation | V   |
++============+=====+
+| 1          | .66 |
++------------+-----+
+| 2          | .52 |
++------------+-----+
+| 3          | .68 |
++------------+-----+ 
 
 Third we will estimate our loss magnitude. Recall that LM is the amount of
 loss for each Loss Event (represented by a positive number). We estimate 

@@ -224,8 +224,8 @@ class FairModel(object):
         This takes input, feeds it to self._data_input.generate(), and
         updates the dependencies via self._tree.update_status(). The kwargs
         can be for normal (keywords `mean` and `stdev`), BetaPert (keywords
-        `low`, `mode`, `high`, and `gamma`), Bernoulli/binomial (keywords
-        `p`), or a constant (keywords `constant`).
+        `low`, `mode`, `high`, and `gamma`), , or a constant (keywords 
+        `constant`).
 
         Parameters
         ----------
