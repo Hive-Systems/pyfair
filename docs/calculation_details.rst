@@ -4,14 +4,20 @@ Calculation Details
 The nodes can be described as follows:
 
 #. **Risk ("R")**
+-----------------
 
-    Description: a vector of currency values/elements, which represent the
-    ultimate loss for a given time period
+    Description
+    ~~~~~~~~~~~
+    A vector of currency values/elements, which represent the ultimate loss
+    for a given time period
 
-    Restrictions: all elements must be positive
+    Restrictions
+    ~~~~~~~~~~~~
+    All elements must be positive
 
-    Derivation: multiply the Loss Event Frequency vector by the Loss
-    Magnitude vector
+    Derivation
+    ~~~~~~~~~~
+    Multiply the Loss Event Frequency vector by the Loss Magnitude vector
 
     .. math::
 
@@ -36,27 +42,39 @@ The nodes can be described as follows:
             \text{LM}_{m}
         \end{bmatrix}
 
-    
-    Example: For a given year the following dollar amounts:
+    Example
+    ~~~~~~~
+    For a given year, if we have the number of times a particular event
+    occurs (LEF) and the dollar losses associated with each of those
+    events (LM), we can multiply these together to derive the ultimate
+    dollar value amount lost (R).
 
-    .. math::
-
-        \begin{bmatrix}
-            \text{\$1,500,000} \\
-            \text{\$0} \\
-            \vdots \\
-            \text{\$527,000} \\
-        \end{bmatrix}
+    +------------+-----+--------+--------------+
+    | Simulation | LEF | LM     | R (LEF x LM) |
+    +============+=====+========+==============+
+    | 1          | 100 | $1,000 | $100,000     |
+    +------------+-----+--------+--------------+
+    | 2          | 100 | $2,000 | $200,000     |
+    +------------+-----+--------+--------------+
+    | 3          | 200 | $3,000 | $600,000     |
+    +------------+-----+--------+--------------+
 
 #. **Loss Event Frequency ("LEF")**
+-----------------------------------
 
-    Description: a vector of elements which represent the number of times a 
-    particular loss occurs during a given time frame (generally one year)
+    Description
+    ~~~~~~~~~~~
+    A vector of elements which represent the number of times a particular 
+    loss occurs during a given time frame (generally one year)
 
-    Restrictions: all elements must be positive
+    Restrictions
+    ~~~~~~~~~~~~
+    All elements must be positive
 
-    Derivation: supplied directly, or multiply the Threat Event Frequency 
-    vector by the Vulnerability vector
+    Derivation
+    ~~~~~~~~~~
+    Supplied directly, or multiply the Threat Event Frequency vector by the
+    Vulnerability vector
 
     .. math::
 
@@ -81,20 +99,37 @@ The nodes can be described as follows:
             \text{V}_{m}
         \end{bmatrix}
 
-    Example: Count of breaches resulting in data loss (for given year):
+    Example
+    ~~~~~~~
+    For a given year, if we have the number of times a particular threat
+    occurs (TEF), and the percentage of times we can expect that threat to
+    turn into a loss (V), we can multiply these together to derive the
+    number of losses that will occur.
 
-    .. math::
+    +------------+------+------+---------------+
+    | Simulation | TEF  | V    | LEF (TEF x V) |
+    +============+======+======+===============+
+    | 1          | 0.50 | 0.50 | 0.25          |
+    +------------+------+------+---------------+
+    | 2          | 200  | 0.25 | 50            |
+    +------------+------+------+---------------+
+    | 3          | 300  | 1.00 | 300           |
+    +------------+------+------+---------------+
 
-        \begin{bmatrix}
-            \text{5} \\
-            \text{1} \\
-            \vdots \\
-            \text{10} \\
-        \end{bmatrix}
+    .. note::
+
+        Though intended to represent the discrete number of events, TEF and 
+        LEF are not rounded to the nearest integer. This allows for
+        the modeling of events that happen infrequently. For instance, if
+        we are running a simulation for a single year, one might model a
+        once a century occurance using a TEF of 0.01.
 
 #. **Threat Event Frequency ("TEF")**
+-------------------------------------
 
-    Description: a vector of elements representing the number of times a 
+    Description
+    ~~~~~~~~~~~
+    A vector of elements representing the number of times a 
     particular threat occurs, whether or not it results in a loss
 
     Restrictions: all elements must be positive
