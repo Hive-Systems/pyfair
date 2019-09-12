@@ -3,8 +3,8 @@ Calculation Details
 
 The nodes can be described as follows:
 
-#. **Risk ("R")**
------------------
+**Risk ("R")**
+--------------
 
     Description
     ~~~~~~~~~~~
@@ -45,9 +45,9 @@ The nodes can be described as follows:
     Example
     ~~~~~~~
     For a given year, if we have the number of times a particular event
-    occurs (LEF) and the dollar losses associated with each of those
-    events (LM), we can multiply these together to derive the ultimate
-    dollar value amount lost (R).
+    occurs (Loss Event Frequency/LEF) and the dollar losses associated with 
+    each of those events (Loss Magnitude/LM), we can multiply these 
+    together to derive the ultimate dollar value amount lost (Risk/R).
 
     +------------+-----+--------+--------------+
     | Simulation | LEF | LM     | R (LEF x LM) |
@@ -59,8 +59,8 @@ The nodes can be described as follows:
     | 3          | 200 | $3,000 | $600,000     |
     +------------+-----+--------+--------------+
 
-#. **Loss Event Frequency ("LEF")**
------------------------------------
+**Loss Event Frequency ("LEF")**
+--------------------------------
 
     Description
     ~~~~~~~~~~~
@@ -102,9 +102,10 @@ The nodes can be described as follows:
     Example
     ~~~~~~~
     For a given year, if we have the number of times a particular threat
-    occurs (TEF), and the percentage of times we can expect that threat to
-    turn into a loss (V), we can multiply these together to derive the
-    number of losses that will occur.
+    occurs (Threat Event Frequency/TEF), and the percentage of times we can
+    expect that threat to turn into a loss (Vulnerability/V), we can
+    multiply these together to derive the number of losses that will occur
+    (Loss Event Frequency/LEF).
 
     +------------+------+------+---------------+
     | Simulation | TEF  | V    | LEF (TEF x V) |
@@ -118,24 +119,28 @@ The nodes can be described as follows:
 
     .. note::
 
-        Though intended to represent the discrete number of events, TEF and 
+        Though intended to represent a discrete number of events, TEF and 
         LEF are not rounded to the nearest integer. This allows for
         the modeling of events that happen infrequently. For instance, if
         we are running a simulation for a single year, one might model a
         once a century occurance using a TEF of 0.01.
 
-#. **Threat Event Frequency ("TEF")**
--------------------------------------
+**Threat Event Frequency ("TEF")**
+----------------------------------
 
     Description
     ~~~~~~~~~~~
-    A vector of elements representing the number of times a 
-    particular threat occurs, whether or not it results in a loss
+    A vector of elements representing the number of times a particular 
+    threat occurs, whether or not it results in a loss
 
-    Restrictions: all elements must be positive
+    Restrictions
+    ~~~~~~~~~~~~
+    All elements must be positive
 
-    Derivation: supplied directly, or multiply the Contact Frequency vector
-    and the Probability of Action vector
+    Derivation
+    ~~~~~~~~~~
+    Supplied directly, or multiply the Contact Frequency vector and the 
+    Probability of Action vector
 
     .. math::
 
@@ -160,25 +165,39 @@ The nodes can be described as follows:
             \text{A}_{m}
         \end{bmatrix}
 
-    Example: Count of cross-site scripting attempts in a given month
+    Example
+    ~~~~~~~
+    For a given year, if we have the number of times an actor comes in
+    contact with an asset (Contact Frequency/C), and the probability that
+    the actor will attempt to act of that contact (Probability of Action,
+    P), we can multiply these together to derive the number of times that
+    a particular threat will occur (Threat Event Freuency/TEF)
+    
+    +------------+-------+------+---------------+
+    | Simulation | C     | A    | TEF (C x A)   |
+    +============+=======+======+===============+
+    | 1          | 1,000 | 0.50 | 500           |
+    +------------+=------+------+---------------+
+    | 2          | 2,000 | 0.25 | 500           |
+    +------------+-------+------+---------------+
+    | 3          | 3,000 | 1.00 | 3,000         |
+    +------------+-------+------+---------------+
 
-    .. math::
+**Vulnerability ("V")**
+---------------------~~
 
-        \begin{bmatrix}
-           \text{9,400} \\
-           \text{8,010} \\
-           \vdots \\
-           \text{8,200} \\
-        \end{bmatrix}
+    Description
+    ~~~~~~~~~~~
+    A vector of elements with each value representing the probability that
+    a potential threat actually results in a loss
 
-#. **Vulnerability ("V")**
+    Restrictions
+    ~~~~~~~~~~~~
+    All elements must be from 0.0 to 1.0
 
-    Description: a vector of elements with each value representing the
-    probability that a potential threat actually results in a loss
-
-    Restrictions: all elements must be from 0.0 to 1.0
-
-    Derivation: supplied directly, or via the following operation:
+    Derivation
+    ~~~~~~~~~~
+    Supplied directly, or via the following operation:
     
     .. math::
 
@@ -193,155 +212,244 @@ The nodes can be described as follows:
             0, & \text{if} \; \text{TC}_{i} \; \lt \text{CS}_{i}\\
         \end{cases}
 
-    Or in other words:
-
-    For each simulation, see if Threat Capability is greater than Control
-    Strength. If TC is greater than CS, that simulation's value is 1.
-    Otherwise it is zero. After this vector of zeros and ones is created,
-    take the average of that vector. This number will be between zero and 
-    one, and will represent the percentage of the population in which TC 
-    was greater than CS (and by extension, which percentage of the
-    population we can expect to be vulnerable).
-
-    For example, say we have TCs:
+    Or in more concrete terms, we have a vector of THreat Capabilities and
+    a vector of Control Strengths. For each element of the vector, we
+    determine if Threat Capability is greater than Control Strength. In
+    other words, 1 is where the threat overwhelms the control, and 0 is
+    where the control withstands the threat.
 
     .. math::
 
-        \begin{bmatrix}
-           \text{V}_{1} \\
-           \text{V}_{2} \\
-           \vdots \\
-           \text{V}_{m}
-        \end{bmatrix}
+        \text{TC}
         =
         \begin{bmatrix}
-           \text{TC}_{1} \\
-           \text{TC}_{2} \\
-           \vdots \\
-           \text{TC}_{m}
+           0.60 \\
+           0.70 \\
+           0.10 \\
         \end{bmatrix}
-        \times
+        \quad
+        \text{CS}
+        =
         \begin{bmatrix}
-           \text{CS}_{1} \\
-           \text{CS}_{2} \\
-           \vdots \\
-           \text{CS}_{m}
+           0.55 \\
+           0.65 \\
+           0.75 \\
         \end{bmatrix}
-
-    For item one, TC is .60 and CS is .55. and consequently our resulting
-    first item will be 1 (because it's vulnerable) For item two, TC is .70
-    and CS is .65, and consequently our resulting second item will be 1
-    (because it's vulnerable). For item 3, our TC is .10 and our CS is .75,
-    and consequently our resulting third item will be zero (because it's
-    not vulnerable. The resulting matrix will be made of 0.66 values, 
-    which in turn means our Vulnerability vector will be a lot like a
-    scalar value.
-
-    Example: the percentage of phishing attempts that result in loss:
+        \quad
+        \overrightarrow{Step Function}
+        \quad
+        \text{Intermediate}
+        =
+        \begin{bmatrix}
+           1 \\
+           1 \\
+           0 \\
+        \end{bmatrix}
+    
+    We then analyze this intermediate array of ones and zeros, and obtain
+    its average. The represents the percent of times in our simulations
+    that the threat overcame the control.
 
     .. math::
 
+        \text{Intermediate}
+        =
         \begin{bmatrix}
-           0.76 \\
-           0.89 \\
-           \vdots \\
-           0.72 \\
+           1 \\
+           1 \\
+           0 \\
+        \end{bmatrix}
+        \quad
+        \overrightarrow{Average}
+        \quad
+        \frac
+            {(1 + 1 + 0)}
+            {3}
+        =
+        0.66
+
+    This is then assigned to a vector for the sake of computational
+    consistency.
+
+    .. math::
+
+    \text{V}
+        =
+        \begin{bmatrix}
+           0.66 \\
+           0.66 \\
+           0.66 \\
         \end{bmatrix}
 
-#. **Contact Frequency ("C")**
+    Example
+    -------
+    For a given year, if we have the relative strengths of attackers
+    (Threat Capability/TC) and the relative strengths of our controls
+    (Control Strength/CS), we can run a step function and then average the
+    result to obtain a percentage of times we expect a threat to overcome
+    a control (Vulnerability/V).
 
-    Description: a vector with elements representing the number of threat 
-    actor contacts that could potentially  yield a threat within a given 
+    +------------+------+------+------+
+    | Simulation | TC   | CS   | V    |
+    +============+======+======+======+
+    | 1          | 0.60 | 0.50 | 0.33 |
+    +------------+=-----+------+------+
+    | 2          | 0.10 | 0.50 | 0.33 |
+    +------------+------+------+------+
+    | 3          | 0.30 | 0.40 | 0.33 |
+    +------------+------+------+------+
+
+    .. note::
+
+        For the purposes of this calculation, TC must be estimated relative
+        to CS, and CS must be estiamted relative to TC. They are
+        essentially just rough guesses to determine the percentage of
+        threats that will fail or succeed (and consequently have no
+        independent meaning apart from each other.
+
+**Contact Frequency ("C")**
+---------------------------
+
+    Description
+    ~~~~~~~~~~~
+    A vector with elements representing the number of threat 
+    actor contacts that could potentially yield a threat within a given 
     timeframe
 
-    Restrictions: all elements must be a positive number
+    Restrictions
+    ~~~~~~~~~~~~
+    All elements must be a positive number
 
-    Derivation: None (this must be supplied, not calculated)
+    Derivation
+    ~~~~~~~~~~
+    None (this must be supplied, not calculated)
 
-    Example: For a given year, the number of ports scans:
+    Example
+    ~~~~~~~
+    For a given year, the number of contacts that can potentially yield an
+    attack, and in turn can potentially yield a loss (Contact Frequency/C).
 
-   .. math::
+    +------------+-----------+
+    | Simulation | C         |
+    +============+===========+
+    | 1          | 5,000,000 | 
+    +------------+=----------+
+    | 2          | 3,000,000 |
+    +------------+-----------+
+    | 3          | 2,500,000 |
+    +------------+-----------+
 
-        \begin{bmatrix}
-           12,000 \\
-           10,150 \\
-           \vdots \\
-           13,000 \\
-        \end{bmatrix}
+**Probability of Action ("A")**
+-------------------------------
 
-#. **Probability of Action ("A")**
+    Description
+    ~~~~~~~~~~~
+    A vector with elements representing the probability that a threat actor
+    will proceed after coming into contact with an organization 
 
-    Description: a vector with elements representing the probability that 
-    a threat actor will proceed after coming into contact with an
-    organization 
+    Restrictions
+    ------------
+    All elements must be number from 0.0 to 1.0
 
-    Restrictions: all elements must be number from 0.0 to 1.0
+    Derivation
+    ----------
+    None (this must be supplied, not calculated)
 
-    Derivation: None (this must be supplied, not calculated)
+    Example
+    -------
+    The probability that a contact results in action being taken against a
+    resource (Probability of Action/P)
 
-    Example: the percent of times that an actor will proceed to attack an
-    open SSH port:
+    +------------+------+
+    | Simulation | P    |
+    +============+======+
+    | 1          | 0.95 | 
+    +------------+------+
+    | 2          | 0.90 |
+    +------------+------+
+    | 3          | 0.80 |
+    +------------+------+
 
-    .. math::
+**Threat Capability ("TC")**
+----------------------------
 
-        \begin{bmatrix}
-           0.45 \\
-           0.49 \\
-           \vdots \\
-           0.46 \\
-        \end{bmatrix} 
-
-#. **Threat Capability ("TC")**
-
-    Description: a vector of unitless elements that describe the relative 
+    Description
+    ~~~~~~~~~~~
+    A vector of unitless elements that describe the relative 
     level of expertise and resources of a threat actor (relative to a
     Control Strength)
 
-    Restrictions: all elements must be number from 0.0 to 1.0
+    Restrictions
+    ~~~~~~~~~~~~
+    All elements must be number from 0.0 to 1.0
 
-    Derivation: None (this must be supplied, not calculated)
+    Derivation
+    ~~~~~~~~~~
+    None (this must be supplied, not calculated)
 
-    Example: the relative strengths of threat actors:
+    Example
+    -------
+    The relative strength of a threat actor (Threat Capavility/C) as it
+    relates to the relative strength of the controls (Control Strength/CS)
 
-   .. math::
+    +------------+------+
+    | Simulation | TC   |
+    +============+======+
+    | 1          | 0.75 | 
+    +------------+------+
+    | 2          | 0.60 |
+    +------------+------+
+    | 3          | 0.70 |
+    +------------+------+
 
-        \begin{bmatrix}
-           0.99 \\
-           0.95 \\
-           \vdots \\
-           0.80 \\
-        \end{bmatrix}
+**Control Strength ("CS")**
+---------------------------
 
-#. **Control Strength ("CS")**
+    Description
+    ~~~~~~~~~~~
+    A vector of unitless elements that describe the relative strength of a 
+    given control (relative to the Threat Capability of a given actor)
 
-    Description: a vector of unitless elements that describe the relative 
-    strength of a given control (relative to the Threat Capability of a 
-    given actor)
+    Restrictions
+    ~~~~~~~~~~~~
+    All elements must be a number from 0.0 to 1.0
 
-    Restrictions: must be a number from 0.0 to 1.0
+    Derivation
+    ~~~~~~~~~~
+    None (this must be supplied, not calculated)
 
-    Derivation: None (this must be supplied, not calculated)
+    Example
+    -------
+    The relative strength of a set of controls (Control Strength/CS) as it
+    relates to the relative strength of a threat actor (Threat
+    Capability/TC)
 
-    Example: the relative strength of a particular control:
+    +------------+------+
+    | Simulation | TC   |
+    +============+======+
+    | 1          | 0.15 | 
+    +------------+------+
+    | 2          | 0.10 |
+    +------------+------+
+    | 3          | 0.05 |
+    +------------+------+
 
-   .. math::
+**Loss Magnitude ("LM")**
+-------------------------
 
-        \begin{bmatrix}
-           0.80 \\
-           0.81 \\
-           \vdots \\
-           0.82 \\
-        \end{bmatrix}    
+    Description
+    ~~~~~~~~~~~
+    A vector of currency values describing the total loss for a single Loss
+    Event
 
-#. **Loss Magnitude ("LM")**
+    Restrictions
+    ~~~~~~~~~~~~
+    All elements must be positive
 
-    Description: a vector of currency values describing the total loss for
-    a given Loss Event
-
-    Restrictions: all elements must be positive
-
-    Derivation: supplied directly, or the sum of the Primary Loss vector 
-    and Secondary Loss vector
+    Derivation
+    ~~~~~~~~~~
+    Supplied directly, or the sum of the Primary Loss vector and Secondary
+    Loss vector
 
     .. math::
 
@@ -366,36 +474,67 @@ The nodes can be described as follows:
             \text{SL}_{m}
         \end{bmatrix}
 
-    Example: the monetary value for a successful breach:
+    Example
+    ~~~~~~~
+    For a given loss, if we have the total dollar amount of a primary loss
+    (Primary Loss/PL), and the total dollar amount of a secondary loss
+    (Secondary Loss/SL), we can obtain the total amount (Loss Magnitude/LM)
+    by adding PL and SL.
 
-    .. math::
+    +------------+------+-----+--------------+
+    | Simulation | PL   | SL  | LM (PL + SL) |
+    +============+======+=====+==============+
+    | 1          | $120 | $80 | $200         |
+    +------------+------+-----+--------------+
+    | 2          | $210 | $5  | $215         |
+    +------------+------+-----+--------------+
+    | 3          | $200 | $60 | $260         |
+    +------------+------+-----+--------------+
 
-        \begin{bmatrix}
-            $1,000,110 \\
-            $2,001,968 \\
-            \vdots \\
-            $1,523,100
-        \end{bmatrix}
+**Primary Loss ("PL")**
+-----------------------
 
-#. **Primary Loss ("PL")**
+    Description
+    ~~~~~~~~~~~
+    A vector of currency losses directly attributable to the threat
 
-    Description: the amount of the loss directly attributable to the threat
+    Restrictions
+    ~~~~~~~~~~~~
+    All elements must be positive
 
-    Restrictions: must be a positive number
+    Derivation
+    ~~~~~~~~~~
+    None (this must be supplied, not calculated)
 
-    Derivation: None (this must be supplied, not calculated)
+    Example
+    ~~~~~~~
+    The amount of the loss directly attributable to the threat (Primary
+    Loss/PL)
 
-    Example: 25,000,000 (dollars in funds stolen)
+    +------------+------------+
+    | Simulation | PL         |
+    +============+============+
+    | 1          | $5,000,000 | 
+    +------------+------------+
+    | 2          | $3,500,000 |
+    +------------+------------+
+    | 3          | $2,500,000 |
+    +------------+------------+
 
-#. **Secondary Loss ("SL")**
+**Secondary Loss ("SL")**
+-------------------------
 
-    Description: the amount of loss incurred as a secondary consequence of
-    the loss
+    Description
+    ~~~~~~~~~~~
+    A vector of currency losses attributable to secondary factors
 
-    Restrictions: must be a positive number
+    Restrictions
+    ~~~~~~~~~~~~
+    All elements must be positive
 
-    Derivation: supplied directly, or the aggregate sum of the Secondary
-    Loss Event Frequency and Secondary Loss Event Magnitude vectors
+    Derivation
+    ~~~~~~~~~~
+    Supplied directly, or the aggregate sum of the Secondary Loss Event Frequency and Secondary Loss Event Magnitude vectors
     multiplied together
 
     Example: 5,000,000 (dollars worth of data research/cleanup post-breach)
