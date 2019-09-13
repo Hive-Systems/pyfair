@@ -143,7 +143,6 @@ class FairModel(object):
         >>> model = FairModel.read_json(json_text)
 
         """
-        
         data = json.loads(param_json)
         # Check type of JSON
         if data['type'] != 'FairModel':
@@ -356,6 +355,7 @@ class FairModel(object):
         return self
 
     def _standardize_target(self, target):
+        """A function to change target abbreviations into full names"""
         if target in self._target_map.keys():
             mapped_target = self._target_map[target]
         else:

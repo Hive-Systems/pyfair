@@ -184,7 +184,7 @@ The nodes can be described as follows:
     +------------+-------+------+---------------+
 
 **Vulnerability ("V")**
----------------------~~
+-----------------------
 
     Description
     ~~~~~~~~~~~
@@ -273,7 +273,7 @@ The nodes can be described as follows:
 
     .. math::
 
-    \text{V}
+        \text{V}
         =
         \begin{bmatrix}
            0.66 \\
@@ -293,7 +293,7 @@ The nodes can be described as follows:
     | Simulation | TC   | CS   | V    |
     +============+======+======+======+
     | 1          | 0.60 | 0.50 | 0.33 |
-    +------------+=-----+------+------+
+    +------------+------+------+------+
     | 2          | 0.10 | 0.50 | 0.33 |
     +------------+------+------+------+
     | 3          | 0.30 | 0.40 | 0.33 |
@@ -534,10 +534,46 @@ The nodes can be described as follows:
 
     Derivation
     ~~~~~~~~~~
-    Supplied directly, or the aggregate sum of the Secondary Loss Event Frequency and Secondary Loss Event Magnitude vectors
-    multiplied together
+    Supplied directly, or the row sum of the Secondary Loss Event
+    Frequency and Secondary Loss Event Magnitude vectors multiplied
+    together on an entrywise basis.
 
-    Example: 5,000,000 (dollars worth of data research/cleanup post-breach)
+    .. math::
+
+        \begin{bmatrix} 
+             \text{SL}_{1} \\
+             \text{SL}_{1} \\
+             \vdots        \\
+             \text{SL}_{1} \\
+        \end{bmatrix}
+        \quad
+        =
+        \quad
+            \sum\limits^n_{j=1}
+        \quad
+        \left(
+            \quad
+            \begin{bmatrix} 
+                 \text{SLEF}_{1,1} & \text{SLEF}_{1,2} & \dots  & \text{SLEF}_{1,n} \\
+                 \text{SLEF}_{2,1} & \text{SLEF}_{2,2} & \dots  & \text{SLEF}_{2,n} \\
+                 \vdots            & \vdots            & \ddots & \vdots \\
+                 \text{SLEF}_{m,1} & \text{SLEF}_{m,2} & \dots  & \text{SLEF}_{m,n} \\
+            \end{bmatrix}
+            \quad
+            \circ
+            \quad
+            \begin{bmatrix} 
+                 \text{SLEM}_{1,1} & \text{SLEM}_{1,2} & \dots  & \text{SLEM}_{1,n} \\
+                 \text{SLEM}_{2,1} & \text{SLEM}_{2,2} & \dots  & \text{SLEM}_{2,n} \\
+                 \vdots            & \vdots            & \ddots & \vdots \\
+                 \text{SLEM}_{m,1} & \text{SLEM}_{m,2} & \dots  & \text{SLEM}_{m,n} \\
+            \end{bmatrix}
+            \quad
+        \right)
+
+    Example
+    ~~~~~~~
+    5,000,000 (dollars worth of data research/cleanup post-breach)
 
 #. **Secondary Loss Event Frequency ("SLEF")**
 
@@ -558,9 +594,3 @@ The nodes can be described as follows:
     Derivation: None (this must be supplied, not calculated)
 
     Example: [100, 900, 200] (magnitude of loss for 3 loss types)
-
-.. note::
-
-    As implemented by pyfair, Secondary Loss is an aggregate field that is
-    create using a vectors of values. This is an exception to the single
-    value per simulation condition we discussed earlier.
