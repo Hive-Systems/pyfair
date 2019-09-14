@@ -534,9 +534,9 @@ The nodes can be described as follows:
 
     Derivation
     ~~~~~~~~~~
-    Supplied directly, or the row sum of the Secondary Loss Event
-    Frequency and Secondary Loss Event Magnitude vectors multiplied
-    together on an entrywise basis.
+    Supplied directly, or the rowwise sum of 1) the Secondary Loss Event
+    Frequency vector and 2) the Secondary Loss Event Magnitude vector
+    multiplied together on an elementwise basis.
 
     .. math::
 
@@ -549,7 +549,7 @@ The nodes can be described as follows:
         \quad
         =
         \quad
-            \sum\limits^n_{j=1}
+        \sum\limits^n_{j=1}
         \quad
         \left(
             \quad
@@ -573,24 +573,139 @@ The nodes can be described as follows:
 
     Example
     ~~~~~~~
-    5,000,000 (dollars worth of data research/cleanup post-breach)
+    For a given model, we can have a matrix of secondary loss
+    proababilities. Each row can represent a simulation and each column can
+    represent a loss type. In this example below we have three different 
+    probability columns for different types of probability loss. E.g. the 
+    probabilities of loss for simulation 1 are 0.95, 0.05, and 1.00.
 
-#. **Secondary Loss Event Frequency ("SLEF")**
+    +------------+-------------+--------------+--------------+
+    | Simulation | Prob Loss A | Prob Loss B  | Prob Loss C  |
+    +============+=============+==============+==============+
+    | 1          | 0.95        | 0.05         | 1.00         |
+    +------------+-------------+--------------+--------------+
+    | 2          | 0.90        | 0.10         | 1.00         |
+    +------------+-------------+--------------+--------------+
+    | 3          | 0.50        | 0.10         | 0.80         |
+    +------------+-------------+--------------+--------------+
 
-    Description: the probability that a given secondary loss could occur
+    For a given model, we can also have the dollar amounts associated with
+    these individual loss types.
 
-    Restrictions: must be a vector of numbers from 0.0 to 1.0
+    +------------+-------------+--------------+--------------+
+    | Simulation | $ Loss A    | $ Loss B     | $ Loss C     |
+    +============+=============+==============+==============+
+    | 1          | $1,000      | $100         | $50          |
+    +------------+-------------+--------------+--------------+
+    | 2          | $2,000      | $50          | $90          |
+    +------------+-------------+--------------+--------------+
+    | 3          | $1,500      | $30          | $25          |
+    +------------+-------------+--------------+--------------+
 
-    Derivation: None (this must be supplied, not calculated)
+    This allows us to match up these matrices on an element-by-element
+    basis and say something like:
 
-    Example: [.25, .80, 1.0] (probabilities of loss for 3 loss types)
+    Cell 1A from table 1 is 0.95 and cell 1A from table 2 is $1,000.
+    Multiplying (Sim 1, Prob Loss A) by (Sim 1, $ Loss A) yields $950. We
+    can put this result in table 3.
 
-#. **Secondary Loss Event Magnitude ("SLEM")**
+    +------------+------------------+
+    | Simulation | Secondary Loss A |
+    +============+==================+
+    | 1          | $950             |
+    +------------+------------------+
 
-    Description: the amount of the secondary loss that could occur
+    If we do this for every cell in tables 1 and 2, we can a new table that
+    has the secondary losses for each loss type and each simulation.
 
-    Restrictions: must be a vector of positive numbers
+    +------------+--------+--------+--------+
+    | Simulation | SL (A) | SL (B) | SL (C) |
+    +============+========+========+========+
+    | 1          | $950   | $5     | $50    |
+    +------------+--------+--------+--------+
+    | 2          | $1,800 | $5     | $90    |
+    +------------+--------+--------+--------+
+    | 3          | $750   | $3     | $20    |
+    +------------+--------+--------+--------+
 
-    Derivation: None (this must be supplied, not calculated)
+    Finally, it is possible to add up each row to get the total amount of
+    Secondary Loss for a given simulation. This Secondary Loss vector can
+    then be added to the Primary Loss vector to do further calculations.
 
-    Example: [100, 900, 200] (magnitude of loss for 3 loss types)
+    +------------+----------------------+
+    | Simulation | Total Secondary Loss |
+    +============+======================+
+    | 1          | $1,005               |
+    +------------+----------------------+
+    | 2          | $1,895               |
+    +------------+----------------------+
+    | 3          | $773                 |
+    +------------+----------------------+
+
+**Secondary Loss Event Frequency ("SLEF")**
+-------------------------------------------
+
+    Description
+    ~~~~~~~~~~~
+    A matrix of probabilities with each row representing a single
+    simulation, and each column represents the probability that a
+    particular secondary loss type will occur
+
+    Restrictions
+    ------------
+    All matrix elements must be number from 0.0 to 1.0
+
+    Derivation
+    ----------
+    None (this must be supplied, not calculated)
+
+    Example
+    ~~~~~~~
+    For a given model, you may have three simulations and three separate
+    different loss types. This would give you three different probabilities
+    for each simulation, and three different simulations for each
+    probability type.
+
+    +------------+-------------+--------------+--------------+
+    | Simulation | Prob Loss A | Prob Loss B  | Prob Loss C  |
+    +============+=============+==============+==============+
+    | 1          | 0.95        | 0.05         | 1.00         |
+    +------------+-------------+--------------+--------------+
+    | 2          | 0.90        | 0.10         | 1.00         |
+    +------------+-------------+--------------+--------------+
+    | 3          | 0.50        | 0.10         | 0.80         |
+    +------------+-------------+--------------+--------------+
+
+**Secondary Loss Event Magnitude ("SLEM")**
+-------------------------------------------
+
+    Description
+    ~~~~~~~~~~~
+    A matrix of currency amounts with each row representing a single
+    simulation, and each column represents the the amount of loss for amount
+    particular loss type
+
+    Restrictions
+    ------------
+    All matrix elements must be positive
+
+    Derivation
+    ----------
+    None (this must be supplied, not calculated)
+
+    Example
+    ~~~~~~~
+    For a given model, you may have three simulations and three separate
+    different loss types. This would give you three different dollar
+    amounts for each simulation, and three different simulations for each
+    dollar amount type.
+
+    +------------+-------------+--------------+--------------+
+    | Simulation | $ Loss A    | $ Loss B     | $ Loss C     |
+    +============+=============+==============+==============+
+    | 1          | $1,000      | $100         | $50          |
+    +------------+-------------+--------------+--------------+
+    | 2          | $2,000      | $50          | $90          |
+    +------------+-------------+--------------+--------------+
+    | 3          | $1,500      | $30          | $25          |
+    +------------+-------------+--------------+--------------+
