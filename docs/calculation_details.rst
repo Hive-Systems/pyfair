@@ -6,58 +6,58 @@ The nodes can be described as follows:
 **Risk ("R")**
 --------------
 
-    Description
-    ~~~~~~~~~~~
-    A vector of currency values/elements, which represent the ultimate loss
-    for a given time period
+Description
+~~~~~~~~~~~
+A vector of currency values/elements, which represent the ultimate loss
+for a given time period
 
-    Restrictions
-    ~~~~~~~~~~~~
-    All elements must be positive
+Restrictions
+~~~~~~~~~~~~
+All elements must be positive
 
-    Derivation
-    ~~~~~~~~~~
-    Multiply the Loss Event Frequency vector by the Loss Magnitude vector
+Derivation
+~~~~~~~~~~
+Multiply the Loss Event Frequency vector by the Loss Magnitude vector
 
-    .. math::
+.. math::
 
-        \begin{bmatrix}
-            \text{R}_{1} \\
-            \text{R}_{2} \\
-            \vdots \\
-            \text{R}_{m}
-        \end{bmatrix}
-        =
-        \begin{bmatrix}
-            \text{LEF}_{1} \\
-            \text{LEF}_{2} \\
-            \vdots \\
-            \text{LEF}_{m}
-        \end{bmatrix}
-        \times
-        \begin{bmatrix}
-            \text{LM}_{1} \\
-            \text{LM}_{2} \\
-            \vdots \\
-            \text{LM}_{m}
-        \end{bmatrix}
+    \begin{bmatrix}
+        \text{R}_{1} \\
+        \text{R}_{2} \\
+        \vdots \\
+        \text{R}_{m}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \text{LEF}_{1} \\
+        \text{LEF}_{2} \\
+        \vdots \\
+        \text{LEF}_{m}
+    \end{bmatrix}
+    \times
+    \begin{bmatrix}
+        \text{LM}_{1} \\
+        \text{LM}_{2} \\
+        \vdots \\
+        \text{LM}_{m}
+    \end{bmatrix}
 
-    Example
-    ~~~~~~~
-    For a given year, if we have the number of times a particular event
-    occurs (Loss Event Frequency/LEF) and the dollar losses associated with 
-    each of those events (Loss Magnitude/LM), we can multiply these 
-    together to derive the ultimate dollar value amount lost (Risk/R).
+Example
+~~~~~~~
+For a given year, if we have the number of times a particular event
+occurs (Loss Event Frequency/LEF) and the dollar losses associated with 
+each of those events (Loss Magnitude/LM), we can multiply these 
+together to derive the ultimate dollar value amount lost (Risk/R).
 
-    +------------+-----+--------+--------------+
-    | Simulation | LEF | LM     | R (LEF x LM) |
-    +============+=====+========+==============+
-    | 1          | 100 | $1,000 | $100,000     |
-    +------------+-----+--------+--------------+
-    | 2          | 100 | $2,000 | $200,000     |
-    +------------+-----+--------+--------------+
-    | 3          | 200 | $3,000 | $600,000     |
-    +------------+-----+--------+--------------+
++------------+-----+--------+--------------+
+| Simulation | LEF | LM     | R (LEF x LM) |
++============+=====+========+==============+
+| 1          | 100 | $1,000 | $100,000     |
++------------+-----+--------+--------------+
+| 2          | 100 | $2,000 | $200,000     |
++------------+-----+--------+--------------+
+| 3          | 200 | $3,000 | $600,000     |
++------------+-----+--------+--------------+
 
 **Loss Event Frequency ("LEF")**
 --------------------------------
@@ -123,7 +123,7 @@ The nodes can be described as follows:
         LEF are not rounded to the nearest integer. This allows for
         the modeling of events that happen infrequently. For instance, if
         we are running a simulation for a single year, one might model a
-        once a century occurance using a TEF of 0.01.
+        once a century occurance using a LEF/TEF of 0.01.
 
 **Threat Event Frequency ("TEF")**
 ----------------------------------
@@ -177,7 +177,7 @@ The nodes can be described as follows:
     | Simulation | C     | A    | TEF (C x A)   |
     +============+=======+======+===============+
     | 1          | 1,000 | 0.50 | 500           |
-    +------------+=------+------+---------------+
+    +------------+-------+------+---------------+
     | 2          | 2,000 | 0.25 | 500           |
     +------------+-------+------+---------------+
     | 3          | 3,000 | 1.00 | 3,000         |
