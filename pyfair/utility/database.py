@@ -42,21 +42,21 @@ class FairDatabase(object):
     def _initialize(self):
         """Initialize database with tables if necessary."""
         with sqlite3.connect(self._path) as conn:
-            conn.execute('''CREATE TABLE IF NOT EXISTS models (
+            conn.execute("""CREATE TABLE IF NOT EXISTS models (
                 uuid string,
                 name string,
                 creation_date text NOT NULL,
                 json string NOT NULL,
                 CONSTRAINT model_pk PRIMARY KEY (uuid));
-            ''')
-            conn.execute('''CREATE TABLE IF NOT EXISTS results (
+            """)
+            conn.execute("""CREATE TABLE IF NOT EXISTS results (
                 uuid string,
                 mean real NOT NULL,
                 stdev real NOT NULL,
                 min real NOT NULL,
                 max real NOT NULL,
                 CONSTRAINT results_pk PRIMARY KEY (uuid));
-            ''')
+            """)
 
     def _dict_factory(self, cursor, row):
         """Convenience function for sqlite queries"""
@@ -116,7 +116,7 @@ class FairDatabase(object):
             return model
 
     def _load_uuid(self, uuid):
-        '''Load model or metamodel based on ID'''
+        """Load model or metamodel based on ID"""
         # Get models and metamodels
         with sqlite3.connect(self._path) as conn:
             conn.row_factory = self._dict_factory
@@ -166,7 +166,7 @@ class FairDatabase(object):
             cursor = conn.cursor()
             # Write model data
             cursor.execute(
-                '''INSERT OR REPLACE INTO models VALUES(?, ?, ?, ?)''',
+                """INSERT OR REPLACE INTO models VALUES(?, ?, ?, ?)""",
                 (
                     meta['model_uuid'], 
                     meta['name'], 
@@ -176,7 +176,7 @@ class FairDatabase(object):
             )
             # Write cached results
             cursor.execute(
-                '''INSERT OR REPLACE INTO results VALUES(?, ?, ?, ?, ?)''',
+                """INSERT OR REPLACE INTO results VALUES(?, ?, ?, ?, ?)""",
                 (
                     meta['model_uuid'], 
                     results.mean(axis=0),

@@ -29,7 +29,7 @@ class TestFairDependencyTree(unittest.TestCase):
         self.assertTrue(tree.calculation_completed())   
 
     def test_downward_propogation(self):
-        '''Ensure propogation up and down the tree works'''
+        """Ensure propogation up and down the tree works"""
         tree = FairDependencyTree()
         # The supply two nodes
         tree.update_status('Loss Event Frequency', 'Supplied')
@@ -57,7 +57,7 @@ class TestFairDependencyTree(unittest.TestCase):
             self.assertEqual(statuses[node], 'Not Required')
 
     def test_upward_propagation(self):
-        '''Ensure upward calculation propogation works'''
+        """Ensure upward calculation propogation works"""
         tree = FairDependencyTree()
         # The supply three nodes
         tree.update_status('Loss Event Frequency', 'Supplied')

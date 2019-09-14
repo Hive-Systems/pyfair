@@ -15,7 +15,7 @@ class TestFairDatabase(unittest.TestCase):
         'Loss Event Frequency': {"low": 0, "mode": 80, "high": 100},
         'Vulnerability': {"mean": .20, "stdev": .01}
     }
-    _QUERY_STRING = '''
+    _QUERY_STRING = """
         SELECT 
             *
         FROM 
@@ -27,7 +27,7 @@ class TestFairDatabase(unittest.TestCase):
         WHERE
             models.uuid=?
 
-    '''
+    """
 
     def setUp(self):
         # sqlite does not seem to like tempfile

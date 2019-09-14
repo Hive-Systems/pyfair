@@ -10,7 +10,7 @@ from pyfair.utility.fair_exception import FairException
 
 class TestFairBaseReport(unittest.TestCase):
 
-    _CALLER_SOURCE_DOCSTRING = "\'\'\'Script to create and run a test suite.\'\'\'"
+    _CALLER_SOURCE_DOCSTRING = "\"\"\"Script to create and run a test suite.\"\"\""
     _BASE64_BYTES = bytes([100, 100, 100, 100, 100])
     _BASE64_BYTES_TAG = '<img  src="data:image/png;base64, ZGRkZGQ=" alt=""/>'
     _BASE64_FIG_TAG_FIRST_50 = '<img  src="data:image/png;base64, iVBORw0KGgoAAAAN'

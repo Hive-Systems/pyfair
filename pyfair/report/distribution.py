@@ -13,7 +13,7 @@ from pyfair.report.base_curve import FairBaseCurve
 
 class FairDistributionCurve(FairBaseCurve):
     """A shiny distribution curve to lend credibility to guesstimates.
-    
+
     This object is used to generate two separarate distributions: 1) a main
     distribution curve with pdf to analyze Risk distribution, and 2) a
     miniature distribution which covers the spread of an individual

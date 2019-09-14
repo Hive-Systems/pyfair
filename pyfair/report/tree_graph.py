@@ -11,7 +11,7 @@ from matplotlib.collections import PatchCollection
 
 
 class FairTreeGraph(object):
-    '''Provides a pretty tree diagram to summarize calculations.
+    """Provides a pretty tree diagram to summarize calculations.
 
     This tree class provides an image that descirbes those nodes that have
     been calculated, those nodes that have had data supplied, and those
@@ -25,8 +25,7 @@ class FairTreeGraph(object):
         A dict with string keys describing the nodes, and string values
         providing a formatting string for numbers of that type
 
-    '''
-
+    """
     # Class attribute with magic numbers galore
     _DIMENSIONS = pd.DataFrame.from_dict(
         {
@@ -188,7 +187,7 @@ class FairTreeGraph(object):
 
     def generate_image(self):
         """Function to orchestate image and axis generation for the tree
-        
+
         Specifically, this creates the axes, tweaks them as necessary,
         creates node text, creates rectangles for the nodes, generates the
         lines, and then generates the legend. It takes no arguments as it

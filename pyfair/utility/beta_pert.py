@@ -43,7 +43,7 @@ class FairBetaPert(object):
 
     .. math::
 
-        \alpha 
+        \alpha
         =
         \frac
             {\text{mean} - \text{low}}
@@ -197,6 +197,6 @@ class FairBetaPert(object):
         -------
         np.array
             An array of PERT-distributed random variates of size `count`
-        
+
         """
         return self._beta_curve.rvs(count)

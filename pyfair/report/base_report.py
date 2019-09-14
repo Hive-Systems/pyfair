@@ -20,12 +20,12 @@ from .violin import FairViolinPlot
 
 class FairBaseReport(object):
     """A base class for creating FairModel and FairMetaModel reports
-    
+
     This class exists to provide a common base for mutliple report types.
     It carries with it formatting data, file paths, and a variety of 
     methods for creating report components. It is not intended to be
     instantiated on its own.
-    
+
     """
     def __init__(self):
         # Add formatting strings

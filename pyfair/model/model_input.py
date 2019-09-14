@@ -84,7 +84,7 @@ class FairDataInput(object):
 
     def _check_parameters(self, target_function, **kwargs):
         """Runs parameter checks
-        
+
         This includes a determination that the value is equal to or
         greater than zero, and a check that all required keywords for a
         given
@@ -291,7 +291,7 @@ class FairDataInput(object):
         normal = scipy.stats.norm(loc=kwargs['mean'], scale=kwargs['stdev'])
         rvs = normal.rvs(count)
         return rvs
- 
+
     def _gen_pert(self, count, **kwargs):
         """Checks parameters, creates BetaPert, returns random values"""
         self._check_pert(**kwargs)

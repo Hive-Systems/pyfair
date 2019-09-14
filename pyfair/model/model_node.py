@@ -3,7 +3,7 @@
 
 class FairDependencyNode(object):
     """Represents the status of a given calculation for FairDependencyTree
-    
+
     FairModel has a captive FairDependencyTree, and a FairDependencyTree
     is made of FairDependencyNodes. It is a simple structure that holds a
     status tag, and related nodes to allow for traversing the tree

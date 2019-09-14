@@ -9,7 +9,7 @@ class FairCalculations(object):
 
     This class is called via the FairModel in which it is contained via its
     calculate() method. It then returns a series that is transformed via
-    1) a step function followed by an average, 2) an addition function, or 
+    1) a step function followed by an average, 2) an addition function, or
     3) a multiplication function.
 
     """
@@ -43,8 +43,8 @@ class FairCalculations(object):
             addtion, or multiplication function.
 
         .. warning:: the order of child_1_data and child_2_data does not
-            matter for addition or multiplication, but it does for the
-            stepwise function.
+                     matter for addition or multiplication, but it does for
+                     the stepwise function.
 
         Returns
         -------

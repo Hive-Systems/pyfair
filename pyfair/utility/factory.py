@@ -4,7 +4,7 @@ from ..model.model import FairModel
 
 
 class FairModelFactory(object):
-    '''A convenience class for creating small variations on models.
+    """A convenience class for creating small variations on models.
 
     Generally this is used for creating two or more models with slight
     variations.
@@ -19,7 +19,7 @@ class FairModelFactory(object):
     random_seed : int, optional
         Random seed for number generation (default is 42)
 
-    '''
+    """
     def __init__(self, static_arguments, n_simulations=10_000, random_seed=42):
         self._static_arguments = static_arguments
         self._n_simulations = n_simulations

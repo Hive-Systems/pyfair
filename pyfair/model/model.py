@@ -25,7 +25,7 @@ class FairModel(object):
     for the individual nodes. The user then triggers the
     calculate_all() method to run all the subcalculations necessary
     to complete the FAIR model.
-    
+
     Parameters
     ----------
     name : str
@@ -190,25 +190,25 @@ class FairModel(object):
     #######################################################################
 
     def get_node_statuses(self):
-        '''Public method access private node status information in ._tree
+        """Public method access private node status information in ._tree
 
         Returns
         -------
         pandas.Series
             A series with index of nodes, and values of statuses 
 
-        '''
+        """
         return self._tree.get_node_statuses()
 
     def get_name(self):
-        '''Gives the name of the model
+        """Gives the name of the model
 
         Returns
         -------
         str
             Name of model
 
-        '''
+        """
         return self._name
 
     def get_uuid(self):
@@ -223,14 +223,14 @@ class FairModel(object):
         return self._model_uuid
 
     def calculation_completed(self):
-        '''Public method to check completion status of dependency tree
+        """Public method to check completion status of dependency tree
 
         Returns
         -------
         bool
             Whether the calculation dependencies are satisfied
 
-        '''
+        """
         status = self._tree.calculation_completed()
         return status
 
@@ -418,7 +418,7 @@ class FairModel(object):
         return self
 
     def _calculate_node(self, name):
-        '''Calculate node by checking parents and updating status'''
+        """Calculate node by checking parents and updating status"""
         # Alsias for data table
         data = self._model_table
         # Get child node statuses

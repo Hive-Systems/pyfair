@@ -212,7 +212,7 @@ Supplied directly, or via the following operation:
         0, & \text{if} \; \text{TC}_{i} \; \lt \text{CS}_{i}\\
     \end{cases}
 
-Or in more concrete terms, we have a vector of THreat Capabilities and
+Or in more concrete terms, we have a vector of Threat Capabilities and
 a vector of Control Strengths. For each element of the vector, we
 determine if Threat Capability is greater than Control Strength. In
 other words, 1 is where the threat overwhelms the control, and 0 is
@@ -236,7 +236,7 @@ where the control withstands the threat.
         0.75 \\
     \end{bmatrix}
     \quad
-    \overrightarrow{Step Function}
+    \overrightarrow{Indicator Function}
     \quad
     \text{Intermediate}
     =
@@ -268,7 +268,7 @@ that the threat overcame the control.
     =
     0.66
 
-This is then assigned to a vector for the sake of computational
+This scalar is then assigned to a vector for the sake of computational
 consistency.
 
 .. math::
@@ -302,10 +302,10 @@ a control (Vulnerability/V).
 .. note::
 
     For the purposes of this calculation, TC must be estimated relative
-    to CS, and CS must be estiamted relative to TC. They are
+    to CS, and CS must be estimated relative to TC. They are
     essentially just rough guesses to determine the percentage of
     threats that will fail or succeed (and consequently have no
-    independent meaning apart from each other.
+    independent meaning apart from each other).
 
 **Contact Frequency ("C")**
 ---------------------------
@@ -333,7 +333,7 @@ attack, and in turn can potentially yield a loss (Contact Frequency/C).
 | Simulation | C         |
 +============+===========+
 | 1          | 5,000,000 | 
-+------------+=----------+
++------------+-----------+
 | 2          | 3,000,000 |
 +------------+-----------+
 | 3          | 2,500,000 |
