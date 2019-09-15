@@ -36,7 +36,7 @@ class TestFairTreeGraph(unittest.TestCase):
         with warnings.catch_warnings(record=False):
             warnings.simplefilter("ignore")
             ftg = FairTreeGraph(model, self._FORMAT_STRINGS)
-            _, _ = ftg.generate_image() 
+            _, _ = ftg.generate_image()
 
 
 if __name__ == '__main__':

@@ -264,6 +264,47 @@ class FairDataInput(object):
         self._supplied_values[new_target] = kwargs_dict
         return summed
 
+    def supply_raw(self, target, array):
+        """Supply raw data to the model
+
+        This takes an arbitrary array, runs some quick checks, and returns
+        the array if appropriate.
+
+        Parameters
+        ----------
+        target : str
+            The eventual target of the raw data
+        array : list, pd.Series, or array
+            The raw data being supplied
+
+        Returns
+        =======
+        np.array
+            The data for the model
+
+        Raises
+        ------
+        pyfair.utility.fair_exception.FairException
+            Raised if the data has null values
+
+        """
+        # Ensure numeric
+        clean_array = pd.to_numeric(array)
+        # Coerce to series
+        if type(array) == pd.Series:
+            s = pd.Series(clean_array.values)
+        else:
+            s = pd.Series(clean_array)
+        # Check numeric and not null
+        if s.isnull().any():
+            raise FairException('Supplied data contains null values')
+        # Ensure values are appropriate
+        if target in self._le_1_targets:
+            if s.max() > 1 or s.min() < 0:
+                raise FairException(f'{target} data greater or less than one')
+        self._supplied_values[target] = {'raw': s.values.tolist()}
+        return s.values
+
     def _determine_func(self, **kwargs):
         """Checks keywords and returns the appropriate function object."""
         # Check whether keys are recognized

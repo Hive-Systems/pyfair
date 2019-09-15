@@ -64,8 +64,8 @@ class FairTreeGraph(object):
         self._params = pd.DataFrame(model.export_params()).T.reindex(self._statuses.index)
         # Tack all data together
         self._data = pd.concat([
-            self._statuses, 
-            self._DIMENSIONS, 
+            self._statuses,
+            self._DIMENSIONS,
             self._result_summary,
             self._params
         ], axis=1, sort=True)
@@ -124,6 +124,14 @@ class FairTreeGraph(object):
         # Set conditions
         calculated = row['status'] == 'Calculated'
         supplied = row['status'] == 'Supplied'
+        # Raw inputs will have a list
+        if 'raw' in row.index:
+            if type(row['raw']) == list:
+                raw = True
+            else:
+                raw = False
+        else:
+            raw = False
         if calculated:
             # Get rid of items with value
             data = row.loc[['μ', 'σ', '↑']].dropna()
@@ -145,12 +153,21 @@ class FairTreeGraph(object):
             data = data.map(lambda x: fmt.format(x))
             # Get max length of stirng
             value_just = data.str.len().max()
-            # Output format
-            output = '\n'.join([
-                key + '  ' + value.rjust(value_just)
-                for key, value
-                in data.iteritems()
-            ])
+            # Output format for raw
+            if raw:
+                output = '\n'.join([
+                    key + '  ' + value.rjust(value_just)
+                    for key, value
+                    in data.iteritems()
+                ])
+                output = 'Raw input'
+            # And verything else ... so much nesting
+            else:
+                output = '\n'.join([
+                    key + '  ' + value.rjust(value_just)
+                    for key, value
+                    in data.iteritems()
+                ])
         else:
             output = ''
         plt.text(
@@ -201,7 +218,7 @@ class FairTreeGraph(object):
 
         """
         fig, ax = plt.subplots()
-        fig.set_size_inches(20,6)
+        fig.set_size_inches(20, 6)
         ax = self._tweak_axes(ax)
         self._data.apply(self._generate_text, args=[ax], axis=1)
         self._generate_rects(ax)

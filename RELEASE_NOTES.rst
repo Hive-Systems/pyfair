@@ -14,9 +14,6 @@ Features
 Version 0.1-alpha.1
 -------------------
 
-Enhancements
-~~~~~~~~~~~~
-
 * Additional documentation for items in `report` and `utility` modules.
 
 Version 0.1-alpha.2
@@ -33,7 +30,10 @@ Version 0.1-alpha.3
 Version 0.1-alpha.4
 -------------------
 
-Fixes
-~~~~~
-
 * Correct inappropriate Vulnerability calculation.
+
+Version 0.1-alpha.5
+-------------------
+
+* Added raw_input() function and associated storage routines.
+* Improved PEP8 compliance.

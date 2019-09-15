@@ -321,6 +321,7 @@ class FairBaseReport(object):
             # On a column basis
             axis=1,
         )
+        param_df = param_df.applymap(lambda x: '' if 'nan' in x else x)
         # Do not truncate our base64 images.
         pd.set_option('display.max_colwidth', -1)
         # Create our distribution icons as strings in table

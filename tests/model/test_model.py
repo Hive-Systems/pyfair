@@ -2,6 +2,7 @@ import json
 import pathlib
 import unittest
 
+import numpy as np
 import pandas as pd
 
 from pyfair.model.model import FairModel
@@ -77,6 +78,24 @@ class TestFairModel(unittest.TestCase):
                 'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},        
             }
         })
+        # Test input_raw_data
+        model.input_raw_data(
+            'Vulnerability',
+            [1] * self.N_SAMPLES
+        )
+        self.assertRaises(
+            FairException, 
+            model.input_raw_data,
+            'Vulnerability',
+            [2] * self.N_SAMPLES
+        )
+        self.assertRaises(
+            FairException, 
+            model.input_raw_data,
+            'Vulnerability',
+            'abc'
+        )
+        model.calculate_all()
 
     def test_calculation(self):
         """Run a calulate all."""

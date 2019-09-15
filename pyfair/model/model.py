@@ -55,7 +55,7 @@ class FairModel(object):
     ##########################################################################
     # Creation Methods
     ##########################################################################
-    
+
     def __init__(self, 
                  name, 
                  n_simulations=10_000, 
@@ -167,8 +167,14 @@ class FairModel(object):
         for param_name, param_value in data.items():
             # If it's not in the drop list, load it.
             if param_name not in drop_params:
+                # Input params must be treated differently if raw
+                contains_raw = 'raw' in param_value.keys()
                 if param_name.startswith('multi'):
                     model.input_multi_data(param_name, param_value)
+                # Raw needs a different way
+                elif contains_raw:
+                    model.input_raw_data(param_name, param_value['raw'])
+                # Otherwise standard input
                 else:
                     model.input_data(param_name, **param_value)
         # Calculate
@@ -352,6 +358,57 @@ class FairModel(object):
         # Iterate through each key, value pair and run through input_data()
         for target, parameters in param_dictionary.items():
             self.input_data(target, **parameters)
+        return self
+
+    def input_raw_data(self, target, array):
+        """Supply a raw array to the model
+
+        This function allows for arbitrary data to be placed within the
+        model by passing an array.
+
+        Parameters
+        ----------
+        target : str
+            The node to which to send the data
+        array : np.array, list, or pd.Series
+            Raw input data for the model
+
+        Returns
+        -------
+        pyfair.model.FairModel
+            A reference to this object of type FairModel
+
+        Raises
+        ------
+        FairException
+            If an inappropriate number of items are supplied
+
+        Examples
+        --------
+        >>> array = np.array([1,2,3])
+        >>> model = pyfair.FairModel(name="Insider Threat")
+        >>> model.input_raw_data('Loss Magnitude', array)
+
+        """
+        # Standardize inputs to account for abbreviations
+        target = self._standardize_target(target)
+        # Check types
+        acceptable_types = [list, np.array, pd.Series]
+        if type(array) not in acceptable_types:
+            raise FairException('Inappropriate input type.')
+        # Check length
+        if len(array) != self._n_simulations:
+            message = "Input legnth {}, but simulations count is is {}".format(
+                len(array),
+                self._n_simulations
+            )
+            raise FairException(message)
+        # Generate data via data captive class
+        data = self._data_input.supply_raw(target, array)
+        # Update dependency tracker captive class
+        self._tree.update_status(target, 'Supplied')
+        # Update the model table with the generated data
+        self._model_table[target] = data
         return self
 
     def _standardize_target(self, target):
