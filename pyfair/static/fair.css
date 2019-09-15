@@ -4,6 +4,7 @@
                 font-family: Arial;
                 border-collapse: collapse; 
                 border: 1px solid silver;
+                margin-top: 10px;
             }
 
             h1 {
@@ -95,7 +96,7 @@
                 padding-left: 30px;
             }
 
-            #overview_img_container {
+            .overview_img_container {
                 flex-direction: column;
             }
 

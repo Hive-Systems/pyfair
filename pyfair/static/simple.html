@@ -35,8 +35,14 @@
                 <div id='overview_df_container'>
                     {OVERVIEW_DATAFRAME}
                 </div>
-                <div id='overview_img_container'>
-                    {HIST}
+            </div>
+            <div class='flex_row' id='overview_row'>
+                <div class='overview_img_container'>
+                        {HIST}
+                </div>
+            </div>
+            <div class='flex_row' id='overview_row'>
+                <div class='overview_img_container'>
                     {EXCEEDENCE}
                 </div>
             </div>
@@ -46,7 +52,10 @@
             <div class='separator'>
                 <p>Parameters</p>
             </div>
+            <div>
                 {PARAMETER_HTML}
+            </div>
+
             <!--Code rows-->
             <div class='separator'>
                 <p>Code</p>

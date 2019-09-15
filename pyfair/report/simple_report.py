@@ -59,18 +59,14 @@ class FairSimpleReport(FairBaseReport):
         parameter_html = ''
         for name, model in self._model_or_models.items():
             parameter_html += "<h1>{}</h1>".format(name)
-            parameter_html += "<div class='flex_row'>"
 
             # Create images which differ based on type
             if model.__class__.__name__ == 'FairModel':
                 parameter_html += self._get_tree(model)
             if model.__class__.__name__ == 'FairMetaModel':
                 parameter_html += self._get_violins(model)
-
-            parameter_html += "</div>"
-
+                
             # Create table
-            parameter_html += "<div class='flex_row'>"
 
             # Create tables which differ based on type
             if model.__class__.__name__ == 'FairModel':
@@ -78,7 +74,7 @@ class FairSimpleReport(FairBaseReport):
             if model.__class__.__name__ == 'FairMetaModel':
                 parameter_html += self._get_metamodel_parameter_table(model)
 
-            parameter_html += "</div><br>"
+            parameter_html += "<br>"
 
         # TODO Text wrap
         t = t.replace('{PARAMETER_HTML}', parameter_html)
