@@ -21,7 +21,7 @@ Monte Carlo risk simulations.
 This is based in large part on:
 
 1. the `Open FAIR™ Technical Standard published by the Open Group <http://pubs.opengroup.org/onlinepubs/9699919899/toc.pdf/>`_; and,
-2. `Measuring and Managing Information Risk <https://www.amazon.com/Measuring-Managing-Information-Risk-Approach-ebook/dp/B00N9YPW5C>/`_
+2. `Measuring and Managing Information Risk <https://www.amazon.com/Measuring-Managing-Information-Risk-Approach-ebook/dp/B00N9YPW5C/>`_
 
 "Open FAIR" is a trademark of the Open Group.
 
