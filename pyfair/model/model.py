@@ -389,6 +389,11 @@ class FairModel(object):
         >>> model = pyfair.FairModel(name="Insider Threat")
         >>> model.input_raw_data('Loss Magnitude', array)
 
+        .. warning:: raw inputs can drastically increase the size of your
+                     stored models. Because this raw data must be recorded
+                     and cannot be simulated, it is stored in its entirity
+                     within the model's JSON.
+
         """
         # Standardize inputs to account for abbreviations
         target = self._standardize_target(target)
