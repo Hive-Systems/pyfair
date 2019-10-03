@@ -3,7 +3,7 @@ pyfair
 
 .. image:: static/logo.PNG
     :alt: logo
-    :width: 300px
+    :width: 200px
 
 .. image:: https://readthedocs.org/projects/pyfair/badge/?version=latest
     :alt: Doc Badge
