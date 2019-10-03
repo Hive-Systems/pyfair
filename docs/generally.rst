@@ -185,6 +185,12 @@ from a curve with a mean of 50,000 and a standard deviation of 10,000.
 Second we will estimate our Vulnerability. Recall that V is the probability
 of whether a loss occurs.
 
++------------+--------------------+
+| Mean       | Standard Deviation |
++============+====================+
+| .67        | .01                |
++------------+--------------------+
+
 **Generates random V values**
 
 +------------+-----+

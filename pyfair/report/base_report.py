@@ -1,6 +1,7 @@
 """Base report class for creating HTML reports"""
 
 import base64
+import getpass
 import inspect
 import io
 import os
@@ -208,14 +209,20 @@ class FairBaseReport(object):
         Do not put model-specific data in here.
 
         """
+        # Get username
+        try:
+            username = getpass.getuser()
+        # The exception this throws is not conspicuously documented
+        except Exception:
+            username = 'Unknown'
         # Add metadata
         metadata = pd.Series({
-            'Author': os.environ['USERNAME'],
+            'Author': username,
             'Created': str(pd.datetime.now()).partition('.')[0],
             'PyFair Version': VERSION,
             'Type': type(self).__name__
         }).to_frame().to_html(border=0, header=None, justify='left', classes='fair_metadata_table')
-        return metadata    
+        return metadata
 
     def _get_tree(self, model):
         """Create base64 image string using FairTreeGraph"""

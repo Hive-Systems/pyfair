@@ -138,15 +138,15 @@ will change. An example is below:
     # Create 3 models with variable arguments
     state_actor = factory.generate_from_partial(
         'Nation State',
-        {'Threat Event Frequency': {'mean': 50, 'stdev': 5}, 'Vulnerability': {'p': .95}}
+        {'Threat Event Frequency': {'mean': 50, 'stdev': 5}, 'Vulnerability': {'constant': .95}}
     )
     hacktivist = factory.generate_from_partial(
         'Hactivist',
-        {'Threat Event Frequency': {'mean': 5_000, 'stdev': 10}, 'Vulnerability': {'p': .25}}
+        {'Threat Event Frequency': {'mean': 5_000, 'stdev': 10}, 'Vulnerability': {'constant': .25}}
     )
     id_thief = factory.generate_from_partial(
         'Identity Thief',
-        {'Threat Event Frequency': {'mean': 500, 'stdev': 100}, 'Vulnerability': {'p': .75}}
+        {'Threat Event Frequency': {'mean': 500, 'stdev': 100}, 'Vulnerability': {'constant': .75}}
     )
 
     # Create a metamodel

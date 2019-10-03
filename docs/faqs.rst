@@ -34,7 +34,6 @@ Parameter Mismatch
 Keywords must be used as follows:
 
 * constant: must be the only parameter used for a given node
-* p: may only be used for Vulnerability
 * low, mode, and high: must be used together (gamma is optional)
 * mean, stdev: must be used together
 
