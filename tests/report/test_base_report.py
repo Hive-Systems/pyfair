@@ -19,12 +19,15 @@ class TestFairBaseReport(unittest.TestCase):
         self._fbr = FairBaseReport()
         self._model_1 = FairModel('model1', n_simulations=5)
         self._model_1.input_data('Risk', mean=100, stdev=5)
+        self._model_1.calculate_all()
         self._model_2 = FairModel('model2', n_simulations=5)
         self._model_2.input_data('Risk', mean=1000, stdev=50)
+        self._model_2.calculate_all()
         self._metamodel = FairMetaModel(
             name='meta', 
             models=[self._model_1, self._model_2],
         )
+        self._metamodel.calculate_all()
 
     def tearDown(self):
         self._fbr = None
@@ -42,15 +45,17 @@ class TestFairBaseReport(unittest.TestCase):
         """Test the validity of the input check"""
         # Create inputs
         bad_model = 'Not a model'
-        model = FairModel(name='model')
+        model = self._model_1
         bad_meta = 0
-        meta = FairMetaModel(name='metamodel', models=[model, model])
+        meta = self._metamodel
         model_list = [model, meta]
         bad_model_list_1 = []
         bad_model_list_2 = [model, bad_model]
         # Test good items
-        for good_item in [model, meta, model_list]:
-            self._fbr._input_check(good_item)
+        for good_item in [model, meta]:
+            self._fbr._input_check([good_item])
+        for good_item in [model_list]:
+            self._fbr._input_check(model_list)
         # Test bad items
         for bad_item in [bad_model, bad_meta, bad_model_list_1, bad_model_list_2]: 
             self.assertRaises(

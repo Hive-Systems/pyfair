@@ -40,3 +40,11 @@ Version 0.1-alpha.6
 
 * Fixed metadata of base report to auto-fetch names cross-platform.
 * Corrected erroneous statements in documentation related to Vulnerability.
+
+Version 0.1-alpha.7
+-------------------
+
+* More descriptive error messages from FairSimpleReport
+* Documentation fixes
+* Fixes to FairSimpleReport (specifically SLEM)
+* Fix calculation_completed() to allow for directly input of Risk

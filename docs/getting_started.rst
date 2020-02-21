@@ -169,11 +169,13 @@ can take Models, MetaModels, or a list of Models and MetaModels like so:
     model1 = FairModel(name='Risk Type 1', n_simulations=10_000)
     model1.input_data('Loss Event Frequency', mean=.3, stdev=.1)
     model1.input_data('Loss Magnitude', constant=5_000_000)
+    model1.calculate_all()
 
     # Create another model
     model2 = FairModel(name='Risk Type 2', n_simulations=10_000)
     model2.input_data('Loss Event Frequency', mean=.3, stdev=.1)
     model2.input_data('Loss Magnitude', low=0, mode=10_000_000, high=20_000_000)
+    model2.calculate_all()
 
     # Create a report and write it to an output.
     fsr = FairSimpleReport([model1, model2])

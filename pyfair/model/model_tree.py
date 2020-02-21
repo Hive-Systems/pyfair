@@ -86,6 +86,8 @@ class FairDependencyTree(object):
         """
         if self._root.status == 'Calculated':
             return True
+        if self._root.status == 'Supplied':
+            return True
         else:
             return False
 
@@ -184,7 +186,7 @@ class FairDependencyTree(object):
         changes are made via update_status.
 
         """
-        self._node_statuses[node.name] = node.status 
+        self._node_statuses[node.name] = node.status
         for node in node.children:
             self._obtain_status(node)
 

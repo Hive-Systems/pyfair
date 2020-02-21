@@ -45,8 +45,8 @@ class FairBaseReport(object):
             'Loss Magnitude'                 : self._dollar_format_string,
             'Primary Loss'                   : self._dollar_format_string,
             'Secondary Loss'                 : self._dollar_format_string,
-            'Secondary Loss Event Frequency' : self._dollar_format_string,
-            'Secondary Loss Magnitude'       : self._dollar_format_string,
+            'Secondary Loss Event Frequency' : self._float_format_string,
+            'Secondary Loss Event Magnitude' : self._dollar_format_string,
         }
         # Add locations
         self._fair_location = pathlib.Path(__file__).parent.parent
@@ -67,7 +67,11 @@ class FairBaseReport(object):
         if 'ipython-input' in str(name):
             return 'Report was called from iPython and not a script.'
         elif name.exists():
-            return name.read_text()
+            text = name.read_text()
+            if text.startswith('"""runpy.py'):
+                return 'Report was not called from a script file.'
+            else:
+                return name.read_text()
         else:
             return 'Report was not called from a script file.'
 
@@ -96,8 +100,13 @@ class FairBaseReport(object):
             raise FairException('Empty iterable where iterable of models expected.')
         # Iterate and process remainder.
         for proported_model in value:
+            # Check if model
             if proported_model.__class__.__name__ in ['FairModel', 'FairMetaModel']:
-                rv[proported_model.get_name()] = proported_model
+                # Check if calculated
+                if proported_model.calculation_completed():
+                    rv[proported_model.get_name()] = proported_model
+                else:
+                    raise FairException('Model or FairModel has not been calculated.')
             else:
                 raise FairException('Iterable member is not a FairModel or FairMetaModel')
         return rv

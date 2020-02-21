@@ -19,13 +19,13 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'pyfair'
-copyright = '2019, Theo Naunheim'
+copyright = '2020, Theo Naunheim'
 author = 'Theo Naunheim'
 
 # The short X.Y version
-version = '0.1.6'
+version = '0.1.7'
 # The full version, including alpha/beta/rc tags
-release = '0.1-alpha.6'
+release = '0.1-alpha.7'
 
 
 # -- General configuration ---------------------------------------------------
