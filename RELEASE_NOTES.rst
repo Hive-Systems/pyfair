@@ -48,3 +48,8 @@ Version 0.1-alpha.7
 * Documentation fixes
 * Fixes to FairSimpleReport (specifically SLEM)
 * Fix calculation_completed() to allow for directly input of Risk
+
+Version 0.1-alpha.8
+-------------------
+
+* Fixed FairSimpleReport to allow for interactive generation.
