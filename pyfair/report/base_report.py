@@ -61,19 +61,22 @@ class FairBaseReport(object):
 
     def _set_caller_source(self):
         """Set source code of Python script running the report"""
-        frame = inspect.getouterframes(inspect.currentframe())[-1]
-        filename = frame[1]
-        name = pathlib.Path(filename)
-        if 'ipython-input' in str(name):
-            return 'Report was called from iPython and not a script.'
-        elif name.exists():
-            text = name.read_text()
-            if text.startswith('"""runpy.py'):
-                return 'Report was not called from a script file.'
+        try:
+            frame = inspect.getouterframes(inspect.currentframe())[-1]
+            filename = frame[1]
+            name = pathlib.Path(filename)
+            if 'ipython-input' in str(name):
+                return 'Report was called from iPython and not a script.'
+            elif name.exists():
+                text = name.read_text()
+                if text.startswith('"""runpy.py'):
+                    return 'Report was not called from a script file.'
+                else:
+                    return name.read_text()
             else:
-                return name.read_text()
-        else:
-            return 'Report was not called from a script file.'
+                return 'Report was not called from a script file.'
+        except Exception:
+            return 'Error in obtaining caller source.'
 
     def _get_caller_source(self):
         """Get source code of calling script after _set_caller_source()"""
