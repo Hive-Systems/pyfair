@@ -15,13 +15,13 @@ Factor Analysis of Information Risk (FAIR) model written in Python.
 
 This package endeavors to create a simple API for automating the creation
 of
-`FAIR <https://en.wikipedia.org/wiki/Factor_analysis_of_information_risk/>`_
+`FAIR <https://en.wikipedia.org/wiki/Factor_analysis_of_information_risk>`_ 
 Monte Carlo risk simulations.
 
-This is based in large part on:
+This is based on the terms found in:
 
-1. the `Open FAIR™ Technical Standard published by the Open Group <http://pubs.opengroup.org/onlinepubs/9699919899/toc.pdf/>`_; and,
-2. `Measuring and Managing Information Risk <https://www.amazon.com/Measuring-Managing-Information-Risk-Approach-ebook/dp/B00N9YPW5C/>`_
+1. `Open FAIR™ RISK TAXONOMY (O-RT) <https://publications.opengroup.org/c13k>`_; and,
+2. `Open FAIR™ RISK ANALYSIS (O-RA) <https://publications.opengroup.org/c13g>`_
 
 "Open FAIR" is a trademark of the Open Group.
 

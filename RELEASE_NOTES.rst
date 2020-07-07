@@ -53,3 +53,9 @@ Version 0.1-alpha.8
 -------------------
 
 * Fixed FairSimpleReport to allow for interactive generation.
+
+Version 0.1-alpha.9
+-------------------
+
+* Corrected erroneous Vulnerability calculation.
+* Updated links in README

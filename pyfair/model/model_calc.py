@@ -59,8 +59,9 @@ class FairCalculations(object):
 
     def _calculate_step_average(self, child_1_data, child_2_data):
         """Get bool series based on step function, then average for vuln"""
-        # Get Trues and Falses where series 1 > series 2
-        bool_series = child_1_data > child_2_data
+        # Get Trues (1) where child_2 (TCap) is greater than child_1 (CS)
+        # Otherwise False (0)
+        bool_series = child_1_data < child_2_data
         # Treat those bools as 1 and 0 and get mean
         bool_scalar_average = bool_series.mean()
         # Create a long array of that mean
