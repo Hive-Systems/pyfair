@@ -1,6 +1,6 @@
 """PyFair is an open source implementation of the FAIR methodology."""
 
-VERSION = '0.1-alpha.9'
+VERSION = '0.1-alpha.10'
 
 
 from . import model

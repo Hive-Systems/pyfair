@@ -5,11 +5,13 @@ pyfair
     :alt: logo
     :width: 100px
 
-|rtd_badge| |travis_badge|
+|rtd_badge| |travis_badge| |pypi_badge|
 
 .. |rtd_badge| image:: https://readthedocs.org/projects/pyfair/badge/?version=latest
 
 .. |travis_badge| image:: https://travis-ci.org/theonaunheim/pyfair.svg?branch=master
+
+.. |pypi_badge| image:: https://badge.fury.io/py/pyfair.svg
 
 Factor Analysis of Information Risk (FAIR) model written in Python.
 
@@ -87,20 +89,20 @@ Serialized Model
 .. code-block:: json
 
     {
+        "Loss Magnitude": {
+            "mean": 100000,
+            "stdev": 20000
+        },
         "Loss Event Frequency": {
             "low": 20,
-            "mode": 100,
-            "high": 900
+            "mode": 90,
+            "high": 95,
+            "gamma": 4
         },
-        "Loss Magnitude": {
-            "low": 3000000,
-            "mode": 3500000,
-            "high": 5000000
-        },
-        "name": "Regular Model 1",
+        "name": "Sample Model",
         "n_simulations": 10000,
         "random_seed": 42,
-        "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",
+        "model_uuid": "2e55fba4-c897-11ea-881b-f26e0bbd6dbc",
         "type": "FairModel",
-        "creation_date": "2019-07-06 17:23:43.647370"
+        "creation_date": "2020-07-17 20:37:03.122525"
     }

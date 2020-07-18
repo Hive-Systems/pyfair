@@ -23,9 +23,9 @@ copyright = '2020, Theo Naunheim'
 author = 'Theo Naunheim'
 
 # The short X.Y version
-version = '0.1.9'
+version = '0.1.10'
 # The full version, including alpha/beta/rc tags
-release = '0.1-alpha.9'
+release = '0.1-alpha.10'
 
 
 # -- General configuration ---------------------------------------------------

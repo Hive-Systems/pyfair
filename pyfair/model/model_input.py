@@ -45,9 +45,9 @@ class FairDataInput(object):
         }
         # List of keywords with function keys
         self._required_keywords = {
-            self._gen_constant : ['constant'],
-            self._gen_pert     : ['low', 'mode', 'high'],
-            self._gen_normal   : ['mean', 'stdev'],
+            self._gen_constant: ['constant'],
+            self._gen_pert    : ['low', 'mode', 'high'],
+            self._gen_normal  : ['mean', 'stdev'],
         }  
         # Storage of inputs
         self._supplied_values = {}
@@ -60,7 +60,7 @@ class FairDataInput(object):
         dict
             A dictionary of the values supplied to generate function. The
             keys for the dict will be the target node as a string (e.g. 
-            'Loss Event Frequency') and the values will be a sub-dictionary 
+            'Loss Event Frequency') and the values will be a sub-dictionary
             of keyword arguments ({'low': 50, 'mode}: 51, 'high': 52}).
 
         """
@@ -70,13 +70,13 @@ class FairDataInput(object):
         """Raises error if not between one and zero"""
         # For every keyword argument
         for key, value in kwargs.items():
+            # Set boolean conditions
+            applicable_keyword = key in self._le_1_keywords
+            applicable_target = target in self._le_1_targets
             # If key is in specified list
-            if target in self._le_1_targets:
-                # We don't care about stdev
-                if key == 'stdev':
-                    pass
+            if applicable_keyword and applicable_target:
                 # Check if value is less than or equal to 1
-                elif 0.0 <= value <= 1.0:
+                if 0.0 <= value <= 1.0:
                     pass
                 # If not, raise error
                 else:

@@ -16,13 +16,13 @@ class FairCalculations(object):
     def __init__(self):
         # Lookup table for functions (no leaf nodes required)
         self._function_dict = {
-            'Risk'                   : self._calculate_multiplication,
-            'Loss Event Frequency'   : self._calculate_multiplication,
-            'Threat Event Frequency' : self._calculate_multiplication,
-            'Vulnerability'          : self._calculate_step_average,
-            'Loss Magnitude'         : self._calculate_addition,
-            'Primary Loss'           : self._calculate_multiplication,
-            'Secondary Loss'         : self._calculate_multiplication,
+            'Risk'                  : self._calculate_multiplication,
+            'Loss Event Frequency'  : self._calculate_multiplication,
+            'Threat Event Frequency': self._calculate_multiplication,
+            'Vulnerability'         : self._calculate_step_average,
+            'Loss Magnitude'        : self._calculate_addition,
+            'Primary Loss'          : self._calculate_multiplication,
+            'Secondary Loss'        : self._calculate_multiplication,
         }
 
     def calculate(self, parent_name, child_1_data, child_2_data):
@@ -43,8 +43,8 @@ class FairCalculations(object):
             addtion, or multiplication function.
 
         .. warning:: the order of child_1_data and child_2_data does not
-                     matter for addition or multiplication, but it does for
-                     the stepwise function.
+            matter for addition or multiplication, but it does for the
+            stepwise function.
 
         Returns
         -------

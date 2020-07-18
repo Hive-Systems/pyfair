@@ -40,11 +40,11 @@ class TestFairModelInput(unittest.TestCase):
         # Run items above one where they shouldn't and check for exception
         with self.assertRaises(FairException):
             self._input._check_le_1('Action', constant=5)
-        with self.assertRaises(FairException):        
-            self._input._check_le_1('Vulnerability', p=5)
-        with self.assertRaises(FairException):        
+        with self.assertRaises(FairException):
+            self._input._check_le_1('Vulnerability', constant=5)
+        with self.assertRaises(FairException):
             self._input._check_le_1('Control Strength', mean=5, stdev=2)
-        with self.assertRaises(FairException):        
+        with self.assertRaises(FairException):
             self._input._check_le_1('Threat Capability', low=2, mode=5, high=10)
 
     def test_check_parameters(self):
@@ -52,7 +52,7 @@ class TestFairModelInput(unittest.TestCase):
         # Constant
         self._input._check_parameters(self._input._gen_constant, constant=20)
         with self.assertRaises(FairException):
-            self._input._check_parameters(self._input._gen_constant, p=4)
+            self._input._check_parameters(self._input._gen_constant)
         # Betapert
         self._input._check_parameters(self._input._gen_pert, low=1, mode=4, high=10)
         with self.assertRaises(FairException):

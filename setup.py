@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='pyfair',
-    version='0.1-alpha.9',
+    version='0.1-alpha.10',
     description='FAIR Monte Carlo creator',
     long_description="""
         Factor Analysis of Information Risk (FAIR) model written in Python.
@@ -10,9 +10,13 @@ setup(
         This package endeavors to create a simple API for automating the
         creation of FAIR Monte Carlo risk simulations.
 
-        This is based in large part on:
-            * the Technical Standard published by the Open Group; and,
-            * Measuring and Managing Information Risk.
+        This is based on the terms found in:
+
+        1. Open FAIR™ RISK TAXONOMY (O-RT); and,
+        2. Open FAIR™ RISK ANALYSIS (O-RA).
+
+        "Open FAIR" is a trademark of the Open Group.
+
     """,
     author='Theo Naunheim',
     author_email='theonaunheim@gmail.com',
