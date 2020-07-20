@@ -45,28 +45,21 @@ class FairBetaPert(object):
 
         \alpha
         =
+        1 +
+        \text{gamma}
         \frac
-            {\text{mean} - \text{low}}
+            {\text{mode} - \text{low}}
             {\text{high} - \text{low}}
-        \times
-        \left\{
-            (\text{mean} - \text{low})
-            \times
-            \frac
-                {\text{high} - \text{mean}}
-                {\text{stdev}^2}
-            - 1
-        \right\}
 
     .. math::
 
         \beta
         =
-        \alpha
-        \times
+        1 +
+        \text{gamma}
         \frac
-            {\text{high} - \text{mean}}
-            {\text{mean} - \text{low}}
+            {\text{high} - \text{mode}}
+            {\text{high} - \text{low}}
 
     Where:
 
@@ -76,14 +69,6 @@ class FairBetaPert(object):
         =
         \frac
             {\text{low} + \text{gamma} \times \text{mode} + \text{high}}
-            {\text{gamma} + 2}
-
-    .. math::
-
-        \text{stdev}
-        =
-        \frac
-            {\text{high} - \text{low}}
             {\text{gamma} + 2}
 
     And where:
@@ -108,9 +93,6 @@ class FairBetaPert(object):
            Application of a Technique for Research and Development Program
            Evaluation. Operations Research, 7(5), 646-669.
 
-    .. [4] Devleesschauwer, Brecht. (2015). prvalence: Tools for Prevalence
-           Assessment Studies. R package version v0.4.0.
-
     .. note:: Though this class is created in contemplation of using the
               class methods attached, it is possible to obtain the raw
               scipy beta distribution itself via the self._beta_curve
@@ -126,15 +108,13 @@ class FairBetaPert(object):
         self._range = high - low
         # Run sanity check
         self._run_range_check()
-        # Run mean, alpha, and beta calcs in sequence.
-        self._mean  = self._generate_mean()
-        self._stdev = self._generate_stdev()
+        # Generate alpha and beta
         self._alpha = self._generate_alpha()
         self._beta  = self._generate_beta()
         # Generate curve
         self._beta_curve = scipy.stats.beta(
-            self._alpha, 
-            self._beta, 
+            self._alpha,
+            self._beta,
             self._low,
             self._range,
         )
@@ -151,36 +131,23 @@ class FairBetaPert(object):
         if self._range <= 0:
             raise FairException('"low" value must be less than "high" value.')
 
-    def _generate_mean(self):
-        """Generate mean for beta distribution"""
-        return (
-            (self._low + self._gamma * self._mode + self._high)
-            /
-            (self._gamma + 2)
-        )
-
-    def _generate_stdev(self):
-        """Generate standard deviation"""
-        return (
-            (self._high - self._low)
-            /
-            (self._gamma + 2)
-        )
-
     def _generate_alpha(self):
         """Generate alpha parameter for beta distrubtions"""
-        group_1 = (self._mean - self._low) / (self._high - self._low)
-        group_2 = ((self._mean - self._low) * (self._high - self._mean)
-                  / 
-                  (self._stdev ** 2)
+        alpha_frac = (
+            (self._mode - self._low) / 
+            (self._high - self._low)
         )
-        return group_1 * (group_2 - 1)
+        alpha = 1 + (self._gamma * alpha_frac)
+        return alpha
 
     def _generate_beta(self):
         """Generate beta parameter for beta distribution"""
-        beta_numerator = self._alpha * (self._high - self._mean)
-        beta_denominator = self._mean - self._low
-        return beta_numerator / beta_denominator
+        beta_frac = (
+            (self._high - self._mode) / 
+            (self._high - self._low)
+        )
+        beta = 1 + (self._gamma * beta_frac)
+        return beta
 
     def random_variates(self, count):
         """Get n PERT-distributed random numbers
