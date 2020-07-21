@@ -12,7 +12,7 @@ class TestFairSimpleReport(unittest.TestCase):
         """Check HTML content can be generated"""
         model_1 = FairModel(name='Model', n_simulations=10)
         model_1.input_data('Loss Event Frequency', mean=10, stdev=1)
-        model_1.input_data('Loss Magnitude', low=0, mode=10, high=100)
+        model_1.input_data('Loss Magnitude', low=0, most_likely=10, high=100)
         model_1.calculate_all()
         meta_model_1 = FairMetaModel(
             name='Meta', 

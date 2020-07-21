@@ -20,7 +20,7 @@ class FairBaseCurve(object):
         Raises
         ------
         FairException
-            Where the input is not a 1) FairModel, 2) FairMetaModel, or 3) an 
+            Where the input is not a 1) FairModel, 2) FairMetaModel, or 3) an
             iterable containing solely FairModels or FairMetaModels.
 
         """

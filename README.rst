@@ -52,15 +52,15 @@ Code
 
     # Create using LEF (PERT), PL, (PERT), and SL (constant)
     model1 = pyfair.FairModel(name="Regular Model 1", n_simulations=10_000)
-    model1.input_data('Loss Event Frequency', low=20, mode=100, high=900)
-    model1.input_data('Primary Loss', low=3_000_000, mode=3_500_000, high=5_000_000)
+    model1.input_data('Loss Event Frequency', low=20, most_likely=100, high=900)
+    model1.input_data('Primary Loss', low=3_000_000, most_likely=3_500_000, high=5_000_000)
     model1.input_data('Secondary Loss', constant=3_500_000)
     model1.calculate_all()
 
     # Create another model using LEF (Normal) and LM (PERT)
     model2 = pyfair.FairModel(name="Regular Model 2", n_simulations=10_000)
     model2.input_data('Loss Event Frequency', mean=.3, stdev=.1)
-    model2.input_data('Loss Magnitude', low=2_000_000_000, mode=3_000_000_000, high=5_000_000_000)
+    model2.input_data('Loss Magnitude', low=2_000_000_000, most_likely=3_000_000_000, high=5_000_000_000)
     model2.calculate_all()
 
     # Create metamodel by combining 1 and 2
@@ -104,5 +104,6 @@ Serialized Model
         "random_seed": 42,
         "model_uuid": "2e55fba4-c897-11ea-881b-f26e0bbd6dbc",
         "type": "FairModel",
-        "creation_date": "2020-07-17 20:37:03.122525"
+        "creation_date": "2020-07-17 20:37:03.122525",
+        "version": "0.1-beta.0"
     }

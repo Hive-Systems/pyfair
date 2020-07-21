@@ -23,7 +23,7 @@ class FairBetaPert(object):
     ----------
     low : float or int
         Lower bound for the distribution below which no values will fall
-    mode : float or int
+    most_likely : float or int
         The most common value in the distribution
     high : float or int
         Higher bound for the distribution above which no values will fall
@@ -47,9 +47,11 @@ class FairBetaPert(object):
         =
         1 +
         \text{gamma}
+        \left(
         \frac
-            {\text{mode} - \text{low}}
+            {\text{most_likely} - \text{low}}
             {\text{high} - \text{low}}
+        \right)
 
     .. math::
 
@@ -57,9 +59,11 @@ class FairBetaPert(object):
         =
         1 +
         \text{gamma}
+        \left(
         \frac
-            {\text{high} - \text{mode}}
+            {\text{high} - \text{most_likely}}
             {\text{high} - \text{low}}
+        \right)
 
     Where:
 
@@ -75,12 +79,10 @@ class FairBetaPert(object):
 
     1) :math:`\text{low}` is the lower bound supplied for the PERT
        distribution; 
-    2) :math:`\text{mode}` is the most likely value for the distriubtion;
+    2) :math:`\text{most_likely}` is the most likely value;
     3) :math:`\text{high}` is the upper bound supplied for the PERT
-       distribution;
-    4) :math:`\text{gamma}` is the shape parameter for the distibution;
-       and,
-    5) :math:`\text{range}` is simply :math:`\text{high} - \text{low}`.
+       distribution; and,
+    4) :math:`\text{gamma}` is the shape parameter for the distibutio.
 
     References
     ----------
@@ -99,10 +101,10 @@ class FairBetaPert(object):
               attribute.
 
     """
-    def __init__(self, low, mode, high, gamma=4):
+    def __init__(self, low, most_likely, high, gamma=4):
         # Populate object with inputs
         self._low   = low
-        self._mode  = mode
+        self._ml    = most_likely
         self._high  = high
         self._gamma = gamma
         self._range = high - low
@@ -134,7 +136,7 @@ class FairBetaPert(object):
     def _generate_alpha(self):
         """Generate alpha parameter for beta distrubtions"""
         alpha_frac = (
-            (self._mode - self._low) / 
+            (self._ml - self._low) / 
             (self._high - self._low)
         )
         alpha = 1 + (self._gamma * alpha_frac)
@@ -143,7 +145,7 @@ class FairBetaPert(object):
     def _generate_beta(self):
         """Generate beta parameter for beta distribution"""
         beta_frac = (
-            (self._high - self._mode) / 
+            (self._high - self._ml) / 
             (self._high - self._low)
         )
         beta = 1 + (self._gamma * beta_frac)

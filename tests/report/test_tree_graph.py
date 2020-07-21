@@ -7,6 +7,7 @@ from pyfair.report.tree_graph import FairTreeGraph
 
 class TestFairTreeGraph(unittest.TestCase):
 
+    # Test only dollars ... this is the defualt
     _DOLLAR_FORMAT_STRING = '${0:,.0f}'
     _FLOAT_FORMAT_STRING  = '{0:.2f}'
     _FORMAT_STRINGS = {
@@ -31,7 +32,7 @@ class TestFairTreeGraph(unittest.TestCase):
         # Whether it comes out OK or not ... ¯\_(ツ)_/¯
         model = FairModel(name='Test')
         model.input_data('Loss Magnitude', mean=50, stdev=5)
-        model.input_data('Loss Event Frequency', low=10, mode=20, high=30)
+        model.input_data('Loss Event Frequency', low=10, most_likely=20, high=30)
         model.calculate_all()
         with warnings.catch_warnings(record=False):
             warnings.simplefilter("ignore")

@@ -191,7 +191,7 @@ class FairTreeGraph(object):
                     connectionstyle="angle3,angleA=0,angleB=-90",
                     ec=row['color'],
                     alpha=.3,
-                    linestyle='--', 
+                    linestyle='--',
                     linewidth=3
                 ),
             )

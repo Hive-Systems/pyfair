@@ -10,6 +10,8 @@ from ..utility import FairException
 
 from .model import FairModel
 
+from .. import VERSION
+
 
 class FairMetaModel(object):
     """A class for aggregating FAIR models.
@@ -43,7 +45,12 @@ class FairMetaModel(object):
         want to break things.
 
     """
-    def __init__(self, name, models, model_uuid=None, creation_date=None):
+    def __init__(self,
+                 name,
+                 models,
+                 model_uuid=None,
+                 creation_date=None,
+                 version=None):
         self._name = name
         self._params = {}
         self._risk_table = pd.DataFrame()
@@ -59,12 +66,16 @@ class FairMetaModel(object):
                 err = f'Input {model} is not a FairModel or FairMetaModel.'
                 raise FairException(err)
         # Assign UUID
-        if model_uuid and creation_date:
+        if model_uuid and creation_date and version:
             self._model_uuid = model_uuid
             self._creation_date = creation_date
+            # version taken from constructor
+            self._version = version
         else:
             self._model_uuid = str(uuid.uuid1())
             self._creation_date = str(datetime.datetime.now())
+            # VERSION taken from the version of this software
+            self._version = VERSION
 
     def get_name(self):
         """Returns the model name.
@@ -118,6 +129,18 @@ class FairMetaModel(object):
 
         """
         data = json.loads(json_data)
+        # If different minor version, raise warning
+        model_major, model_minor, _ = data['version'].split('.')
+        installed_major, installed_minor, _ = VERSION.split('.')
+        major_mismatch = model_major != installed_major
+        minor_mismatch = model_minor != installed_minor
+        if major_mismatch or minor_mismatch:
+            json_version = data['version']
+            warning.warn(
+                f'You are currently running {VERSION}. The model you are '
+                f'creating was made with {json_version}. This could cause '
+                f'calculation descrepencies.'
+            )
         # Check type of JSON
         if data['type'] != 'FairMetaModel':
             raise FairException('Failed JSON parse attempt. This is not a FairMetaModel.')
@@ -126,7 +149,7 @@ class FairMetaModel(object):
             key: value
             for key, value
             in data.items()
-            if key not in ['name', 'model_uuid', 'type', 'creation_date']
+            if key not in ['name', 'model_uuid', 'type', 'creation_date', 'version']
         }
         # Instantiate models (there is no need to cover)
         # metamodels here because metamodel json only
@@ -141,7 +164,8 @@ class FairMetaModel(object):
             name=data['name'],
             models=models,
             model_uuid=data['model_uuid'],
-            creation_date=data['creation_date']
+            creation_date=data['creation_date'],
+            version=data['version']
         )
         return meta_model
 
@@ -157,7 +181,7 @@ class FairMetaModel(object):
             key: value
             for key, value
             in params.items()
-            if key not in ['name', 'model_uuid', 'type', 'creation_date']
+            if key not in ['name', 'model_uuid', 'type', 'creation_date', 'version']
         }
         # Iterate through params
         for model_params in params.values():
@@ -207,7 +231,7 @@ class FairMetaModel(object):
         self._risk_table['Risk'] = sum_vector
         # Check for NaN values in sum_vector
         if pd.isnull(sum_vector).any():
-            raise FairException('np.NaN values in summed Risk column.' 
+            raise FairException('np.NaN values in summed Risk column.'
                                 ' Likely cause: n_simulations mismatch across models.')
         return self
 
@@ -241,6 +265,7 @@ class FairMetaModel(object):
         data['model_uuid'] = self._model_uuid
         data['creation_date'] = self._creation_date
         data['type'] = str(self.__class__.__name__)
+        data['version'] = self._version
         json_data = json.dumps(
             data,
             indent=4,

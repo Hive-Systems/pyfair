@@ -131,5 +131,5 @@ class FairModelFactory(object):
                 model.input_multi_data(arg_name, **arg_value)
             # If regular, run input_data()
             else:
-                model.input_data(arg_name, **arg_value)                
+                model.input_data(arg_name, **arg_value)
         return model

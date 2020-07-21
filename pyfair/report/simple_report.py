@@ -88,7 +88,7 @@ class FairSimpleReport(FairBaseReport):
             json += '\n\n\n'
         t = t.replace('{JSON}', json)
         source = self._get_caller_source()
-        source.replace('<', '').replace('>','')
+        source.replace('<', '').replace('>', '')
         t = t.replace('{SOURCE}', source)
 
         return t

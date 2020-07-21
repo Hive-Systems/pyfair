@@ -1,6 +1,16 @@
 Release Notes
 =============
 
+Version 0.2-beta.0
+------------------
+
+* Change PERT derivations from `prvalence` version to more commonly accepted
+  version from Wikipedia
+* Universally changed `mode` argument to `most_likely`
+* Reporting defaults to dollars, but now supports currency prefixes
+* Tested against: python 3.8.3, matplotlib 3.2.2, numpy 1.18.5, pandas 1.0.5,
+  scipy 1.5.0
+
 Version 0.1-alpha.10
 --------------------
 
@@ -10,13 +20,13 @@ Version 0.1-alpha.10
 Version 0.1-alpha.9
 -------------------
 
-* Corrected erroneous Vulnerability calculation.
+* Corrected erroneous Vulnerability calculation
 * Updated links in README
 
 Version 0.1-alpha.8
 -------------------
 
-* Fixed FairSimpleReport to allow for interactive generation.
+* Fixed FairSimpleReport to allow for interactive generation
 
 Version 0.1-alpha.7
 -------------------
@@ -29,19 +39,19 @@ Version 0.1-alpha.7
 Version 0.1-alpha.6
 -------------------
 
-* Fixed metadata of base report to auto-fetch names cross-platform.
-* Corrected erroneous statements in documentation related to Vulnerability.
+* Fixed metadata of base report to auto-fetch names cross-platform
+* Corrected erroneous statements in documentation related to Vulnerability
 
 Version 0.1-alpha.5
 -------------------
 
-* Added raw_input() function and associated storage routines.
-* Improved PEP8 compliance.
+* Added raw_input() function and associated storage routines
+* Improved PEP8 compliance
 
 Version 0.1-alpha.4
 -------------------
 
-* Correct inappropriate Vulnerability calculation.
+* Correct inappropriate Vulnerability calculation
 
 Version 0.1-alpha.3
 -------------------
@@ -52,16 +62,16 @@ Version 0.1-alpha.3
 Version 0.1-alpha.2
 -------------------
 
-* Testing and documentation completed for the `model` module.
+* Testing and documentation completed for the `model` module
 
 Version 0.1-alpha.1
 -------------------
 
-* Additional documentation for items in `report` and `utility` modules.
+* Additional documentation for items in `report` and `utility` modules
 
 Version 0.1-alpha.0
 -------------------
 
 * Initial release of pyfair containing the foundational `FairModel`,
   `FairMetaModel`, `FairSimpleReport`, `FairDatabase`, and `FairModelFactory`
-  classes.
+  classes

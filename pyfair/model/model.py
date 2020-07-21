@@ -2,6 +2,7 @@
 
 import json
 import uuid
+import warning
 
 import numpy as np
 import pandas as pd
@@ -10,6 +11,7 @@ from .model_input import FairDataInput
 from .model_tree import FairDependencyTree
 from .model_calc import FairCalculations
 from ..utility.fair_exception import FairException
+from .. import VERSION
 
 
 class FairModel(object):
@@ -56,12 +58,13 @@ class FairModel(object):
     # Creation Methods
     ##########################################################################
 
-    def __init__(self, 
-                 name, 
-                 n_simulations=10_000, 
-                 random_seed=42, 
-                 model_uuid=None, 
-                 creation_date=None):
+    def __init__(self,
+                 name,
+                 n_simulations=10_000,
+                 random_seed=42,
+                 model_uuid=None,
+                 creation_date=None,
+                 version=None):
         # Set n_simulations and random seed for reproducablility
         self._name = name
         self._n_simulations = n_simulations
@@ -84,16 +87,20 @@ class FairModel(object):
             'Secondary Loss Event Frequency',
             'Secondary Loss Event Magnitude',
         ])
-        self._data_input  = FairDataInput() 
+        self._data_input  = FairDataInput()
         self._tree        = FairDependencyTree()
         self._calculation = FairCalculations()
         # If no ID supplied, create.
-        if model_uuid and creation_date:
+        if model_uuid and creation_date and version:
             self._model_uuid  = model_uuid
             self._creation_date = creation_date
+            # This is the version supplied with __init__()
+            self._version = version
         else:
             self._model_uuid = str(uuid.uuid1())
             self._creation_date = str(pd.datetime.now())
+            # This is the version of the currently installed module.
+            self._version = VERSION
         # Standardized targets for abbreviation use
         self._target_map = {
             'LEF' : 'Loss Event Frequency',
@@ -144,6 +151,18 @@ class FairModel(object):
 
         """
         data = json.loads(param_json)
+        # If different minor version, raise warning
+        model_major, model_minor, _ = data['version'].split('.')
+        installed_major, installed_minor, _ = VERSION.split('.')
+        major_mismatch = model_major != installed_major
+        minor_mismatch = model_minor != installed_minor
+        if major_mismatch or minor_mismatch:
+            json_version = data['version']
+            warning.warn(
+                f'You are currently running {VERSION}. The model you are '
+                f'creating was made with {json_version}. This could cause '
+                f'calculation descrepencies.'
+            )
         # Check type of JSON
         if data['type'] != 'FairModel':
             raise FairException('Failed JSON parse attempt. This is not a FairModel.')
@@ -153,13 +172,15 @@ class FairModel(object):
             random_seed=data['random_seed'],
             model_uuid=data['model_uuid'],
             creation_date=data['creation_date']
+            version=data['version']
         )
         # Be lazy
         drop_params = [
             'name',
-            'n_simulations', 
-            'random_seed', 
-            'creation_date', 
+            'n_simulations',
+            'random_seed',
+            'creation_date',
+            'version',
             'model_uuid',
             'type'
         ]
@@ -201,7 +222,7 @@ class FairModel(object):
         Returns
         -------
         pandas.Series
-            A series with index of nodes, and values of statuses 
+            A series with index of nodes, and values of statuses
 
         """
         return self._tree.get_node_statuses()
@@ -250,7 +271,7 @@ class FairModel(object):
         This takes input, feeds it to self._data_input.generate(), and
         updates the dependencies via self._tree.update_status(). The kwargs
         can be for normal (keywords `mean` and `stdev`), BetaPert (keywords
-        `low`, `mode`, `high`, and `gamma`), , or a constant (keywords 
+        `low`, `most_likely`, `high`, and `gamma`), , or a constant (keyword
         `constant`).
 
         Parameters
@@ -307,11 +328,11 @@ class FairModel(object):
         >>> model1.input_multi_data('Secondary Loss', {
         ...     'Reputational': {
         ...         'Secondary Loss Event Frequency': {'constant': 4000},
-        ...         'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},
+        ...         'Secondary Loss Event Magnitude': {'low': 10, 'most_likely': 20, 'high': 100},
         ...     },
         ...     'Legal': {
         ...         'Secondary Loss Event Frequency': {'constant': 2000},
-        ...         'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},        
+        ...         'Secondary Loss Event Magnitude': {'low': 10, 'most_likely': 20, 'high': 100},        
         ...     }
         ... })
 
@@ -331,7 +352,7 @@ class FairModel(object):
         """Takes multiple inputs via nested dictionaries.
 
         The function iterates through a dictionary and runs input_data()
-        for each item. This allows for multiple items to be added at a 
+        for each item. This allows for multiple items to be added at a
         single time. The param dictionary will take the form:
 
         {'target_1': {param_1: value_1}, 'target_2': {param_2: value_2}}
@@ -351,7 +372,7 @@ class FairModel(object):
         >>> model = pyfair.FairModel(name="Insider Threat")
         >>> model.bulk_import_data({
         ...     'Loss Event Frequency': {'mean': 90, 'stdev': 100},
-        ...     'Loss Magnitude': {'constant': 4000}, 
+        ...     'Loss Magnitude': {'constant': 4000},
         ... })
 
         """
@@ -451,7 +472,7 @@ class FairModel(object):
         >>> model = pyfair.FairModel(name="Insider Threat")
         >>> model.bulk_import_data({
         ...     'Loss Event Frequency': {'mean': 90, 'stdev': 100},
-        ...     'Loss Magnitude': {'constant': 4000}, 
+        ...     'Loss Magnitude': {'constant': 4000},
         ... })
         ... model.calculate_all()
 
@@ -521,7 +542,7 @@ class FairModel(object):
         >>> model = pyfair.FairModel(name="Insider Threat")
         >>> model.bulk_import_data({
         ...     'Loss Event Frequency': {'mean': 90, 'stdev': 100},
-        ...     'Loss Magnitude': {'constant': 4000}, 
+        ...     'Loss Magnitude': {'constant': 4000},
         ... })
         ... model.calculate_all)()
         ... results = model.export_results()
@@ -559,6 +580,7 @@ class FairModel(object):
         data['model_uuid'] = self._model_uuid
         data['type'] = str(self.__class__.__name__)
         data['creation_date'] = self._creation_date
+        data['version'] = self._version
         # Dump as string
         json_data = json.dumps(
             data,

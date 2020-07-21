@@ -33,7 +33,7 @@ FairModel is used to create basic Monte Carlo simulations as follows:
     model.input_data('Loss Magnitude', constant=5_000_000)
 
     # We could hypothetically do BetaPert data
-    # model.input_data('Loss Magnitude', low=0, mode=10, high=100, gamma=90)
+    # model.input_data('Loss Magnitude', low=0, most_likely=10, high=100, gamma=90)
 
     # Run our simulations
     model.calculate_all()
@@ -101,7 +101,7 @@ FairMetaModel constructor like this:
     # Create another model
     model2 = FairModel(name='Risk Type 2', n_simulations=10_000)
     model2.input_data('Loss Event Frequency', mean=.3, stdev=.1)
-    model2.input_data('Loss Magnitude', low=0, mode=10_000_000, high=20_000_000)
+    model2.input_data('Loss Magnitude', low=0, most_likely=10_000_000, high=20_000_000)
 
     # Create our metamodel
     metamodel = FairMetaModel(name='Our MetaModel', models=[model1, model2])
@@ -174,7 +174,7 @@ can take Models, MetaModels, or a list of Models and MetaModels like so:
     # Create another model
     model2 = FairModel(name='Risk Type 2', n_simulations=10_000)
     model2.input_data('Loss Event Frequency', mean=.3, stdev=.1)
-    model2.input_data('Loss Magnitude', low=0, mode=10_000_000, high=20_000_000)
+    model2.input_data('Loss Magnitude', low=0, most_likely=10_000_000, high=20_000_000)
     model2.calculate_all()
 
     # Create a report and write it to an output.

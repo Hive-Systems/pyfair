@@ -28,13 +28,13 @@ class FairBaseReport(object):
     instantiated on its own.
 
     """
-    def __init__(self):
+    def __init__(self, currency_prefix='$'):
         # Add formatting strings
         self._model_or_models = None
-        self._dollar_format_string     = '${0:,.0f}'
+        self._currency_format_string     = currency_prefix + '{0:,.0f}'
         self._float_format_string      = '{0:.2f}'
         self._format_strings = {
-            'Risk'                           : self._dollar_format_string,
+            'Risk'                           : self._currency_format_string,
             'Loss Event Frequency'           : self._float_format_string,
             'Threat Event Frequency'         : self._float_format_string,
             'Vulnerability'                  : self._float_format_string,         
@@ -42,11 +42,11 @@ class FairBaseReport(object):
             'Action'                         : self._float_format_string,
             'Threat Capability'              : self._float_format_string,
             'Control Strength'               : self._float_format_string,
-            'Loss Magnitude'                 : self._dollar_format_string,
-            'Primary Loss'                   : self._dollar_format_string,
-            'Secondary Loss'                 : self._dollar_format_string,
+            'Loss Magnitude'                 : self._currency_format_string,
+            'Primary Loss'                   : self._currency_format_string,
+            'Secondary Loss'                 : self._currency_format_string,
             'Secondary Loss Event Frequency' : self._float_format_string,
-            'Secondary Loss Event Magnitude' : self._dollar_format_string,
+            'Secondary Loss Event Magnitude' : self._currency_format_string,
         }
         # Add locations
         self._fair_location = pathlib.Path(__file__).parent.parent
@@ -56,25 +56,24 @@ class FairBaseReport(object):
             'css'   : self._static_location / 'fair.css',
             'simple': self._static_location / 'simple.html'
         }
-        self._param_cols = ['low', 'mode', 'high', 'constant', 'mean', 'stdev']
+        self._param_cols = [
+            'low',
+            'most_likely',
+            'high',
+            'constant',
+            'mean',
+            'stdev'
+        ]
         self._caller_source = self._set_caller_source()
 
     def _set_caller_source(self):
         """Set source code of Python script running the report"""
         try:
+            # In the pantheon of bad ideas, this is up there ...
             frame = inspect.getouterframes(inspect.currentframe())[-1]
             filename = frame[1]
             name = pathlib.Path(filename)
-            if 'ipython-input' in str(name):
-                return 'Report was called from iPython and not a script.'
-            elif name.exists():
-                text = name.read_text()
-                if text.startswith('"""runpy.py'):
-                    return 'Report was not called from a script file.'
-                else:
-                    return name.read_text()
-            else:
-                return 'Report was not called from a script file.'
+            return name.read_text()
         except Exception:
             return 'Error in obtaining caller source.'
 
@@ -289,7 +288,7 @@ class FairBaseReport(object):
         overview_df = risk_results.applymap(lambda x: self._format_strings['Risk'].format(x))
         overview_df.loc['Simulations'] = [
             '{0:,.0f}'.format(len(model.export_results())) 
-            for model 
+            for model
             in model_or_models.values()
         ]
         # Add data
@@ -304,8 +303,8 @@ class FairBaseReport(object):
         params = dict(**model.export_params())
         # Remove items we don't want.
         params = {
-            key: value 
-            for key, value 
+            key: value
+            for key, value
             in params.items() 
             if key in self._format_strings.keys()
         }
@@ -331,7 +330,7 @@ class FairBaseReport(object):
                     # ... by getting the format string and formatting
                     fs[row.name].format(item)
                     # For each item
-                    for item 
+                    for item
                     in row
                 ],
                 # And keep the index
@@ -346,14 +345,14 @@ class FairBaseReport(object):
         # Create our distribution icons as strings in table
         param_df['distribution'] = [
             self._get_distribution_icon(model, target)
-            for target 
+            for target
             in param_df.index.values
         ]
         # Export table to html
         detail_table = param_df.to_html(
-            border=0, 
-            header=True, 
-            justify='left', 
+            border=0,
+            header=True,
+            justify='left',
             classes='fair_table',
             escape=False
         )
@@ -379,9 +378,9 @@ class FairBaseReport(object):
         )
         # Do not truncate our base64 images.
         detail_table = risk_df.to_html(
-            border=0, 
-            header=True, 
-            justify='left', 
+            border=0,
+            header=True,
+            justify='left',
             classes='fair_table',
             escape=False
         )

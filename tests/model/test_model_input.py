@@ -45,7 +45,7 @@ class TestFairModelInput(unittest.TestCase):
         with self.assertRaises(FairException):
             self._input._check_le_1('Control Strength', mean=5, stdev=2)
         with self.assertRaises(FairException):
-            self._input._check_le_1('Threat Capability', low=2, mode=5, high=10)
+            self._input._check_le_1('Threat Capability', low=2, most_likely=5, high=10)
 
     def test_check_parameters(self):
         """Ensure missing keywords will throw an error or work normally"""
@@ -54,9 +54,9 @@ class TestFairModelInput(unittest.TestCase):
         with self.assertRaises(FairException):
             self._input._check_parameters(self._input._gen_constant)
         # Betapert
-        self._input._check_parameters(self._input._gen_pert, low=1, mode=4, high=10)
+        self._input._check_parameters(self._input._gen_pert, low=1, most_likely=4, high=10)
         with self.assertRaises(FairException):
-            self._input._check_parameters(self._input._gen_pert, mode=4)
+            self._input._check_parameters(self._input._gen_pert, most_likely=4)
         # Check normal
         self._input._check_parameters(self._input._gen_normal, mean=4, stdev=2) 
         with self.assertRaises(FairException):
@@ -69,15 +69,15 @@ class TestFairModelInput(unittest.TestCase):
         """Ensure PERT checks are accuate"""
         # Check low > mode
         with self.assertRaises(FairException):
-            self._input._check_pert(low=5, mode=2, high=10)
-        # Check mode > high
+            self._input._check_pert(low=5, most_likely=2, high=10)
+        # Check most_likely > high
         with self.assertRaises(FairException):
-            self._input._check_pert(low=5, mode=12, high=10)
+            self._input._check_pert(low=5, most_likely=12, high=10)
 
     def test_check_generation(self):
         """Run generation tests"""
         # Run basic PERT
-        result = self._input.generate('Loss Event Frequency', self._COUNT, low=0, mode=10, high=20)
+        result = self._input.generate('Loss Event Frequency', self._COUNT, low=0, most_likely=10, high=20)
         self.assertTrue(len(result) == self._COUNT)
         # Basic normal
         result = self._input.generate('Loss Event Frequency', self._COUNT, mean=20, stdev=5)

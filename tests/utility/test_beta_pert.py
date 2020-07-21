@@ -18,7 +18,7 @@ class TestFairViolinPlot(unittest.TestCase):
         # Test correct usage
         fbp = FairBetaPert(
             low=5,
-            mode=20,
+            most_likely=20,
             high=50,
             gamma=2
         )
@@ -30,7 +30,7 @@ class TestFairViolinPlot(unittest.TestCase):
             FairException,
             FairBetaPert,
             low=5,
-            mode=5,
+            most_likely=5,
             high=5
         )
 

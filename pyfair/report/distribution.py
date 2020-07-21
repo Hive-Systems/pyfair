@@ -109,7 +109,7 @@ class FairDistributionCurve(FairBaseCurve):
         for name, model in self._input.items():
             legend_labels.append(name)
             plt.hist(
-                [model.export_results()['Risk']], 
+                [model.export_results()['Risk']],
                 bins=25,
                 alpha=.3
             )

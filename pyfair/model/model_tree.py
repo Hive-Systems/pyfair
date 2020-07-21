@@ -34,18 +34,18 @@ class FairDependencyTree(object):
         # Create and add nodes to tree
         self._root = FairDependencyNode('Risk')
         self._node_names = [
-            'Risk', 
-            'Loss Event Frequency', 
-            'Threat Event Frequency', 
-            'Vulnerability', 
-            'Contact', 
-            'Action', 
-            'Threat Capability', 
-            'Control Strength', 
-            'Loss Magnitude', 
-            'Primary Loss', 
+            'Risk',
+            'Loss Event Frequency',
+            'Threat Event Frequency',
+            'Vulnerability',
+            'Contact',
+            'Action',
+            'Threat Capability',
+            'Control Strength',
+            'Loss Magnitude',
+            'Primary Loss',
             'Secondary Loss',
-            'Secondary Loss Event Frequency', 
+            'Secondary Loss Event Frequency',
             'Secondary Loss Event Magnitude'
         ]
         # Initial tree setup
@@ -230,8 +230,8 @@ class FairDependencyTree(object):
             elif parent_node.status == 'Required':
                 # Get statuses
                 statuses = [
-                    child_node.status 
-                    for child_node 
+                    child_node.status
+                    for child_node
                     in parent_node.children
                 ]
                 # Get a bool for each of the statuses

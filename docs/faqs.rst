@@ -25,8 +25,8 @@ The following nodes must have values from 0 to 1:
 
 Pert distributions:
 
-* High parameter must be equal to or greater than Mode parameter
-* Mode parameter must be equal to or greater than Low parameter
+* High parameter must be equal to or greater than Most Likely parameter
+* Most likely parameter must be equal to or greater than Low parameter
 
 Parameter Mismatch
 ------------------

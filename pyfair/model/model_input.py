@@ -32,21 +32,21 @@ class FairDataInput(object):
     def __init__(self):
         # These targets must be less than or equal to one
         self._le_1_targets = ['Action', 'Vulnerability', 'Control Strength', 'Threat Capability']
-        self._le_1_keywords = ['constant', 'high', 'mode', 'low', 'mean']
+        self._le_1_keywords = ['constant', 'high', 'most_likely', 'low', 'mean']
         # Parameter map associates parameters with functions
         self._parameter_map = {
-            'constant': self._gen_constant,
-            'high'    : self._gen_pert,
-            'mode'    : self._gen_pert,
-            'low'     : self._gen_pert,
-            'gamma'   : self._gen_pert,
-            'mean'    : self._gen_normal,
-            'stdev'   : self._gen_normal,
+            'constant'   : self._gen_constant,
+            'high'       : self._gen_pert,
+            'most_likely': self._gen_pert,
+            'low'        : self._gen_pert,
+            'gamma'      : self._gen_pert,
+            'mean'       : self._gen_normal,
+            'stdev'      : self._gen_normal,
         }
         # List of keywords with function keys
         self._required_keywords = {
             self._gen_constant: ['constant'],
-            self._gen_pert    : ['low', 'mode', 'high'],
+            self._gen_pert    : ['low', 'most_likely', 'high'],
             self._gen_normal  : ['mean', 'stdev'],
         }  
         # Storage of inputs
@@ -94,7 +94,8 @@ class FairDataInput(object):
         for keyword, value in kwargs.items():
             # Two conditions
             value_is_less_than_zero = value < 0
-            keyword_is_relevant = keyword in ['mean', 'constant', 'low', 'mode', 'high']
+            relevant_keywords = ['mean', 'constant', 'low', 'most_likely', 'high']
+            keyword_is_relevant = keyword in relevant_keywords
             # Test conditions
             if keyword_is_relevant and value_is_less_than_zero:
                 raise FairException('"{}" is less than zero.'.format(keyword))
@@ -123,8 +124,8 @@ class FairDataInput(object):
             The number of random numbers generated (or alternatively, the
             length of the Series returned).
         **kwargs
-            Keyword arguments with one of the following values: {`mean`, 
-            `stdev`, `low`, `mode`, `high`, `gamma`, or `constant`}.
+            Keyword arguments with one of the following values: {`mean`,
+            `stdev`, `low`, `most_likely`, `high`, `gamma`, or `constant`}.
 
         Raises
         ------
@@ -146,6 +147,7 @@ class FairDataInput(object):
         result = self._generate_single(target, count, **kwargs)
         # Explicitly insert optional keywords for model storage
         dict_keys = kwargs.keys()
+        # Old models without gamma keyword won't work without this.
         if 'low' in dict_keys and 'gamma' not in dict_keys:
             kwargs['gamma'] = 4
         # Record and return
@@ -194,13 +196,13 @@ class FairDataInput(object):
                 'Reputational': {
                     'Secondary Loss Event Frequency': {'constant': 4000}, 
                     'Secondary Loss Event Magnitude': {
-                        'low': 10, 'mode': 20, 'high': 100
+                        'low': 10, 'most_likely': 20, 'high': 100
                     },
                 },
                 'Legal': {
                     'Secondary Loss Event Frequency': {'constant': 2000}, 
                     'Secondary Loss Event Magnitude': {
-                        'low': 10, 'mode': 20, 'high': 100
+                        'low': 10, 'most_likely': 20, 'high': 100
                     },   
                 }
             }
@@ -343,8 +345,8 @@ class FairDataInput(object):
     def _check_pert(self, **kwargs):
         """Does the work of ensuring BetaPert distribution is valid"""
         conditions = {
-            'mode >= low'  : kwargs['mode'] >= kwargs['low'],
-            'high >= mode' : kwargs['high'] >= kwargs['mode'],
+            'most_likely >= low' : kwargs['most_likely'] >= kwargs['low'],
+            'high >= most_likely': kwargs['high'] >= kwargs['most_likely'],
         }
         for condition_name, condition_value in conditions.items():
             if condition_value == False:
