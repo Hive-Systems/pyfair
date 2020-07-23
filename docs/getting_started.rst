@@ -65,7 +65,7 @@ pyfair will take care of most of the "under the hood" unpleasantness
 associated with the Monte Carlo generation and FAIR calculation. You simply
 supply the targets and the distribution types. These targets are:
 
-    * BetaPert: low, mode, and high (and optionally gamma)
+    * BetaPert: low, most_likely, and high (and optionally gamma)
     * Constant: constant
     * Normal: mean, stdev
 

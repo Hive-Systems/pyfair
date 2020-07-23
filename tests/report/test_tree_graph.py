@@ -14,7 +14,7 @@ class TestFairTreeGraph(unittest.TestCase):
         'Risk'                           : _DOLLAR_FORMAT_STRING,
         'Loss Event Frequency'           : _FLOAT_FORMAT_STRING,
         'Threat Event Frequency'         : _FLOAT_FORMAT_STRING,
-        'Vulnerability'                  : _FLOAT_FORMAT_STRING,         
+        'Vulnerability'                  : _FLOAT_FORMAT_STRING,
         'Contact'                        : _FLOAT_FORMAT_STRING,
         'Action'                         : _FLOAT_FORMAT_STRING,
         'Threat Capability'              : _FLOAT_FORMAT_STRING,

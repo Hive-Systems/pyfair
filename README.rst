@@ -25,7 +25,8 @@ This is based on the terms found in:
 1. `Open FAIR™ RISK TAXONOMY (O-RT) <https://publications.opengroup.org/c13k>`_; and,
 2. `Open FAIR™ RISK ANALYSIS (O-RA) <https://publications.opengroup.org/c13g>`_
 
-"Open FAIR" is a trademark of the Open Group.
+"Open FAIR" is a trademark of the Open Group. This project is not endorsed by
+or affiliated with the Open Group.
 
 Installation
 ------------
@@ -95,7 +96,7 @@ Serialized Model
         },
         "Loss Event Frequency": {
             "low": 20,
-            "mode": 90,
+            "most_likely": 90,
             "high": 95,
             "gamma": 4
         },

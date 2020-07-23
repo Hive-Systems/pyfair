@@ -1,8 +1,9 @@
 """This module contains the main class for creating FAIR models."""
 
+import datetime
 import json
 import uuid
-import warning
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -98,7 +99,7 @@ class FairModel(object):
             self._version = version
         else:
             self._model_uuid = str(uuid.uuid1())
-            self._creation_date = str(pd.datetime.now())
+            self._creation_date = str(datetime.datetime.now())
             # This is the version of the currently installed module.
             self._version = VERSION
         # Standardized targets for abbreviation use
@@ -158,7 +159,7 @@ class FairModel(object):
         minor_mismatch = model_minor != installed_minor
         if major_mismatch or minor_mismatch:
             json_version = data['version']
-            warning.warn(
+            warnings.warn(
                 f'You are currently running {VERSION}. The model you are '
                 f'creating was made with {json_version}. This could cause '
                 f'calculation descrepencies.'
@@ -171,7 +172,7 @@ class FairModel(object):
             n_simulations=data['n_simulations'], 
             random_seed=data['random_seed'],
             model_uuid=data['model_uuid'],
-            creation_date=data['creation_date']
+            creation_date=data['creation_date'],
             version=data['version']
         )
         # Be lazy

@@ -11,11 +11,11 @@ class TestFairModelInput(unittest.TestCase):
     _MULTI = {
             'Reputational': {
                 'Secondary Loss Event Frequency': {'constant': 4000}, 
-                'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},
+                'Secondary Loss Event Magnitude': {'low': 10, 'most_likely': 20, 'high': 100},
             },
             'Legal': {
                 'Secondary Loss Event Frequency': {'constant': 2000}, 
-                'Secondary Loss Event Magnitude': {'low': 10, 'mode': 20, 'high': 100},        
+                'Secondary Loss Event Magnitude': {'low': 10, 'most_likely': 20, 'high': 100},        
             }
     }
 
@@ -67,7 +67,7 @@ class TestFairModelInput(unittest.TestCase):
 
     def test_check_pert(self):
         """Ensure PERT checks are accuate"""
-        # Check low > mode
+        # Check low > most_likely
         with self.assertRaises(FairException):
             self._input._check_pert(low=5, most_likely=2, high=10)
         # Check most_likely > high

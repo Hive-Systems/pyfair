@@ -72,7 +72,7 @@ class FairBetaPert(object):
         \text{mean}
         =
         \frac
-            {\text{low} + \text{gamma} \times \text{mode} + \text{high}}
+            {\text{low} + \text{gamma} \times \text{most_likely} + \text{high}}
             {\text{gamma} + 2}
 
     And where:

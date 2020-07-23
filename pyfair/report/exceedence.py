@@ -70,7 +70,7 @@ class FairExceedenceCurves(FairBaseCurve):
         ax.axes.set_title('Exceedence Probability Curve', fontsize=20)
 
     def _generate_loss_curve(self, name, ax, space, loss_expectancy):
-        """For each dollar amount, what's the probability loss was exceeded?"""
+        """For each currency amount, what's the probability loss was exceeded?"""
         # Plot
         ax.plot(space, loss_expectancy)
         # Style

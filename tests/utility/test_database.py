@@ -12,9 +12,9 @@ class TestFairDatabase(unittest.TestCase):
     _BULK_IMPORT_DATA = {
         'Primary Loss': {"mean": 5_000_000, "stdev": 10},
         'Secondary Loss': {"constant": 100},
-        'Loss Event Frequency': {"low": 0, "mode": 80, "high": 100},
-        'Threat Capability': {"low": 0, "mode": .4, "high": .9, "gamma": 3},
-        'Control Strength': {"low": .3, "mode": .4, "high": .5},
+        'Loss Event Frequency': {"low": 0, "most_likely": 80, "high": 100},
+        'Threat Capability': {"low": 0, "most_likely": .4, "high": .9, "gamma": 3},
+        'Control Strength': {"low": .3, "most_likely": .4, "high": .5},
     }
     _QUERY_STRING = """
         SELECT 

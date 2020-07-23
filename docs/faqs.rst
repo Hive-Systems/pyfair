@@ -34,7 +34,7 @@ Parameter Mismatch
 Keywords must be used as follows:
 
 * constant: must be the only parameter used for a given node
-* low, mode, and high: must be used together (gamma is optional)
+* low, most_likely, and high: must be used together (gamma is optional)
 * mean, stdev: must be used together
 
 Why are my calculation dependencies unresolved?

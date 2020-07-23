@@ -61,7 +61,7 @@ class FairDataInput(object):
             A dictionary of the values supplied to generate function. The
             keys for the dict will be the target node as a string (e.g. 
             'Loss Event Frequency') and the values will be a sub-dictionary
-            of keyword arguments ({'low': 50, 'mode}: 51, 'high': 52}).
+            of keyword arguments ({'low': 50, 'most_likely}: 51, 'high': 52}).
 
         """
         return self._supplied_values
@@ -239,7 +239,7 @@ class FairDataInput(object):
         Returns
         -------
         pd.Series
-            A series of length `count` composed of aggregate risk dollar
+            A series of length `count` composed of aggregate risk currency
             amounts.
 
         """
