@@ -108,10 +108,10 @@ Why do my simulation results change from run to run?
 
 Monte Carlo simulations are an attempt to harness large numbers of random
 simulations to model complex outcomes. pyfair seeds its random number
-generation with a so-called "random seed". This makes the outcome, While
-quasi-random and suitable for modeling, actually deterministic in fact. As
-a consequence, we can run a pyfair simulation today and a simulation
-tomorrow, and they will come out the same if the parameters are the same.
+generation with a so-called "random seed". This makes the outcome
+deterministic, even though it appears random. As a consequence, we can run
+a pyfair simulation today and a simulation tomorrow, and they will come out
+the same if the parameters are the same.
 
 By default, the random seed is 42. If you're reading this, you've probably
 changed the random seed.

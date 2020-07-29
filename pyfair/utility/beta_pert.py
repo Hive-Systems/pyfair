@@ -96,7 +96,7 @@ class FairBetaPert(object):
            Evaluation. Operations Research, 7(5), 646-669.
 
     .. note:: Though this class is created in contemplation of using the
-              class methods attached, it is possible to obtain the raw
+              object's public methods, it is possible to obtain the raw
               scipy beta distribution itself via the self._beta_curve
               attribute.
 
@@ -136,7 +136,7 @@ class FairBetaPert(object):
     def _generate_alpha(self):
         """Generate alpha parameter for beta distrubtions"""
         alpha_frac = (
-            (self._ml - self._low) / 
+            (self._ml - self._low) /
             (self._high - self._low)
         )
         alpha = 1 + (self._gamma * alpha_frac)
@@ -145,7 +145,7 @@ class FairBetaPert(object):
     def _generate_beta(self):
         """Generate beta parameter for beta distribution"""
         beta_frac = (
-            (self._high - self._ml) / 
+            (self._high - self._ml) /
             (self._high - self._low)
         )
         beta = 1 + (self._gamma * beta_frac)

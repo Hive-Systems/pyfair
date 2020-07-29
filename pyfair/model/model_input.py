@@ -213,7 +213,7 @@ class FairDataInput(object):
         parameters supplied. Those simulations are then calculated
         independently, and then summed to yield aggregate risk.
 
-        .. warning:: unlike other functions, this does not take **kwargs--
+        .. warning:: Unlike other functions, this does not take **kwargs--
            rather it takes a dictionary
 
         Parameters
