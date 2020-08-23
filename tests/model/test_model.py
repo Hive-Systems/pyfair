@@ -1,6 +1,7 @@
 import json
 import pathlib
 import unittest
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -13,7 +14,9 @@ class TestFairModel(unittest.TestCase):
 
     MODEL_TABLE_COLUMN_COUNT = 13
     N_SAMPLES = 100
-    MODEL_JSON = '{     "Loss Event Frequency": {         "low": 20,         "most_likely": 100,         "high": 900     },     "Loss Magnitude": {         "low": 3000000,         "most_likely": 3500000,         "high": 5000000     },     "name": "Regular Model 1",     "n_simulations": 10000,     "random_seed": 42,     "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",     "type": "FairModel",     "creation_date": "2019-07-06 17:23:43.647370",     "version": "0.2-beta.0" }'
+    OLD_STYLE_MODEL_JSON = '{     "Loss Event Frequency": {         "low": 20,         "mode": 100,         "high": 900     },     "Loss Magnitude": {         "low": 3000000,         "most_likely": 3500000,         "high": 5000000     },     "name": "Regular Model 1",     "n_simulations": 10000,     "random_seed": 42,     "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",     "type": "FairModel",     "creation_date": "2019-07-06 17:23:43.647370" }'
+    MODEL_JSON = '{     "Loss Event Frequency": {         "low": 20,         "most_likely": 100,         "high": 900     },     "Loss Magnitude": {         "low": 3000000,         "most_likely": 3500000,         "high": 5000000,         "gamma": 4     },     "name": "Regular Model 1",     "n_simulations": 10000,     "random_seed": 42,     "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",     "type": "FairModel",     "creation_date": "2019-07-06 17:23:43.647370",     "version": "0.2-beta.0" }'
+    OLD_STYLE_META_MODEL_JSON = '{     "Regular Model 1": {         "Loss Event Frequency": {             "low": 20,             "mode": 100,             "high": 900         },         "Loss Magnitude": {             "low": 3000000,             "most_likely": 3500000,             "high": 5000000         },         "name": "Regular Model 1",         "n_simulations": 10000,         "random_seed": 42,         "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",         "type": "FairModel",         "creation_date": "2019-07-06 17:23:43.647370",     "version": "0.2-beta.0"     },     "Regular Model 2": {         "Loss Event Frequency": {             "mean": 0.3,             "stdev": 0.1         },         "Loss Magnitude": {             "low": 2000000000,             "most_likely": 3000000000,             "high": 5000000000         },         "name": "Regular Model 2",         "n_simulations": 10000,         "random_seed": 42,         "model_uuid": "b6ca98a4-a03c-11e9-8ce0-f26e0bbd6dbc",         "type": "FairModel",         "creation_date": "2019-07-06 17:23:43.672336"     },     "name": "My Meta Model!",     "model_uuid": "b6cce298-a03c-11e9-b79f-f26e0bbd6dbc",     "creation_date": "2019-07-06 17:23:43.687336",     "type": "FairMetaModel" }'
     META_MODEL_JSON = '{     "Regular Model 1": {         "Loss Event Frequency": {             "low": 20,             "most_likely": 100,             "high": 900         },         "Loss Magnitude": {             "low": 3000000,             "most_likely": 3500000,             "high": 5000000         },         "name": "Regular Model 1",         "n_simulations": 10000,         "random_seed": 42,         "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",         "type": "FairModel",         "creation_date": "2019-07-06 17:23:43.647370",     "version": "0.2-beta.0"     },     "Regular Model 2": {         "Loss Event Frequency": {             "mean": 0.3,             "stdev": 0.1         },         "Loss Magnitude": {             "low": 2000000000,             "most_likely": 3000000000,             "high": 5000000000         },         "name": "Regular Model 2",         "n_simulations": 10000,         "random_seed": 42,         "model_uuid": "b6ca98a4-a03c-11e9-8ce0-f26e0bbd6dbc",         "type": "FairModel",         "creation_date": "2019-07-06 17:23:43.672336"     },     "name": "My Meta Model!",     "model_uuid": "b6cce298-a03c-11e9-b79f-f26e0bbd6dbc",     "creation_date": "2019-07-06 17:23:43.687336",     "type": "FairMetaModel",     "version": "0.2-beta.0" }'
 
     def test_creation(self):
@@ -36,11 +39,18 @@ class TestFairModel(unittest.TestCase):
 
     def test_read_json(self):
         """Test static method for reading JSON"""
-        # Instantiate model
-        model = FairModel.read_json(self.MODEL_JSON)
-        self.assertTrue(model)
-        # Ensure metamodel fails
-        self.assertRaises(FairException, FairModel.read_json, self.META_MODEL_JSON)
+        json_list = [
+            (self.OLD_STYLE_MODEL_JSON, self.OLD_STYLE_META_MODEL_JSON),
+            (self.MODEL_JSON, self.META_MODEL_JSON)
+        ]
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            for m_json, mm_json in json_list:
+                # Instantiate model
+                model = FairModel.read_json(m_json)
+                self.assertTrue(model)
+                # Ensure metamodel fails
+                self.assertRaises(FairException, FairModel.read_json, mm_json)
 
     def test_inspection(self):
         """Check the inspection methods"""

@@ -1,5 +1,6 @@
 import json
 import unittest
+import warnings
 
 import pandas as pd
 
@@ -12,8 +13,11 @@ class TestFairMetaModel(unittest.TestCase):
 
     _RISK_TABLE_COLUMN_COUNT = 2
     _N_SAMPLES = 100
-    _MODEL_JSON = '{     "Loss Event Frequency": {         "low": 20,         "most_likely": 100,         "high": 900     },     "Loss Magnitude": {         "low": 3000000,         "most_likely": 3500000,         "high": 5000000     },     "name": "Regular Model 1",     "n_simulations": 10000,     "random_seed": 42,     "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",     "type": "FairModel",     "creation_date": "2019-07-06 17:23:43.647370",    "version": "0.2-beta.0" }'
+    _OLD_STYLE_MODEL_JSON = '{     "Loss Event Frequency": {         "low": 20,         "mode": 100,         "high": 900     },     "Loss Magnitude": {         "low": 3000000,         "most_likely": 3500000,         "high": 5000000     },     "name": "Regular Model 1",     "n_simulations": 10000,     "random_seed": 42,     "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",     "type": "FairModel",     "creation_date": "2019-07-06 17:23:43.647370"  }'
+    _MODEL_JSON = '{     "Loss Event Frequency": {         "low": 20,         "most_likely": 100,         "high": 900,         "gamma": 4 },     "Loss Magnitude": {         "low": 3000000,         "most_likely": 3500000,         "high": 5000000     },     "name": "Regular Model 1",     "n_simulations": 10000,     "random_seed": 42,     "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",     "type": "FairModel",     "creation_date": "2019-07-06 17:23:43.647370",    "version": "0.2-beta.0" }'
+    _OLD_STYLE_META_MODEL_JSON = '{     "Regular Model 1": {         "Loss Event Frequency": {             "low": 20,             "most_likely": 100,             "high": 900,             "gamma":4         },         "Loss Magnitude": {             "low": 3000000,             "most_likely": 3500000,             "high": 5000000,             "gamma":4         },         "name": "Regular Model 1",         "n_simulations": 10000,         "random_seed": 42,         "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",         "type": "FairModel",         "creation_date": "2019-07-06 17:23:43.647370",     "version": "0.2-beta.0"     },     "Regular Model 2": {         "Loss Event Frequency": {             "mean": 0.3,             "stdev": 0.1         },         "Loss Magnitude": {             "low": 2000000000,             "most_likely": 3000000000,             "high": 5000000000,            "gamma":4         },         "name": "Regular Model 2",         "n_simulations": 10000,         "random_seed": 42,         "model_uuid": "b6ca98a4-a03c-11e9-8ce0-f26e0bbd6dbc",         "type": "FairModel",         "creation_date": "2019-07-06 17:23:43.672336",     "version": "0.2-beta.0"     },     "name": "My Meta Model!",     "model_uuid": "b6cce298-a03c-11e9-b79f-f26e0bbd6dbc",     "creation_date": "2019-07-06 17:23:43.687336",     "type": "FairMetaModel"   }'
     _META_MODEL_JSON = '{     "Regular Model 1": {         "Loss Event Frequency": {             "low": 20,             "most_likely": 100,             "high": 900,             "gamma":4         },         "Loss Magnitude": {             "low": 3000000,             "most_likely": 3500000,             "high": 5000000,             "gamma":4         },         "name": "Regular Model 1",         "n_simulations": 10000,         "random_seed": 42,         "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",         "type": "FairModel",         "creation_date": "2019-07-06 17:23:43.647370",     "version": "0.2-beta.0"     },     "Regular Model 2": {         "Loss Event Frequency": {             "mean": 0.3,             "stdev": 0.1         },         "Loss Magnitude": {             "low": 2000000000,             "most_likely": 3000000000,             "high": 5000000000,            "gamma":4         },         "name": "Regular Model 2",         "n_simulations": 10000,         "random_seed": 42,         "model_uuid": "b6ca98a4-a03c-11e9-8ce0-f26e0bbd6dbc",         "type": "FairModel",         "creation_date": "2019-07-06 17:23:43.672336",     "version": "0.2-beta.0"     },     "name": "My Meta Model!",     "model_uuid": "b6cce298-a03c-11e9-b79f-f26e0bbd6dbc",     "creation_date": "2019-07-06 17:23:43.687336",     "type": "FairMetaModel",     "version": "0.2-beta.0" }'
+
 
     def setUp(self):
         # Static method instantiation
@@ -24,25 +28,27 @@ class TestFairMetaModel(unittest.TestCase):
 
     def test_creation(self):
         """Test basic instantiation"""
-        # Ensure existence of appropriate attributes
-        self.assertTrue(self._meta._model_uuid)
-        self.assertTrue(self._meta._creation_date)
-        # Check that the table is of proper-ish
-        self.assertEqual(
-            len(self._meta._risk_table.columns), 
-            self._RISK_TABLE_COLUMN_COUNT
-        )
-        # Test regular instantiation
-        m1 = FairModel.read_json(self._MODEL_JSON)
-        m2 = FairModel.read_json(self._MODEL_JSON)
-        self._meta = FairMetaModel('New Model', [m1, m2])
-        # Throw garbage in metamodel
-        self.assertRaises(
-            FairException,
-            FairMetaModel,
-            'Garbage Name', 
-            ['Garbage Input']
-        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            # Ensure existence of appropriate attributes
+            self.assertTrue(self._meta._model_uuid)
+            self.assertTrue(self._meta._creation_date)
+            # Check that the table is of proper-ish
+            self.assertEqual(
+                len(self._meta._risk_table.columns), 
+                self._RISK_TABLE_COLUMN_COUNT
+            )
+            # Test regular instantiation
+            m1 = FairModel.read_json(self._OLD_STYLE_MODEL_JSON)
+            m2 = FairModel.read_json(self._MODEL_JSON)
+            self._meta = FairMetaModel('New Model', [m1, m2])
+            # Throw garbage in metamodel
+            self.assertRaises(
+                FairException,
+                FairMetaModel,
+                'Garbage Name', 
+                ['Garbage Input']
+            )
 
     def test_read_json(self):
         """setUp covers most, so just test Model JSON fails"""
@@ -67,7 +73,7 @@ class TestFairMetaModel(unittest.TestCase):
         """Run a calulate all."""
         # Test regular instantiation
         m1 = FairModel.read_json(self._MODEL_JSON)
-        m2 = FairModel.read_json(self._MODEL_JSON)
+        m2 = FairModel.read_json(self._OLD_STYLE_MODEL_JSON)
         self._meta = FairMetaModel('New Model', [m1, m2])
         # Test before
         self.assertFalse(self._meta.calculation_completed())
