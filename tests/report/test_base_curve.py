@@ -11,13 +11,18 @@ class TestFairBaseCurve(unittest.TestCase):
 
     def setUp(self):
         self._fbc = FairBaseCurve()
+        self._model = FairModel('test')
+        self._model.input_data('LEF', constant=100)
+        self._model.input_data('LM', constant=100)
+        self._model.calculate_all()
 
     def tearDown(self):
         self._fbc = None
+        self._model = None
 
     def test_good_inputs(self):
         """Test base_curve for good inputs"""
-        model = FairModel('model')
+        model = self._model
         meta = FairMetaModel('meta', models=[model, model])
         good_list = [model, meta, model]
         for input_item in [model, meta, good_list]:

@@ -10,7 +10,6 @@ from pyfair.utility.fair_exception import FairException
 
 class TestFairBaseReport(unittest.TestCase):
 
-    _CALLER_SOURCE_DOCSTRING = "\"\"\"Script to create and run a test suite.\"\"\""
     _BASE64_BYTES = bytes([100, 100, 100, 100, 100])
     _BASE64_BYTES_TAG = '<img  src="data:image/png;base64, ZGRkZGQ=" alt=""/>'
     _BASE64_FIG_TAG_FIRST_50 = '<img  src="data:image/png;base64, iVBORw0KGgoAAAAN'
@@ -34,12 +33,6 @@ class TestFairBaseReport(unittest.TestCase):
         self._model_1 = None
         self._model_2 = None
         self._metamodel = None
-
-    def test_caller_source(self):
-        """Test setting and getting of caller source"""
-        cs = self._fbr._get_caller_source()
-        cs_line_1 = cs.splitlines()[0]
-        self.assertEquals(self._CALLER_SOURCE_DOCSTRING, cs_line_1)
 
     def test_input_check(self):
         """Test the validity of the input check"""

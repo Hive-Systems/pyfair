@@ -79,16 +79,4 @@ class FairSimpleReport(FairBaseReport):
         # TODO Text wrap
         t = t.replace('{PARAMETER_HTML}', parameter_html)
 
-        # JSON and Source
-        json = ''
-        for name, model in self._model_or_models.items():
-            json += name
-            json += '\n====================\n'
-            json += model.to_json()
-            json += '\n\n\n'
-        t = t.replace('{JSON}', json)
-        source = self._get_caller_source()
-        source.replace('<', '').replace('>', '')
-        t = t.replace('{SOURCE}', source)
-
         return t

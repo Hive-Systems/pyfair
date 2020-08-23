@@ -64,22 +64,6 @@ class FairBaseReport(object):
             'mean',
             'stdev'
         ]
-        self._caller_source = self._set_caller_source()
-
-    def _set_caller_source(self):
-        """Set source code of Python script running the report"""
-        try:
-            # In the pantheon of bad ideas, this is up there ...
-            frame = inspect.getouterframes(inspect.currentframe())[-1]
-            filename = frame[1]
-            name = pathlib.Path(filename)
-            return name.read_text()
-        except Exception:
-            return 'Error in obtaining caller source.'
-
-    def _get_caller_source(self):
-        """Get source code of calling script after _set_caller_source()"""
-        return self._caller_source
 
     def _input_check(self, value):
         """Check input value for report is appropriate
