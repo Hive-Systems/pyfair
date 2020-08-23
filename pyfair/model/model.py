@@ -125,12 +125,12 @@ class FairModel(object):
         })
 
     @staticmethod
-    def read_json(param_json):
+    def read_json(json_data):
         """Static method to create a model from a JSON string
 
         Parameters
         ----------
-        param_json : str
+        json_data : str
             a UTF-8 encoded JSON string containing model data
 
         Returns
@@ -151,7 +151,10 @@ class FairModel(object):
         >>> model = FairModel.read_json(json_text)
 
         """
-        data = json.loads(param_json)
+        data = json.loads(json_data)
+        # If no version, assign
+        if not 'version' in data.keys():
+            data['version'] = '0.1-alpha.10 or earlier'
         # If different minor version, raise warning
         model_major, model_minor, _ = data['version'].split('.')
         installed_major, installed_minor, _ = VERSION.split('.')
@@ -189,12 +192,11 @@ class FairModel(object):
         for param_name, param_value in data.items():
             # If it's not in the drop list, load it.
             if param_name not in drop_params:
-                # Input params must be treated differently if raw
-                contains_raw = 'raw' in param_value.keys()
+                # Note multi params are not expanded
                 if param_name.startswith('multi'):
                     model.input_multi_data(param_name, param_value)
                 # Raw needs a different way
-                elif contains_raw:
+                elif 'raw' in param_value.keys():
                     model.input_raw_data(param_name, param_value['raw'])
                 # Otherwise standard input
                 else:
@@ -293,6 +295,11 @@ class FairModel(object):
         >>> model.input_data('Loss Magnitude', mean=20, stdev=10)
 
         """
+        # 'mode' -> 'most_likely' conversion (REFACTOR ME)
+        if 'mode' in kwargs:
+            mode_value = kwargs['mode']
+            kwargs['most_likely'] = mode_value
+            del kwargs['mode']
         # Standardize inputs to account for abbreviations
         target = self._standardize_target(target)
         # Generate data via data captive class
@@ -338,6 +345,12 @@ class FairModel(object):
         ... })
 
         """
+        # 'mode' -> 'most_likely' (REFACTOR ME)
+        for dict_name, sub_dict in kwargs_dict.items():
+            if 'mode' in sub_dict:
+                mode_value = sub_dict['mode']
+                sub_dict['most_likely'] = mode_value
+                del sub_dict['mode']
         # Generate our data
         data = self._data_input.generate_multi(target, self._n_simulations, kwargs_dict)
         # Multitargets are prefixed with 'multi_'

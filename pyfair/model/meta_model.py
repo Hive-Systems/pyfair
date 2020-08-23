@@ -3,6 +3,7 @@
 import datetime
 import json
 import uuid
+import warnings
 
 import pandas as pd
 
@@ -129,6 +130,9 @@ class FairMetaModel(object):
 
         """
         data = json.loads(json_data)
+        # If no version, assign
+        if not 'version' in data.keys():
+            data['version'] = '0.1-alpha.10 or earlier'
         # If different minor version, raise warning
         model_major, model_minor, _ = data['version'].split('.')
         installed_major, installed_minor, _ = VERSION.split('.')
@@ -136,7 +140,7 @@ class FairMetaModel(object):
         minor_mismatch = model_minor != installed_minor
         if major_mismatch or minor_mismatch:
             json_version = data['version']
-            warning.warn(
+            warnings.warn(
                 f'You are currently running {VERSION}. The model you are '
                 f'creating was made with {json_version}. This could cause '
                 f'calculation descrepencies.'
