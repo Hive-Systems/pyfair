@@ -140,11 +140,12 @@ class FairMetaModel(object):
         minor_mismatch = model_minor != installed_minor
         if major_mismatch or minor_mismatch:
             json_version = data['version']
-            warnings.warn(
-                f'You are currently running {VERSION}. The model you are '
-                f'creating was made with {json_version}. This could cause '
-                f'calculation descrepencies.'
-            )
+            msg = f'''
+                You are currently running {VERSION}. The model you are
+                creating was made with {json_version}. This could cause
+                calculation descrepencies.
+            '''
+            warnings.warn(msg)
         # Check type of JSON
         if data['type'] != 'FairMetaModel':
             raise FairException('Failed JSON parse attempt. This is not a FairMetaModel.')
