@@ -103,6 +103,12 @@ FairBetaPert
 .. autoclass:: pyfair.utility.beta_pert.FairBetaPert
     :members:
 
+FairCompatability
+~~~~~~~~~~~~~~~~~
+
+.. autoclass:: pyfair.utility.compatability.FairCompatability
+    :members:
+
 FairModelFactory
 ~~~~~~~~~~~~~
 

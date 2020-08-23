@@ -25,7 +25,7 @@ author = 'Theo Naunheim'
 # The short X.Y version
 version = '0.2.0'
 # The full version, including alpha/beta/rc tags
-release = '0.1-beta.0'
+release = '0.2-beta.0'
 
 
 # -- General configuration ---------------------------------------------------

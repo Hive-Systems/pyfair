@@ -30,7 +30,6 @@ class FairDependencyTree(object):
     def __init__(self):
         # Leaf nodes for reference
         self._leaf_nodes = []
-        self._node_statuses = {}
         # Create and add nodes to tree
         self._root = FairDependencyNode('Risk')
         self._node_names = [
@@ -51,6 +50,12 @@ class FairDependencyTree(object):
         # Initial tree setup
         self.nodes = {
             node_name: FairDependencyNode(node_name)
+            for node_name
+            in self._node_names
+        }
+        # Populate initial node statuses
+        self._node_statuses = {
+            node_name: 'Required'
             for node_name
             in self._node_names
         }

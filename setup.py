@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='pyfair',
-    version='0.1-beta.0',
+    version='0.2-beta.0',
     description='FAIR Monte Carlo creator',
     long_description="""
         Factor Analysis of Information Risk (FAIR) model written in Python.

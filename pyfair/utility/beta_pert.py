@@ -30,6 +30,13 @@ class FairBetaPert(object):
     gamma : float or int, optional
         A BetaPERT parameter for narrowing peak, default is 4
 
+    .. note::
+
+        Most BetaPERT distributions use the term `lambda` to describe the
+        parameter that narrows or widens the distribution peak. Because
+        `lambda` is a reserved keyword in Python, the term `gamma` is used
+        instead.
+
     Notes
     -----
     `PERT distributions <https://en.wikipedia.org/wiki/PERT_distribution>`_

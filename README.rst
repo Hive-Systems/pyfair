@@ -106,5 +106,5 @@ Serialized Model
         "model_uuid": "2e55fba4-c897-11ea-881b-f26e0bbd6dbc",
         "type": "FairModel",
         "creation_date": "2020-07-17 20:37:03.122525",
-        "version": "0.1-beta.0"
+        "version": "0.2-beta.0"
     }
