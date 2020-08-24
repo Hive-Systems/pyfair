@@ -9,12 +9,13 @@ import pandas as pd
 
 from ..utility import FairException
 
+from .base import FairBase
 from .model import FairModel
 
 from .. import VERSION
 
 
-class FairMetaModel(object):
+class FairMetaModel(FairBase):
     """A class for aggregating FAIR models.
 
     An instance of this class is created by taking multiple FAIR models and
@@ -77,30 +78,6 @@ class FairMetaModel(object):
             self._creation_date = str(datetime.datetime.now())
             # VERSION taken from the version of this software
             self._version = VERSION
-
-    def get_name(self):
-        """Returns the model name.
-
-        Returns
-        -------
-        str
-            The name of the model.
-
-        """
-
-        return self._name
-
-    def get_uuid(self):
-        """Returns the model's unique ID.
-
-        Returns
-        -------
-        str
-            The UUID of the model.
-
-        """
-
-        return self._model_uuid
 
     @staticmethod
     def read_json(json_data):
@@ -219,7 +196,6 @@ class FairMetaModel(object):
             The metamodel and component model parameters.
 
         """
-
         return self._params
 
     def calculate_all(self):
@@ -231,7 +207,6 @@ class FairMetaModel(object):
             Reference to current instance.
 
         """
-
         sum_vector = self._risk_table.sum(axis=1)
         self._risk_table['Risk'] = sum_vector
         # Check for NaN values in sum_vector

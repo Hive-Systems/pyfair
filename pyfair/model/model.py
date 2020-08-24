@@ -7,7 +7,9 @@ import warnings
 
 import numpy as np
 import pandas as pd
+import scipy.stats as stats
 
+from .base import FairBase
 from .model_input import FairDataInput
 from .model_tree import FairDependencyTree
 from .model_calc import FairCalculations
@@ -15,7 +17,7 @@ from ..utility.fair_exception import FairException
 from .. import VERSION
 
 
-class FairModel(object):
+class FairModel(FairBase):
     """A main class to act as an API for FAIR Model construction.
 
     A single instance of this class is created for each FAIR model. It
@@ -230,28 +232,6 @@ class FairModel(object):
 
         """
         return self._tree.get_node_statuses()
-
-    def get_name(self):
-        """Gives the name of the model
-
-        Returns
-        -------
-        str
-            Name of model
-
-        """
-        return self._name
-
-    def get_uuid(self):
-        """Returns the model's unique ID.
-
-        Returns
-        -------
-        str
-            The UUID of the model.
-
-        """
-        return self._model_uuid
 
     def calculation_completed(self):
         """Public method to check completion status of dependency tree

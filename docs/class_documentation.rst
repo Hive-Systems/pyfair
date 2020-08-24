@@ -9,11 +9,19 @@ FairModel
 
 .. autoclass:: pyfair.model.model.FairModel
     :members:
+    :inherited-members:
 
 FairMetaModel
 ~~~~~~~~~~~~~
 
 .. autoclass:: pyfair.model.meta_model.FairMetaModel 
+    :members:
+    :inherited-members:
+
+FairBase
+~~~~~~~~
+
+.. autoclass:: pyfair.model.base.FairBase
     :members:
 
 FairCalculations
@@ -101,12 +109,6 @@ FairBetaPert
 ~~~~~~~~~~~~~
 
 .. autoclass:: pyfair.utility.beta_pert.FairBetaPert
-    :members:
-
-FairCompatability
-~~~~~~~~~~~~~~~~~
-
-.. autoclass:: pyfair.utility.compatability.FairCompatability
     :members:
 
 FairModelFactory
