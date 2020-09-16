@@ -38,8 +38,8 @@ class FairDependencyTree(object):
             'Loss Event Frequency', 
             'Threat Event Frequency', 
             'Vulnerability', 
-            'Contact', 
-            'Action', 
+            'Contact Frequency', 
+            'Probability of Action', 
             'Threat Capability', 
             'Control Strength', 
             'Loss Magnitude', 
@@ -167,8 +167,8 @@ class FairDependencyTree(object):
         nodes['Loss Event Frequency'].add_child(nodes['Threat Event Frequency'])
         nodes['Loss Event Frequency'].add_child(nodes['Vulnerability'])
         # Threat Event Frequency Subbranch
-        nodes['Threat Event Frequency'].add_child(nodes['Contact'])
-        nodes['Threat Event Frequency'].add_child(nodes['Action'])
+        nodes['Threat Event Frequency'].add_child(nodes['Contact Frequency'])
+        nodes['Threat Event Frequency'].add_child(nodes['Probability of Action'])
         # Vulnerability Subbranch
         nodes['Vulnerability'].add_child(nodes['Control Strength'])
         nodes['Vulnerability'].add_child(nodes['Threat Capability'])
