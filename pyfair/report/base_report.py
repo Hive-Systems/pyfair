@@ -1,6 +1,7 @@
 """Base report class for creating HTML reports"""
 
 import base64
+import datetime
 import getpass
 import inspect
 import io
@@ -28,25 +29,25 @@ class FairBaseReport(object):
     instantiated on its own.
 
     """
-    def __init__(self):
+    def __init__(self, currency_prefix='$'):
         # Add formatting strings
         self._model_or_models = None
-        self._dollar_format_string     = '${0:,.0f}'
+        self._currency_format_string     = currency_prefix + '{0:,.0f}'
         self._float_format_string      = '{0:.2f}'
         self._format_strings = {
-            'Risk'                           : self._dollar_format_string,
+            'Risk'                           : self._currency_format_string,
             'Loss Event Frequency'           : self._float_format_string,
             'Threat Event Frequency'         : self._float_format_string,
             'Vulnerability'                  : self._float_format_string,         
-            'Contact'                        : self._float_format_string,
-            'Action'                         : self._float_format_string,
+            'Contact Frequency'              : self._float_format_string,
+            'Probability of Action'          : self._float_format_string,
             'Threat Capability'              : self._float_format_string,
             'Control Strength'               : self._float_format_string,
-            'Loss Magnitude'                 : self._dollar_format_string,
-            'Primary Loss'                   : self._dollar_format_string,
-            'Secondary Loss'                 : self._dollar_format_string,
+            'Loss Magnitude'                 : self._currency_format_string,
+            'Primary Loss'                   : self._currency_format_string,
+            'Secondary Loss'                 : self._currency_format_string,
             'Secondary Loss Event Frequency' : self._float_format_string,
-            'Secondary Loss Event Magnitude' : self._dollar_format_string,
+            'Secondary Loss Event Magnitude' : self._currency_format_string,
         }
         # Add locations
         self._fair_location = pathlib.Path(__file__).parent.parent
@@ -56,40 +57,21 @@ class FairBaseReport(object):
             'css'   : self._static_location / 'fair.css',
             'simple': self._static_location / 'simple.html'
         }
-        self._param_cols = ['low', 'mode', 'high', 'constant', 'mean', 'stdev']
-        self._caller_source = self._set_caller_source()
-
-    def _set_caller_source(self):
-        """Set source code of Python script running the report"""
-        try:
-            frame = inspect.getouterframes(inspect.currentframe())[-1]
-            filename = frame[1]
-            name = pathlib.Path(filename)
-            if 'ipython-input' in str(name):
-                return 'Report was called from iPython and not a script.'
-            elif name.exists():
-                text = name.read_text()
-                if text.startswith('"""runpy.py'):
-                    return 'Report was not called from a script file.'
-                else:
-                    return name.read_text()
-            else:
-                return 'Report was not called from a script file.'
-        except Exception:
-            return 'Error in obtaining caller source.'
-
-    def _get_caller_source(self):
-        """Get source code of calling script after _set_caller_source()"""
-        return self._caller_source
+        self._param_cols = [
+            'low',
+            'most_likely',
+            'high',
+            'constant',
+            'mean',
+            'stdev'
+        ]
 
     def _input_check(self, value):
         """Check input value for report is appropriate
-
         Raises
         ------
         FairException
             If an inappropriate object or iterable of objects is supplied
-
         """
         # If it's a model or metamodel, plug it in a dict.
         rv = {}
@@ -116,13 +98,11 @@ class FairBaseReport(object):
 
     def get_format_strings(self):
         """Returns the format strings for respective nodes
-
         Returns
         -------
         dict
             Containing keys with node names and values with the formatting
             string appropriate for those nodes
-
         """
         return self._format_strings
 
@@ -132,7 +112,6 @@ class FairBaseReport(object):
         To avoid having separate image files, pyfair simply embeds report
         images as base64 image tags. base64ify() is a convenience function
         that creates these tags.
-
         image : [bytes, str, pathlib.Path]
             The binary data, path string, or pathlib.Path containing either
             the data itself or a file of data.
@@ -140,21 +119,17 @@ class FairBaseReport(object):
         alternative_text: str, optional
             Alternative text to be showed in the event the image does not
             properly render
-
         options : str, optional
             A string containing additional HTML attributes to be placed
             between "<image " and " src="
-
         Returns
         -------
         str
             An HTML <img> tag with base64 data and appropriate attributes
-
         Raises
         ------
         TypeError
             If the image parameter supplied is of an inappropriate type
-
         """
         # If path, open and read.
         if type(image) == str or isinstance(image, pathlib.Path):
@@ -178,15 +153,12 @@ class FairBaseReport(object):
 
     def to_html(self, output_path):
         """Writes HTML report data to a file
-
         This is a public method that simply obtains the output of the
         _construct_output() method and writes it to a file.
-
         Parameters
         ----------
         output_path : str or pathlib.Path
             The output path to which the HTML data is written
-
         """
         output = self._construct_output()
         with open(output_path, 'w+') as f:
@@ -217,9 +189,7 @@ class FairBaseReport(object):
 
     def _get_metadata_table(self):
         """Generate table of metadata to attach to top of model.
-
         Do not put model-specific data in here.
-
         """
         # Get username
         try:
@@ -230,7 +200,7 @@ class FairBaseReport(object):
         # Add metadata
         metadata = pd.Series({
             'Author': username,
-            'Created': str(pd.datetime.now()).partition('.')[0],
+            'Created': str(datetime.datetime.now()).partition('.')[0],
             'PyFair Version': VERSION,
             'Type': type(self).__name__
         }).to_frame().to_html(border=0, header=None, justify='left', classes='fair_metadata_table')
@@ -243,23 +213,23 @@ class FairBaseReport(object):
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
 
-    def _get_distribution(self, model_or_models):
+    def _get_distribution(self, model_or_models, currency_prefix):
         """Create base64 image string using FairDistributionCurve"""
-        fdc = FairDistributionCurve(model_or_models)
+        fdc = FairDistributionCurve(model_or_models, currency_prefix)
         fig, ax = fdc.generate_image()
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
 
     def _get_distribution_icon(self, model, target):
         """Create base64 icon string using FairDistributionCurve"""
-        fdc = FairDistributionCurve(model)
+        fdc = FairDistributionCurve(model, self._currency_prefix)
         fig, ax = fdc.generate_icon(model.get_name(), target)        
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
 
-    def _get_exceedence_curves(self, model_or_models):
+    def _get_exceedence_curves(self, model_or_models, currency_prefix):
         """Create base64 image string using FairExceedenceCurves"""
-        fec = FairExceedenceCurves(model_or_models)
+        fec = FairExceedenceCurves(model_or_models, currency_prefix)
         fig, ax = fec.generate_image()
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
@@ -289,7 +259,7 @@ class FairBaseReport(object):
         overview_df = risk_results.applymap(lambda x: self._format_strings['Risk'].format(x))
         overview_df.loc['Simulations'] = [
             '{0:,.0f}'.format(len(model.export_results())) 
-            for model 
+            for model
             in model_or_models.values()
         ]
         # Add data
@@ -304,8 +274,8 @@ class FairBaseReport(object):
         params = dict(**model.export_params())
         # Remove items we don't want.
         params = {
-            key: value 
-            for key, value 
+            key: value
+            for key, value
             in params.items() 
             if key in self._format_strings.keys()
         }
@@ -331,7 +301,7 @@ class FairBaseReport(object):
                     # ... by getting the format string and formatting
                     fs[row.name].format(item)
                     # For each item
-                    for item 
+                    for item
                     in row
                 ],
                 # And keep the index
@@ -342,18 +312,18 @@ class FairBaseReport(object):
         )
         param_df = param_df.applymap(lambda x: '' if 'nan' in x else x)
         # Do not truncate our base64 images.
-        pd.set_option('display.max_colwidth', -1)
+        pd.set_option('display.max_colwidth', None)
         # Create our distribution icons as strings in table
         param_df['distribution'] = [
             self._get_distribution_icon(model, target)
-            for target 
+            for target
             in param_df.index.values
         ]
         # Export table to html
         detail_table = param_df.to_html(
-            border=0, 
-            header=True, 
-            justify='left', 
+            border=0,
+            header=True,
+            justify='left',
             classes='fair_table',
             escape=False
         )
@@ -379,9 +349,9 @@ class FairBaseReport(object):
         )
         # Do not truncate our base64 images.
         detail_table = risk_df.to_html(
-            border=0, 
-            header=True, 
-            justify='left', 
+            border=0,
+            header=True,
+            justify='left',
             classes='fair_table',
             escape=False
         )

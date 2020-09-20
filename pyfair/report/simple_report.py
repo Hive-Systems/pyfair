@@ -20,8 +20,9 @@ class FairSimpleReport(FairBaseReport):
     >>> fsr.generate_html('output.html')
 
     """
-    def __init__(self, model_or_models):
-        super().__init__()
+    def __init__(self, model_or_models, currency_prefix='$'):
+        super().__init__(currency_prefix=currency_prefix)
+        self._currency_prefix = currency_prefix
         self._model_or_models = self._input_check(model_or_models)
         self._css = self._template_paths['css'].read_text()
         self._template = self._template_paths['simple'].read_text()
@@ -48,11 +49,17 @@ class FairSimpleReport(FairBaseReport):
         t = t.replace('{OVERVIEW_DATAFRAME}', overview_html)
 
         # Overview Hist
-        hist = self._get_distribution(self._model_or_models.values())
+        hist = self._get_distribution(
+            self._model_or_models.values(), 
+            currency_prefix=self._currency_prefix
+        )
         t = t.replace('{HIST}', hist)
 
         # Overview Exceedence Curves
-        exceed = self._get_exceedence_curves(self._model_or_models.values())
+        exceed = self._get_exceedence_curves(
+            self._model_or_models.values(), 
+            currency_prefix=self._currency_prefix
+        )
         t = t.replace('{EXCEEDENCE}', exceed)
 
         # Create parameter html
@@ -78,17 +85,5 @@ class FairSimpleReport(FairBaseReport):
 
         # TODO Text wrap
         t = t.replace('{PARAMETER_HTML}', parameter_html)
-
-        # JSON and Source
-        json = ''
-        for name, model in self._model_or_models.items():
-            json += name
-            json += '\n====================\n'
-            json += model.to_json()
-            json += '\n\n\n'
-        t = t.replace('{JSON}', json)
-        source = self._get_caller_source()
-        source.replace('<', '').replace('>','')
-        t = t.replace('{SOURCE}', source)
 
         return t

@@ -1,5 +1,6 @@
 """This module contains the main class for creating FAIR models."""
 
+import datetime
 import json
 import uuid
 
@@ -93,7 +94,7 @@ class FairModel(object):
             self._creation_date = creation_date
         else:
             self._model_uuid = str(uuid.uuid1())
-            self._creation_date = str(pd.datetime.now())
+            self._creation_date = str(datetime.datetime.now())
         # Standardized targets for abbreviation use
         self._target_map = {
             'LEF' : 'Loss Event Frequency',

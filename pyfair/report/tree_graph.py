@@ -29,9 +29,9 @@ class FairTreeGraph(object):
     # Class attribute with magic numbers galore
     _DIMENSIONS = pd.DataFrame.from_dict(
         {
-            'Contact'                       : ['C'   ,    0,    0,  600,  800],
+            'Contact Frequency'             : ['C'   ,    0,    0,  600,  800],
             'Threat Event Frequency'        : ['TEF' ,  600,  800, 1800, 1600],
-            'Action'                        : ['A'   , 1200,    0,  600,  800],
+            'Probability of Action'         : ['A'   , 1200,    0,  600,  800],
             'Threat Capability'             : ['TC'  , 2400,    0, 3000,  800],
             'Vulnerability'                 : ['V'   , 3000,  800, 1800, 1600],
             'Control Strength'              : ['CS'  , 3600,    0, 3000,  800],
