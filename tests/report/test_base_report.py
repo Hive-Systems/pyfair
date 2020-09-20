@@ -35,12 +35,6 @@ class TestFairBaseReport(unittest.TestCase):
         self._model_2 = None
         self._metamodel = None
 
-    def test_caller_source(self):
-        """Test setting and getting of caller source"""
-        cs = self._fbr._get_caller_source()
-        cs_line_1 = cs.splitlines()[0]
-        self.assertEquals(self._CALLER_SOURCE_DOCSTRING, cs_line_1)
-
     def test_input_check(self):
         """Test the validity of the input check"""
         # Create inputs
@@ -83,8 +77,8 @@ class TestFairBaseReport(unittest.TestCase):
 
     def test_get_distribution(self):
         """Test distribution creation"""
-        self._fbr._get_distribution(self._model_1)
-        self._fbr._get_distribution([self._model_1, self._model_2])
+        self._fbr._get_distribution(self._model_1, currency_prefix='$')
+        self._fbr._get_distribution([self._model_1, self._model_2], currency_prefix='$')
 
     def test_get_distribution_icon(self):
         """Test distribution icon creation"""
@@ -92,8 +86,8 @@ class TestFairBaseReport(unittest.TestCase):
 
     def test_get_exceedence_curves(self):
         """Test exceedence curve creation"""
-        self._fbr._get_exceedence_curves(self._model_1)
-        self._fbr._get_exceedence_curves([self._model_1, self._model_2])
+        self._fbr._get_exceedence_curves(self._model_1, currency_prefix='$')
+        self._fbr._get_exceedence_curves([self._model_1, self._model_2], currency_prefix='$')
 
     def test_get_violins(self):
         """Test violin creation"""

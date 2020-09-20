@@ -5,7 +5,7 @@ Version 0.1-alpha.11
 --------------------
 
 * Added support for different currency prefixes
-* Added additional abbreviations for `input_data()`
+* Fixed errant abbreviations for `input_data()`
 
 Version 0.1-alpha.10
 --------------------

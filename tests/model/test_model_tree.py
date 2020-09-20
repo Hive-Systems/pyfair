@@ -45,8 +45,8 @@ class TestFairDependencyTree(unittest.TestCase):
         for node in [
             'Threat Event Frequency',
             'Vulnerability',
-            'Contact',
-            'Action',
+            'Contact Frequency',
+            'Probability of Action',
             'Threat Capability',
             'Control Strength',
             'Primary Loss',

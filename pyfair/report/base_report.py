@@ -31,6 +31,7 @@ class FairBaseReport(object):
     """
     def __init__(self, currency_prefix='$'):
         # Add formatting strings
+        self._currency_prefix = currency_prefix
         self._model_or_models = None
         self._currency_format_string     = currency_prefix + '{0:,.0f}'
         self._float_format_string      = '{0:.2f}'
