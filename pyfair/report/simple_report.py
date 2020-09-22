@@ -12,11 +12,16 @@ class FairSimpleReport(FairBaseReport):
     method. The method is takes the template and css for the simple report
     and plugs in the appropriate data base on the models supplied.
 
+    Parameters
+    ----------
+    currency_prefix : str
+        The currency symbol in front of your (default: $)
+
     Examples
     --------
     >>> m1 = pyfair.model.FairModel.from_json('model_1.json')
     >>> m2 = pyfair.model.FairModel.from_json('model_2.json')
-    >>> fsr = FairSimpleReport([m1, m2])
+    >>> fsr = FairSimpleReport([m1, m2], currency_prefix='元')
     >>> fsr.generate_html('output.html')
 
     """

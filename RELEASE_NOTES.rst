@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+Version 0.1-alpha.12
+--------------------
+
+* Data validation fixes for changes in 0.1-alpha.11
+
 Version 0.1-alpha.11
 --------------------
 

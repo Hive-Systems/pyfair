@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='pyfair',
-    version='0.1-alpha.11',
+    version='0.1-alpha.12',
     description='Open FAIR Monte Carlo creator',
     long_description="""
         Factor Analysis of Information Risk (Open FAIR) model in Python.

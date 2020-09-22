@@ -39,7 +39,7 @@ class TestFairModelInput(unittest.TestCase):
         """Ensure le_1_check works"""
         # Run items above one where they shouldn't and check for exception
         with self.assertRaises(FairException):
-            self._input._check_le_1('Action', constant=5)
+            self._input._check_le_1('Probability of Action', constant=5)
         with self.assertRaises(FairException):
             self._input._check_le_1('Vulnerability', constant=5)
         with self.assertRaises(FairException):
@@ -89,7 +89,7 @@ class TestFairModelInput(unittest.TestCase):
         result = self._input.generate('Loss Event Frequency', self._COUNT, constant=50)
         self.assertAlmostEqual(result.mean(), 50)
         # Make sure items are clipped at 0 and 1 where approprriate
-        result = self._input.generate('Action', self._COUNT, mean=.5, stdev=2)
+        result = self._input.generate('Probability of Action', self._COUNT, mean=.5, stdev=2)
         self.assertTrue(max(result) <= 1)
         self.assertTrue(min(result) >= 0)
     
