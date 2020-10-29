@@ -1,4 +1,4 @@
-pyfair
+pyfair (REWRITE WITH TENSORFLOW AND OPTIONAL BAYESIAN CALCS)
 ======
 
 .. image:: static/logo.PNG

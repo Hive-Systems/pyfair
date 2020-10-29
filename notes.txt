@@ -1,0 +1,31 @@
+
+distributions = [
+    poisson,
+    uniform,
+    constant,
+    raw,
+    pert,
+    normal,
+]
+
+
+FairModel
+FairAggregation
+
+# Acyclic only
+
+model.input(node_name, target_type, target_params)
+model.attach_calc()
+model.calculate()
+
+class FairCalculation() # defaults are 
+
+model
+    - dpe
+
+
+pyfair
+    calculations
+        default_add
+    models
+    utilities
