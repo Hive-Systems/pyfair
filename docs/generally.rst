@@ -244,10 +244,8 @@ together element-by-element. This will give us 3 LEF values.
 | 3          | 44,665 | .68 | 30,372            |
 +------------+--------+-----+-------------------+
 
-This follows with what we known know about Loss Event Frequency. It is the
-amount of loss that actually occurs. We have a three potential losses, and
-two of those losses actually occur. The others do not occur, so the amount
-of loss is zero.
+This follows with what we know about Loss Event Frequency. It is the
+number of threat events that conver to loss events.
 
 Step 3: Calculate Our R Using LEF and LM
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -271,8 +269,8 @@ Step 4: Analyze Our Risk Outputs
 
 By using our random inputs and putting them through our Monte Carlo model
 we were able to calculate Risk for three simulations. The resulting Risk
-from these simulations is $10,512,018, $0, and $4,841,190. Now that we have
-conducted our simulation we've learned that with our estimates we can
+from these simulations is $6,937,920, $3,895,200, and $2,612,009. Now that
+we have conducted our simulation we've learned that with our estimates we can
 expect our Risk to have the following attributes:
 
 +------------+-------------------------+
