@@ -73,7 +73,8 @@ class TestFairMetaModel(unittest.TestCase):
         """Run a calulate all."""
         # Test regular instantiation
         m1 = FairModel.read_json(self._MODEL_JSON)
-        m2 = FairModel.read_json(self._OLD_STYLE_MODEL_JSON)
+        with self.assertWarns(UserWarning):
+            m2 = FairModel.read_json(self._OLD_STYLE_MODEL_JSON)
         self._meta = FairMetaModel('New Model', [m1, m2])
         # Test before
         self.assertFalse(self._meta.calculation_completed())
@@ -86,7 +87,7 @@ class TestFairMetaModel(unittest.TestCase):
         """Test parameter and result exports are OK."""
         # Get rid of weird formatting included in class attribute
         self.maxDiff = 5_000
-        self.assertEquals(
+        self.assertEqual(
             self._meta.to_json().replace('\n','').replace(' ','') ,
             self._META_MODEL_JSON.replace('\n','').replace(' ','') 
         )
@@ -97,7 +98,7 @@ class TestFairMetaModel(unittest.TestCase):
         del param_dict['name']
         del param_dict['type']
         del param_dict['version']
-        self.assertEquals(
+        self.assertEqual(
             self._meta.export_params(),
             param_dict
         )

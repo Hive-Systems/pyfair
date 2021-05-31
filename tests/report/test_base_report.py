@@ -60,7 +60,7 @@ class TestFairBaseReport(unittest.TestCase):
     def test_base64ify(self):
         """Test base64ify"""
         tag = self._fbr.base64ify(self._BASE64_BYTES)
-        self.assertEquals(tag, self._BASE64_BYTES_TAG)
+        self.assertEqual(tag, self._BASE64_BYTES_TAG)
 
     # DO NOT TEST to_html or _construct_output. Those are done by subclass.
  

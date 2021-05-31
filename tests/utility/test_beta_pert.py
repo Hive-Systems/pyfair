@@ -24,7 +24,7 @@ class TestFairViolinPlot(unittest.TestCase):
         )
         variates = fbp.random_variates(1_000)
         mean = variates.mean()
-        self.assertEquals(mean, self._CORRECT_MEAN)
+        self.assertEqual(mean, self._CORRECT_MEAN)
         # Test incorrect usage
         self.assertRaises(
             FairException,

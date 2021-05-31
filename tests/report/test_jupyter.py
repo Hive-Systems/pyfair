@@ -59,9 +59,8 @@ class TestFairJupyterShim(unittest.TestCase):
             self._metamodel_1,
             self._model_2,
         ]
-        with self.assertRaises(FairException):
-            shim = FairJupyterShim(inputs, currency_prefix='€')
-            output = shim.get_distributions()
+        shim = FairJupyterShim(inputs, currency_prefix='€')
+        output = shim.get_distributions()
         self.assertTrue('combined' in output.keys())
 
     def test_exceedence_curves(self):
@@ -70,9 +69,8 @@ class TestFairJupyterShim(unittest.TestCase):
             self._metamodel_1,
             self._model_2,
         ]
-        with self.assertRaises(FairException):
-            shim = FairJupyterShim(inputs, currency_prefix='€')
-            output = shim.get_exceedence_curves()
+        shim = FairJupyterShim(inputs, currency_prefix='€')
+        output = shim.get_exceedence_curves()
         self.assertTrue('combined' in output.keys())
 
     def test_good_violin(self):

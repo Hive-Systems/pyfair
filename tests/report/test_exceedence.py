@@ -42,7 +42,7 @@ class TestFairExceedenceCurves(unittest.TestCase):
             self._SPACE,
             self._RISK
         )
-        self.assertAlmostEquals(self._MEAN_QUANTILE, quantiles.mean())
+        self.assertAlmostEqual(self._MEAN_QUANTILE, quantiles.mean())
 
     def test_loss_data(self):
         """Test loss percentage gneration data"""
@@ -50,7 +50,7 @@ class TestFairExceedenceCurves(unittest.TestCase):
             self._SPACE,
             self._RISK,
         )
-        self.assertAlmostEquals(self._MEAN_PERCENT, percent.mean())
+        self.assertAlmostEqual(self._MEAN_PERCENT, percent.mean())
 
 
 if __name__ == '__main__':

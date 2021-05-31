@@ -3,6 +3,8 @@ import pathlib
 import sys
 import unittest
 
+
+
 # Add pyfair directory to path
 this_file = pathlib.Path(__file__).absolute()
 repo_dir = this_file.parents[1]

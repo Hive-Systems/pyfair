@@ -36,7 +36,7 @@ class TestFairFactory(unittest.TestCase):
         # Generate
         models = self._fac.generate_from_partials(self._VARIABLE_ARGS_DICT)
         # Ensure proper number of argicles generated
-        self.assertEquals(len(models), len(self._VARIABLE_ARGS_DICT))
+        self.assertEqual(len(models), len(self._VARIABLE_ARGS_DICT))
         # Ensure they are all models
         for model in models:
             self.assertIsInstance(model, FairModel)
