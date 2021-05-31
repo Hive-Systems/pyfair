@@ -1,17 +1,17 @@
 Release Notes
 =============
 
-<<<<<<< HEAD
 Version 0.2-beta.0
 ------------------
 
 * Change PERT derivations from `prvalence` version to more commonly accepted
   version from Wikipedia
 * Universally changed `mode` argument to `most_likely`
+* Add FairJupyterShim class
 * Reporting defaults to dollars, but now supports currency prefixes
 * Tested against: python 3.8.3, matplotlib 3.2.2, numpy 1.18.5, pandas 1.0.5,
   scipy 1.5.0
-=======
+
 Version 0.1-alpha.12
 --------------------
 
@@ -22,7 +22,6 @@ Version 0.1-alpha.11
 
 * Added support for different currency prefixes
 * Fixed errant abbreviations for `input_data()`
->>>>>>> master
 
 Version 0.1-alpha.10
 --------------------
