@@ -12,16 +12,22 @@ class FairSimpleReport(FairBaseReport):
     method. The method is takes the template and css for the simple report
     and plugs in the appropriate data base on the models supplied.
 
+    Parameters
+    ----------
+    currency_prefix : str
+        The currency symbol in front of your (default: $)
+
     Examples
     --------
     >>> m1 = pyfair.model.FairModel.from_json('model_1.json')
     >>> m2 = pyfair.model.FairModel.from_json('model_2.json')
-    >>> fsr = FairSimpleReport([m1, m2])
+    >>> fsr = FairSimpleReport([m1, m2], currency_prefix='元')
     >>> fsr.generate_html('output.html')
 
     """
-    def __init__(self, model_or_models):
-        super().__init__()
+    def __init__(self, model_or_models, currency_prefix='$'):
+        super().__init__(currency_prefix=currency_prefix)
+        self._currency_prefix = currency_prefix
         self._model_or_models = self._input_check(model_or_models)
         self._css = self._template_paths['css'].read_text()
         self._template = self._template_paths['simple'].read_text()
@@ -48,11 +54,17 @@ class FairSimpleReport(FairBaseReport):
         t = t.replace('{OVERVIEW_DATAFRAME}', overview_html)
 
         # Overview Hist
-        hist = self._get_distribution(self._model_or_models.values())
+        hist = self._get_distribution(
+            self._model_or_models.values(), 
+            currency_prefix=self._currency_prefix
+        )
         t = t.replace('{HIST}', hist)
 
         # Overview Exceedence Curves
-        exceed = self._get_exceedence_curves(self._model_or_models.values())
+        exceed = self._get_exceedence_curves(
+            self._model_or_models.values(), 
+            currency_prefix=self._currency_prefix
+        )
         t = t.replace('{EXCEEDENCE}', exceed)
 
         # Create parameter html

@@ -1,3 +1,6 @@
+# Debugging notebooks
+*.ipynb
+
 # VSCode
 .vscode/
 

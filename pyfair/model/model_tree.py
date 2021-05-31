@@ -33,6 +33,7 @@ class FairDependencyTree(object):
         # Create and add nodes to tree
         self._root = FairDependencyNode('Risk')
         self._node_names = [
+<<<<<<< HEAD
             'Risk',
             'Loss Event Frequency',
             'Threat Event Frequency',
@@ -43,6 +44,18 @@ class FairDependencyTree(object):
             'Control Strength',
             'Loss Magnitude',
             'Primary Loss',
+=======
+            'Risk', 
+            'Loss Event Frequency', 
+            'Threat Event Frequency', 
+            'Vulnerability', 
+            'Contact Frequency', 
+            'Probability of Action', 
+            'Threat Capability', 
+            'Control Strength', 
+            'Loss Magnitude', 
+            'Primary Loss', 
+>>>>>>> master
             'Secondary Loss',
             'Secondary Loss Event Frequency',
             'Secondary Loss Event Magnitude'
@@ -172,8 +185,8 @@ class FairDependencyTree(object):
         nodes['Loss Event Frequency'].add_child(nodes['Threat Event Frequency'])
         nodes['Loss Event Frequency'].add_child(nodes['Vulnerability'])
         # Threat Event Frequency Subbranch
-        nodes['Threat Event Frequency'].add_child(nodes['Contact'])
-        nodes['Threat Event Frequency'].add_child(nodes['Action'])
+        nodes['Threat Event Frequency'].add_child(nodes['Contact Frequency'])
+        nodes['Threat Event Frequency'].add_child(nodes['Probability of Action'])
         # Vulnerability Subbranch
         nodes['Vulnerability'].add_child(nodes['Control Strength'])
         nodes['Vulnerability'].add_child(nodes['Threat Capability'])

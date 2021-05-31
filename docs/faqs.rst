@@ -74,8 +74,8 @@ Your code will raise this error:
     Risk                                  Required
     Loss Event Frequency                  Supplied
     Threat Event Frequency            Not Required
-    Contact                           Not Required
-    Action                            Not Required
+    Contact Frequency                 Not Required
+    Probability of Action             Not Required
     Vulnerability                     Not Required
     Control Strength                  Not Required
     Threat Capability                 Not Required

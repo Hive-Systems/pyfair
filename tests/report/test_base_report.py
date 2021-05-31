@@ -76,8 +76,8 @@ class TestFairBaseReport(unittest.TestCase):
 
     def test_get_distribution(self):
         """Test distribution creation"""
-        self._fbr._get_distribution(self._model_1)
-        self._fbr._get_distribution([self._model_1, self._model_2])
+        self._fbr._get_distribution(self._model_1, currency_prefix='$')
+        self._fbr._get_distribution([self._model_1, self._model_2], currency_prefix='$')
 
     def test_get_distribution_icon(self):
         """Test distribution icon creation"""
@@ -85,8 +85,8 @@ class TestFairBaseReport(unittest.TestCase):
 
     def test_get_exceedence_curves(self):
         """Test exceedence curve creation"""
-        self._fbr._get_exceedence_curves(self._model_1)
-        self._fbr._get_exceedence_curves([self._model_1, self._model_2])
+        self._fbr._get_exceedence_curves(self._model_1, currency_prefix='$')
+        self._fbr._get_exceedence_curves([self._model_1, self._model_2], currency_prefix='$')
 
     def test_get_violins(self):
         """Test violin creation"""

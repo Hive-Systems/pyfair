@@ -17,9 +17,10 @@ from ..report.base_curve import FairBaseCurve
 class FairExceedenceCurves(FairBaseCurve):
     """Plots one or more exceedence curves"""
 
-    def __init__(self, model_or_iterable):
+    def __init__(self, model_or_iterable, currency_prefix='$'):
         # If it's just a model, make it a list.
         super().__init__()
+        self._currency_prefix = currency_prefix
         self._input = self._input_check(model_or_iterable)
 
     def generate_image(self):
@@ -63,7 +64,7 @@ class FairExceedenceCurves(FairBaseCurve):
         # Plot
         ax.plot(quantiles, space)
         # Style
-        y_formatter = matplotlib.ticker.StrMethodFormatter('${x:,.0f}')
+        y_formatter = matplotlib.ticker.StrMethodFormatter(self._currency_prefix + '{x:,.0f}')
         ax.axes.yaxis.set_major_formatter(y_formatter)
         x_formatter = matplotlib.ticker.StrMethodFormatter('{x:,.0f}%')
         ax.axes.xaxis.set_major_formatter(x_formatter)
@@ -75,7 +76,7 @@ class FairExceedenceCurves(FairBaseCurve):
         ax.plot(space, loss_expectancy)
         # Style
         ax.axes.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}%'))
-        ax.axes.xaxis.set_major_formatter(StrMethodFormatter('${x:,.0f}'))
+        ax.axes.xaxis.set_major_formatter(StrMethodFormatter(self._currency_prefix + '{x:,.0f}'))
         ax.axes.xaxis.set_tick_params(rotation=-45)
         for tick in ax.axes.xaxis.get_major_ticks():
             tick.label.set_horizontalalignment('left')

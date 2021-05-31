@@ -31,8 +31,13 @@ class FairDataInput(object):
     """
     def __init__(self):
         # These targets must be less than or equal to one
+<<<<<<< HEAD
         self._le_1_targets = ['Action', 'Vulnerability', 'Control Strength', 'Threat Capability']
         self._le_1_keywords = ['constant', 'high', 'most_likely', 'low', 'mean']
+=======
+        self._le_1_targets = ['Probability of Action', 'Vulnerability', 'Control Strength', 'Threat Capability']
+        self._le_1_keywords = ['constant', 'high', 'mode', 'low', 'mean']
+>>>>>>> master
         # Parameter map associates parameters with functions
         self._parameter_map = {
             'constant'   : self._gen_constant,

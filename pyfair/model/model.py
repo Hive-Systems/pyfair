@@ -80,8 +80,8 @@ class FairModel(FairBase):
             'Loss Event Frequency',
             'Threat Event Frequency',
             'Vulnerability',
-            'Contact',
-            'Action',
+            'Contact Frequency',
+            'Probability of Action',
             'Threat Capability',
             'Control Strength',
             'Loss Magnitude',
@@ -102,8 +102,11 @@ class FairModel(FairBase):
         else:
             self._model_uuid = str(uuid.uuid1())
             self._creation_date = str(datetime.datetime.now())
+<<<<<<< HEAD
             # This is the version of the currently installed module.
             self._version = VERSION
+=======
+>>>>>>> master
         # Standardized targets for abbreviation use
         self._target_map = {
             'LEF' : 'Loss Event Frequency',

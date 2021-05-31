@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
 from scipy.stats import beta
 
-from pyfair.report.base_curve import FairBaseCurve
+from ..report.base_curve import FairBaseCurve
 
 
 class FairDistributionCurve(FairBaseCurve):
@@ -30,8 +30,9 @@ class FairDistributionCurve(FairBaseCurve):
     >>> dc = pyfair.report.FairDistributionCurve(m) 
 
     """
-    def __init__(self, model_or_iterable):
+    def __init__(self, model_or_iterable, currency_prefix='$'):
         self._input = self._input_check(model_or_iterable)
+        self._currency_prefix = currency_prefix
 
     def generate_icon(self, model_name, target):
         """Generate a minimalist histogram for for a given model/parameter
@@ -99,7 +100,7 @@ class FairDistributionCurve(FairBaseCurve):
         plt.subplots_adjust(bottom=.2)
         ax.axes.set_title('Risk Distribution', fontsize=20)
         # Format X axis
-        ax.axes.xaxis.set_major_formatter(StrMethodFormatter('${x:,.0f}'))
+        ax.axes.xaxis.set_major_formatter(StrMethodFormatter(self._currency_prefix + '{x:,.0f}'))
         ax.axes.xaxis.set_tick_params(rotation=-45)
         ax.set_ylabel('Frequency Histogram')
         for tick in ax.axes.xaxis.get_major_ticks():

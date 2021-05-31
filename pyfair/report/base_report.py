@@ -1,6 +1,7 @@
 """Base report class for creating HTML reports"""
 
 import base64
+import datetime
 import getpass
 import inspect
 import io
@@ -30,6 +31,7 @@ class FairBaseReport(object):
     """
     def __init__(self, currency_prefix='$'):
         # Add formatting strings
+        self._currency_prefix = currency_prefix
         self._model_or_models = None
         self._currency_format_string     = currency_prefix + '{0:,.0f}'
         self._float_format_string      = '{0:.2f}'
@@ -38,8 +40,8 @@ class FairBaseReport(object):
             'Loss Event Frequency'           : self._float_format_string,
             'Threat Event Frequency'         : self._float_format_string,
             'Vulnerability'                  : self._float_format_string,         
-            'Contact'                        : self._float_format_string,
-            'Action'                         : self._float_format_string,
+            'Contact Frequency'              : self._float_format_string,
+            'Probability of Action'          : self._float_format_string,
             'Threat Capability'              : self._float_format_string,
             'Control Strength'               : self._float_format_string,
             'Loss Magnitude'                 : self._currency_format_string,
@@ -67,12 +69,10 @@ class FairBaseReport(object):
 
     def _input_check(self, value):
         """Check input value for report is appropriate
-
         Raises
         ------
         FairException
             If an inappropriate object or iterable of objects is supplied
-
         """
         # If it's a model or metamodel, plug it in a dict.
         rv = {}
@@ -99,13 +99,11 @@ class FairBaseReport(object):
 
     def get_format_strings(self):
         """Returns the format strings for respective nodes
-
         Returns
         -------
         dict
             Containing keys with node names and values with the formatting
             string appropriate for those nodes
-
         """
         return self._format_strings
 
@@ -115,7 +113,6 @@ class FairBaseReport(object):
         To avoid having separate image files, pyfair simply embeds report
         images as base64 image tags. base64ify() is a convenience function
         that creates these tags.
-
         image : [bytes, str, pathlib.Path]
             The binary data, path string, or pathlib.Path containing either
             the data itself or a file of data.
@@ -123,21 +120,17 @@ class FairBaseReport(object):
         alternative_text: str, optional
             Alternative text to be showed in the event the image does not
             properly render
-
         options : str, optional
             A string containing additional HTML attributes to be placed
             between "<image " and " src="
-
         Returns
         -------
         str
             An HTML <img> tag with base64 data and appropriate attributes
-
         Raises
         ------
         TypeError
             If the image parameter supplied is of an inappropriate type
-
         """
         # If path, open and read.
         if type(image) == str or isinstance(image, pathlib.Path):
@@ -161,15 +154,12 @@ class FairBaseReport(object):
 
     def to_html(self, output_path):
         """Writes HTML report data to a file
-
         This is a public method that simply obtains the output of the
         _construct_output() method and writes it to a file.
-
         Parameters
         ----------
         output_path : str or pathlib.Path
             The output path to which the HTML data is written
-
         """
         output = self._construct_output()
         with open(output_path, 'w+') as f:
@@ -200,9 +190,7 @@ class FairBaseReport(object):
 
     def _get_metadata_table(self):
         """Generate table of metadata to attach to top of model.
-
         Do not put model-specific data in here.
-
         """
         # Get username
         try:
@@ -213,7 +201,7 @@ class FairBaseReport(object):
         # Add metadata
         metadata = pd.Series({
             'Author': username,
-            'Created': str(pd.datetime.now()).partition('.')[0],
+            'Created': str(datetime.datetime.now()).partition('.')[0],
             'PyFair Version': VERSION,
             'Type': type(self).__name__
         }).to_frame().to_html(border=0, header=None, justify='left', classes='fair_metadata_table')
@@ -226,23 +214,23 @@ class FairBaseReport(object):
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
 
-    def _get_distribution(self, model_or_models):
+    def _get_distribution(self, model_or_models, currency_prefix):
         """Create base64 image string using FairDistributionCurve"""
-        fdc = FairDistributionCurve(model_or_models)
+        fdc = FairDistributionCurve(model_or_models, currency_prefix)
         fig, ax = fdc.generate_image()
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
 
     def _get_distribution_icon(self, model, target):
         """Create base64 icon string using FairDistributionCurve"""
-        fdc = FairDistributionCurve(model)
+        fdc = FairDistributionCurve(model, self._currency_prefix)
         fig, ax = fdc.generate_icon(model.get_name(), target)        
         img_tag = self._fig_to_img_tag(fig)
         return img_tag
 
-    def _get_exceedence_curves(self, model_or_models):
+    def _get_exceedence_curves(self, model_or_models, currency_prefix):
         """Create base64 image string using FairExceedenceCurves"""
-        fec = FairExceedenceCurves(model_or_models)
+        fec = FairExceedenceCurves(model_or_models, currency_prefix)
         fig, ax = fec.generate_image()
         img_tag = self._fig_to_img_tag(fig)
         return img_tag

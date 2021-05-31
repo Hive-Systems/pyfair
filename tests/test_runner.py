@@ -16,6 +16,7 @@ import model.test_model_input
 import model.test_model_node
 import model.test_model_tree
 import model.test_model
+import model.test_base
 import report.test_base_curve
 import report.test_base_report
 import report.test_distribution
@@ -37,6 +38,7 @@ test_modules = [
     model.test_model_node,
     model.test_model_tree,
     model.test_model,
+    model.test_base,
     # Report Module
     report.test_base_curve,
     report.test_base_report,
