@@ -33,7 +33,6 @@ class FairDependencyTree(object):
         # Create and add nodes to tree
         self._root = FairDependencyNode('Risk')
         self._node_names = [
-<<<<<<< HEAD
             'Risk',
             'Loss Event Frequency',
             'Threat Event Frequency',
@@ -44,18 +43,6 @@ class FairDependencyTree(object):
             'Control Strength',
             'Loss Magnitude',
             'Primary Loss',
-=======
-            'Risk', 
-            'Loss Event Frequency', 
-            'Threat Event Frequency', 
-            'Vulnerability', 
-            'Contact Frequency', 
-            'Probability of Action', 
-            'Threat Capability', 
-            'Control Strength', 
-            'Loss Magnitude', 
-            'Primary Loss', 
->>>>>>> master
             'Secondary Loss',
             'Secondary Loss Event Frequency',
             'Secondary Loss Event Magnitude'

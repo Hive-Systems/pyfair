@@ -1,6 +1,6 @@
 .. note::
 
-    The transition from version 0.1-alpha.10 to 0.2-beta.0 introduced
+    The transition from version 0.1-alpha.12 to 0.2-beta.0 introduced
     a large number of changes to the pyfair codebase. While every effort
     was made to maintain compatability as much as possible, it is likely
     that these changes will require changes to previous models. If it is

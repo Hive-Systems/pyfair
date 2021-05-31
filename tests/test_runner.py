@@ -24,6 +24,7 @@ import report.test_exceedence
 import report.test_simple_report
 import report.test_tree_graph
 import report.test_violin
+import report.test_jupyter
 import utility.test_beta_pert
 import utility.test_database
 import utility.test_factory
@@ -47,6 +48,7 @@ test_modules = [
     report.test_simple_report,
     report.test_tree_graph,
     report.test_violin,
+    report.test_jupyter,
     # Utility Module
     utility.test_beta_pert,
     utility.test_database,

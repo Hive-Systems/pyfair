@@ -102,11 +102,8 @@ class FairModel(FairBase):
         else:
             self._model_uuid = str(uuid.uuid1())
             self._creation_date = str(datetime.datetime.now())
-<<<<<<< HEAD
             # This is the version of the currently installed module.
             self._version = VERSION
-=======
->>>>>>> master
         # Standardized targets for abbreviation use
         self._target_map = {
             'LEF' : 'Loss Event Frequency',
@@ -159,7 +156,7 @@ class FairModel(FairBase):
         data = json.loads(json_data)
         # If no version, assign
         if not 'version' in data.keys():
-            data['version'] = '0.1-alpha.10 or earlier'
+            data['version'] = '0.1-alpha.12 or earlier'
         # If different minor version, raise warning
         model_major, model_minor, _ = data['version'].split('.')
         installed_major, installed_minor, _ = VERSION.split('.')

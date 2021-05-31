@@ -109,7 +109,7 @@ class FairMetaModel(FairBase):
         data = json.loads(json_data)
         # If no version, assign
         if not 'version' in data.keys():
-            data['version'] = '0.1-alpha.10 or earlier'
+            data['version'] = '0.1-alpha.12 or earlier'
         # If different minor version, raise warning
         model_major, model_minor, _ = data['version'].split('.')
         installed_major, installed_minor, _ = VERSION.split('.')

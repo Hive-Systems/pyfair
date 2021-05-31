@@ -58,6 +58,9 @@ FairSimpleReport
     :members:
     :inherited-members:
 
+.. autoclass:: fair.report.jupyter.FairJupyterShim
+    :members:
+
 FairBaseReport
 ~~~~~~~~~~~~~
 
