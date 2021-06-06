@@ -28,21 +28,39 @@ This is based on the terms found in:
 "Open FAIR" is a trademark of the Open Group. This project is not endorsed by
 or affiliated with the Open Group.
 
+Documentation
+-------------
+
+Documentation can be found at the
+`Read the Docs site <https://pyfair.readthedocs.io/en/latest/>`_.
+
 Installation
 ------------
 
 pyfair is available on `PyPI <https://pypi.org/project/pyfair/>`_. To use 
 pyfair with your Python installation, you can run:
 
-.. code-block:: python
+.. code-block:: shell
 
     pip install pyfair
 
-Documentation
--------------
+pyfair is also availble as a Docker-based Jupyter notebook on
+`Docker Hub <https://hub.docker.com/r/theonaunheim/pyfair-notebook>`_. To use
+pyfair as a docker image, you can run:
 
-Documentation can be found at the
-`Read the Docs site <https://pyfair.readthedocs.io/en/latest/>`_.
+For Powershell:
+
+.. code-block:: shell
+
+    docker pull theonaunheim/pyfair-notebook:latest
+    docker run -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v ${PWD}:/home/jovyan/work theonaunheim/pyfair-notebook:latest
+
+For Bash:
+
+.. code-block:: shell
+
+    docker pull theonaunheim/pyfair-notebook:latest
+    docker run -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v $(PWD):/home/jovyan/work theonaunheim/pyfair-notebook:latest
 
 Code
 ----
