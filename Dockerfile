@@ -25,13 +25,13 @@ WORKDIR /home/jovyan/work/
 
 ## For me to build and push
 
-### docker build -t theonaunheim/pyfair_docker:latest .
-### docker push theonaunheim/pyfair_docker:latest
+### docker build -t theonaunheim/pyfair-notebook:latest .
+### docker push theonaunheim/pyfair-notebook:latest
 
 ## For anyone to pull and run (Windows will warn for working directory)
 
-### docker pull theonaunheim/pyfair_docker:latest
-### docker run -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v ${PWD}:/home/jovyan/work theonaunheim/pyfair_docker:latest
+### docker pull theonaunheim/pyfair-notebook:latest
+### docker run -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v ${PWD}:/home/jovyan/work theonaunheim/pyfair-notebook:latest
 
 #############################
 # Bash Usage
@@ -39,5 +39,5 @@ WORKDIR /home/jovyan/work/
 
 ## For anyone to pull and run (PWD wrapped in braces on Powershell, parens in Bash)
 
-### docker pull theonaunheim/pyfair_docker:latest
-### docker run -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v $(PWD):/home/jovyan/work theonaunheim/pyfair_docker:latest
+### docker pull theonaunheim/pyfair-notebook:latest
+### docker run -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v $(PWD):/home/jovyan/work theonaunheim/pyfair-notebook:latest
