@@ -26,30 +26,31 @@ class FairExceedenceCurves(FairBaseCurve):
     def generate_image(self):
         """Main function for generating plots"""
         # Do not plot interactively
-        with plt.ioff():
-            # Setup plots
-            fig, axes = plt.subplots(1, 2, figsize=(16, 4))
-            plt.subplots_adjust(bottom=.3)
-            ax1, ax2 = axes
-            # For each model, calculate and plot.
-            legend_labels = []
-            for name, model in self._input.items():
-                legend_labels.append(name)
-                data = model.export_results()
-                # Get Risk Data
-                risk = data['Risk']
-                risk_max = risk.max()
-                # Create feature space
-                space = pd.Series(np.linspace(0, risk_max, 100))
-                # Get X and Y for each calculation
-                prob_xy = self._get_prob_data(space, risk)
-                loss_xy = self._get_loss_data(space, risk)
-                # Generate curves with x and y
-                self._generate_prob_curve(name, ax1, *prob_xy)
-                self._generate_loss_curve(name, ax2, *loss_xy)
-            ax1.legend(legend_labels, frameon=False)
-            ax2.legend(legend_labels, frameon=False)
-            return (fig, (ax1, ax2))
+        plt.ioff()
+        # Setup plots
+        fig, axes = plt.subplots(1, 2, figsize=(16, 4))
+        plt.subplots_adjust(bottom=.3)
+        ax1, ax2 = axes
+        # For each model, calculate and plot.
+        legend_labels = []
+        for name, model in self._input.items():
+            legend_labels.append(name)
+            data = model.export_results()
+            # Get Risk Data
+            risk = data['Risk']
+            risk_max = risk.max()
+            # Create feature space
+            space = pd.Series(np.linspace(0, risk_max, 100))
+            # Get X and Y for each calculation
+            prob_xy = self._get_prob_data(space, risk)
+            loss_xy = self._get_loss_data(space, risk)
+            # Generate curves with x and y
+            self._generate_prob_curve(name, ax1, *prob_xy)
+            self._generate_loss_curve(name, ax2, *loss_xy)
+        ax1.legend(legend_labels, frameon=False)
+        ax2.legend(legend_labels, frameon=False)
+        plt.ioff()
+        return (fig, (ax1, ax2))
 
     def _get_prob_data(self, space, risk):
         """Get the percentle score for each risk value"""
@@ -64,26 +65,28 @@ class FairExceedenceCurves(FairBaseCurve):
     def _generate_prob_curve(self, name, ax, quantiles, space):
         """For each percentile, what is the expected loss?"""
         # Do not plot interactively
-        with plt.ioff():
-            # Plot
-            ax.plot(quantiles, space)
-            # Style
-            y_formatter = matplotlib.ticker.StrMethodFormatter(self._currency_prefix + '{x:,.0f}')
-            ax.axes.yaxis.set_major_formatter(y_formatter)
-            x_formatter = matplotlib.ticker.StrMethodFormatter('{x:,.0f}%')
-            ax.axes.xaxis.set_major_formatter(x_formatter)
-            ax.axes.set_title('Exceedence Probability Curve', fontsize=20)
+        plt.ioff()
+        # Plot
+        ax.plot(quantiles, space)
+        # Style
+        y_formatter = matplotlib.ticker.StrMethodFormatter(self._currency_prefix + '{x:,.0f}')
+        ax.axes.yaxis.set_major_formatter(y_formatter)
+        x_formatter = matplotlib.ticker.StrMethodFormatter('{x:,.0f}%')
+        ax.axes.xaxis.set_major_formatter(x_formatter)
+        ax.axes.set_title('Exceedence Probability Curve', fontsize=20)
+        plt.ion()
 
     def _generate_loss_curve(self, name, ax, space, loss_expectancy):
         """For each currency amount, what's the probability loss was exceeded?"""
         # Do not plot interactively
-        with plt.ioff():
-            # Plot
-            ax.plot(space, loss_expectancy)
-            # Style
-            ax.axes.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}%'))
-            ax.axes.xaxis.set_major_formatter(StrMethodFormatter(self._currency_prefix + '{x:,.0f}'))
-            ax.axes.xaxis.set_tick_params(rotation=-45)
-            for label in ax.axes.xaxis.get_ticklabels(which='major'):
-                label.set_horizontalalignment('left')
-            ax.axes.set_title('Loss Exceedence Curve', fontsize=20)
+        plt.ioff()
+        # Plot
+        ax.plot(space, loss_expectancy)
+        # Style
+        ax.axes.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}%'))
+        ax.axes.xaxis.set_major_formatter(StrMethodFormatter(self._currency_prefix + '{x:,.0f}'))
+        ax.axes.xaxis.set_tick_params(rotation=-45)
+        for label in ax.axes.xaxis.get_ticklabels(which='major'):
+            label.set_horizontalalignment('left')
+        ax.axes.set_title('Loss Exceedence Curve', fontsize=20)
+        plt.ion()

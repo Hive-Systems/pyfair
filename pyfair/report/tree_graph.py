@@ -218,12 +218,13 @@ class FairTreeGraph(object):
 
         """
         # Do not plot interactively
-        with plt.ioff():
-            fig, ax = plt.subplots()
-            fig.set_size_inches(20, 6)
-            ax = self._tweak_axes(ax)
-            self._data.apply(self._generate_text, args=[ax], axis=1)
-            self._generate_rects(ax)
-            self._data.apply(self._generate_lines, args=[ax], axis=1)
-            self._generate_legend(ax)
-            return (fig, ax)
+        plt.ioff()
+        fig, ax = plt.subplots()
+        fig.set_size_inches(20, 6)
+        ax = self._tweak_axes(ax)
+        self._data.apply(self._generate_text, args=[ax], axis=1)
+        self._generate_rects(ax)
+        self._data.apply(self._generate_lines, args=[ax], axis=1)
+        self._generate_legend(ax)
+        plt.ion()
+        return (fig, ax)

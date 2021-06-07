@@ -103,16 +103,17 @@ class FairJupyterShim(object):
         
         """
         # Do not plot interactively
-        with plt.ioff():
-            rv = {}
-            for name, model in self._model_or_models.items():
-                if isinstance(model, FairMetaModel):
-                    raise FairException('Cannot make a tree from metamodel: {}'.format(model))
-                else:
-                    ftg = FairTreeGraph(model, self._format_strings)
-                    fig_ax = ftg.generate_image()
-                    rv[name] = fig_ax
-            return rv
+        plt.ioff()
+        rv = {}
+        for name, model in self._model_or_models.items():
+            if isinstance(model, FairMetaModel):
+                raise FairException('Cannot make a tree from metamodel: {}'.format(model))
+            else:
+                ftg = FairTreeGraph(model, self._format_strings)
+                fig_ax = ftg.generate_image()
+                rv[name] = fig_ax
+        plt.ion()
+        return rv
 
     def get_distributions(self) -> dict:
         """Create a distribution image of model/metamodels iterable
@@ -126,19 +127,20 @@ class FairJupyterShim(object):
         
         """
         # Do not plot interactively
-        with plt.ioff():
-            # Process individual distributions
-            rv = {}
-            for name, model in self._model_or_models.items():
-                fdc = FairDistributionCurve(model, self._currency_prefix)
-                fig, ax = fdc.generate_image()
-                rv[name] = (fig, ax)
-            # Process combined distributions
-            inputs = self._model_or_models.values()
-            fdc2 = FairDistributionCurve(inputs, self._currency_prefix)
-            fig, ax = fdc2.generate_image()
-            rv['combined'] = (fig, ax)
-            return rv
+        plt.ioff()
+        # Process individual distributions
+        rv = {}
+        for name, model in self._model_or_models.items():
+            fdc = FairDistributionCurve(model, self._currency_prefix)
+            fig, ax = fdc.generate_image()
+            rv[name] = (fig, ax)
+        # Process combined distributions
+        inputs = self._model_or_models.values()
+        fdc2 = FairDistributionCurve(inputs, self._currency_prefix)
+        fig, ax = fdc2.generate_image()
+        rv['combined'] = (fig, ax)
+        plt.ion()
+        return rv
 
     def get_exceedence_curves(self) -> dict:
         """Create a exceedence curves
@@ -153,19 +155,20 @@ class FairJupyterShim(object):
         
         """
         # Do not plot interactively
-        with plt.ioff():
-            # Process individual curve
-            rv = {}
-            for name, model in self._model_or_models.items():
-                fec = FairExceedenceCurves(model, self._currency_prefix)
-                fig, axes = fec.generate_image()
-                rv[name] = (fig, axes)
-            # Add combined curve
-            inputs = self._model_or_models.values()
-            fec2 = FairExceedenceCurves(inputs, self._currency_prefix)
-            fig, ax = fec2.generate_image()
-            rv['combined'] = (fig, ax)
-            return rv
+        plt.ioff()
+        # Process individual curve
+        rv = {}
+        for name, model in self._model_or_models.items():
+            fec = FairExceedenceCurves(model, self._currency_prefix)
+            fig, axes = fec.generate_image()
+            rv[name] = (fig, axes)
+        # Add combined curve
+        inputs = self._model_or_models.values()
+        fec2 = FairExceedenceCurves(inputs, self._currency_prefix)
+        fig, ax = fec2.generate_image()
+        rv['combined'] = (fig, ax)
+        plt.ion()
+        return rv
 
     def get_violins(self):
         """Create a exceedence curves
@@ -183,12 +186,13 @@ class FairJupyterShim(object):
         
         """
         # Do not plot interactively
-        with plt.ioff():
-            rv = {}
-            for name, model in self._model_or_models.items():
-                if isinstance(model, FairModel):
-                    raise FairException('Cannot make violin plot from model: {}'.format(model))
-            vplot = FairViolinPlot(model)
-            fig, ax = vplot.generate_image()
-            rv[name] = (fig, ax)
-            return rv
+        plt.ioff()
+        rv = {}
+        for name, model in self._model_or_models.items():
+            if isinstance(model, FairModel):
+                raise FairException('Cannot make violin plot from model: {}'.format(model))
+        vplot = FairViolinPlot(model)
+        fig, ax = vplot.generate_image()
+        rv[name] = (fig, ax)
+        plt.ion()
+        return rv
