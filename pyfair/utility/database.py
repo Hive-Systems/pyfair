@@ -36,12 +36,12 @@ class FairDatabase(object):
 
     """
     def __init__(self, path):
-        self._path = pathlib.Path(path)
+        self._path = str(pathlib.Path(path))
         self._initialize()
 
     def _initialize(self):
         """Initialize database with tables if necessary."""
-        with sqlite3.connect(str(self._path))) as conn:
+        with sqlite3.connect(self._path) as conn:
             conn.execute("""CREATE TABLE IF NOT EXISTS models (
                 uuid string,
                 name string,
