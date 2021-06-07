@@ -33,8 +33,8 @@ class FairMetaModel(object):
 
     Examples
     --------
-    >>> m1 = pyfair.model.FairModel.from_json('model_1.json')
-    >>> m2 = pyfair.model.FairModel.from_json('model_2.json')
+    >>> m1 = pyfair.model.FairModel.read_json('model_1.json')
+    >>> m2 = pyfair.model.FairModel.read_json('model_2.json')
     >>> meta1  = pyfair.model.FairMetaModel('Name', [m1, m2])
     >>> meta1.calculate_all()
     >>> meta1.export_results()
