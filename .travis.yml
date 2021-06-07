@@ -3,5 +3,7 @@ branches:
   only:
   - master
   - dev
-install: pip install .
+install:
+  - pip install -r requirements.txt 
+  - pip install .
 script: python ./tests/test_runner.py
