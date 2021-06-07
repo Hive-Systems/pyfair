@@ -44,7 +44,7 @@ pyfair with your Python installation, you can run:
 
     pip install pyfair
 
-pyfair's dev branch is also availble as a Docker-based Jupyter notebook on
+pyfair's dev branch is also available as a Docker-based Jupyter notebook on
 `Docker Hub <https://hub.docker.com/r/theonaunheim/pyfair-notebook>`_. To use
 pyfair as a docker image, you can run the following commands.
 
