@@ -11,7 +11,7 @@ USER jovyan
 # Install pyfair
 RUN mkdir /home/jovyan/work/src
 WORKDIR /home/jovyan/work/src
-RUN git clone https://github.com/theonaunheim/pyfair.git
+RUN git clone --branch dev --single-branch https://github.com/theonaunheim/pyfair.git
 WORKDIR /home/jovyan/work/src/pyfair
 RUN pip install --no-cache-dir .
 RUN rm -rf /home/jovyan/work/src

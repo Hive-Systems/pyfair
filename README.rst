@@ -9,7 +9,7 @@ pyfair
 
 .. |rtd_badge| image:: https://readthedocs.org/projects/pyfair/badge/?version=latest
 
-.. |travis_badge| image:: https://travis-ci.org/theonaunheim/pyfair.svg?branch=master
+.. |travis_badge| image:: https://www.travis-ci.com/theonaunheim/surgeo.svg?branch=master
 
 .. |pypi_badge| image:: https://badge.fury.io/py/pyfair.svg
 
@@ -44,9 +44,9 @@ pyfair with your Python installation, you can run:
 
     pip install pyfair
 
-pyfair is also availble as a Docker-based Jupyter notebook on
+pyfair's dev branch is also availble as a Docker-based Jupyter notebook on
 `Docker Hub <https://hub.docker.com/r/theonaunheim/pyfair-notebook>`_. To use
-pyfair as a docker image, you can run:
+pyfair as a docker image, you can run the following commands.
 
 For Powershell:
 

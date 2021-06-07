@@ -37,6 +37,51 @@ Keywords must be used as follows:
 * low, most_likely, and high: must be used together (gamma is optional)
 * mean, stdev: must be used together
 
+Functioning example with all nodes and input types
+--------------------------------------------------
+
+.. warning::
+
+    If you supply a node, pyfair essentially ignores all your inputs
+    underneath that node. E.g. If you supply Loss Event Frequency,
+    you Threat Event Frequency and Vulnerability are immaterial. This
+    example exists solely for the purpose of giving you examples of
+    valid inputs.
+
+.. code-block:: python
+
+    # Model with all nodes specified
+    model = FairModel('All Nodes Defined')
+    # Contact Frequency: all parameters must be positive numbers
+    # Normal curve takes mean and standard deviation
+    model.input_data('Contact Frequency', mean=5, stdev=1)
+    # Probability of Action: all parameters must be from zero to one
+    # Constant takes a single constant value
+    model.input_data('Probability of Action', constant=.95)
+    # Threat Capability: all parameters must be from zero to one
+    # BetaPert takes without lambda/gamma takes a low, most_likely, and high value
+    model.input_data('Threat Capability', low=.2, most_likely=.4, high=.9)
+    # Control Strength: all parameters must be from zero to one 
+    # BetaPert with lambda/gamma also takes a gamma value
+    model.input_data('Control Strength', low=.2, most_likely=.4, high=.9, gamma=2)
+    # Secondary Loss Event Frequency: all parameters must be a positive number
+    model.input_data('Secondary Loss Event Frequency', constant=50)
+    # Secondary Loss Event Magnitude: all parameters must be a positive number
+    model.input_data('Secondary Loss Event Magnitude',  constant=50)
+    # Threat Event Frequency: all parameters must be a positive number
+    model.input_data('Threat Event Frequency',  constant=50)
+    # Vulnerability: all parameters must be from zero to one
+    model.input_data('Vulnerability', constant=.75)
+    # Primary Loss: all parameters must be positive numbers
+    model.input_data('Primary Loss', constant=50)
+    # Secondary Loss: all parameters must be positive numbers
+    model.input_data('Secondary Loss',  constant=50)
+    # Secondary Loss Event Frequency: all parameters must be positive numbers
+    model.input_data('Loss Event Frequency', constant=50)
+    # Loss Magnitude: all parameters must be positive numbers
+    model.input_data('Loss Magnitude',  constant=50)
+    model.calculate_all()
+
 Why are my calculation dependencies unresolved?
 -----------------------------------------------
 

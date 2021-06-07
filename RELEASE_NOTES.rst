@@ -8,6 +8,8 @@ Version 0.2-beta.0
   version
 * Universally changed `mode` argument to `most_likely`
 * Add FairJupyterShim class
+* Added Dockerfile and instructionsfor `theonaunheim/pyfair-notebook`
+  Docker Hub image
 * Tested against: python 3.8.3, matplotlib 3.2.2, numpy 1.18.5, pandas 1.0.5,
   scipy 1.5.0
 
