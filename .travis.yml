@@ -6,4 +6,4 @@ branches:
 install:
   - pip install -r requirements.txt 
   - pip install .
-script: python ./tests/test_runner.py
+script: pytest
