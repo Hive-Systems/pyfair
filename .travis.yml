@@ -3,7 +3,7 @@ branches:
   only:
   - dev
 install:
-  - git clone git clone --depth=50 --branch=dev https://github.com/theonaunheim/pyfair.git theonaunheim/pyfair
+  - git clone --depth=50 --branch=dev https://github.com/theonaunheim/pyfair.git theonaunheim/pyfair
   - pip install -r requirements.txt 
   - pip install .
 script: python ./tests/test_runner.py
