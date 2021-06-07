@@ -1,2 +1,7 @@
 language: python
+branches:
+  only:
+  - master
+  - dev
+install: pip install .
 script: python ./tests/test_runner.py
