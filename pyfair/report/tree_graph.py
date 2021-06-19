@@ -218,7 +218,8 @@ class FairTreeGraph(object):
 
         """
         # Do not plot interactively
-        plt.ioff()
+        if matplotlib.get_backend() == 'module://matplotlib_inline.backend_inline':
+            plt.ioff()
         fig, ax = plt.subplots()
         fig.set_size_inches(20, 6)
         ax = self._tweak_axes(ax)
@@ -226,5 +227,6 @@ class FairTreeGraph(object):
         self._generate_rects(ax)
         self._data.apply(self._generate_lines, args=[ax], axis=1)
         self._generate_legend(ax)
-        plt.ion()
+        if matplotlib.get_backend() == 'module://matplotlib_inline.backend_inline':
+            plt.ion()
         return (fig, ax)

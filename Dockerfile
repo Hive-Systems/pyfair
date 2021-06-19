@@ -16,6 +16,9 @@ WORKDIR /home/jovyan/work/src/pyfair
 RUN pip install --no-cache-dir .
 RUN rm -rf /home/jovyan/work/src
 
+# Install ipympl for %matplotlib notebook
+RUN pip install --no-cache-dir ipympl
+
 # Flip back to working environment
 WORKDIR /home/jovyan/work/
 
