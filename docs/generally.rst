@@ -144,7 +144,7 @@ example of how everything works.
 
 For the purposes of this demonstration, we will keep it simple. We will run
 a Monte Carlo model composed of three separate simulations and using three
-inputs. These inputs will be Threat Event Frqeuency (TEF), Vulnerability
+inputs. These inputs will be Threat Event Frequency (TEF), Vulnerability
 (V), and Loss Magnitude (LM). We will use this simulation to estimate the 
 Risk associated with allowing all ports to remain open.
 
@@ -237,7 +237,7 @@ of 50.
 | 3          | 86  |
 +------------+-----+ 
 
-Step 2: Calculate LEF Using TDF and V
+Step 2: Calculate LEF Using TEF and V
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As you can likely see, we can use our 3 TEFs and 3 Vs and multiply them
@@ -254,7 +254,7 @@ together element-by-element. This will give us 3 LEF values.
 +------------+--------+-----+-------------------+
 
 This follows with what we know about Loss Event Frequency. It is the
-number of threat events that conver to loss events.
+number of threat events that convert to loss events.
 
 Step 3: Calculate Our R Using LEF and LM
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -270,7 +270,7 @@ by the amount lost for each event.
 +------------+--------+-----+------------------+
 | 2          | 25,968 | 150 | 3,895,200        |
 +------------+--------+-----+------------------+
-| 3          | 30,372 | 86  | 2,612,009        |
+| 3          | 30,372 | 86  | 2,611,992        |
 +------------+--------+-----+------------------+
 
 Step 4: Analyze Our Risk Outputs
@@ -299,7 +299,7 @@ should be able to achieve similar results with 5 to 10 lines of code.
     # Create our model and calculate (don't worry about understanding yet)
     model = FairModel(name='Sample')
     model.input_data('Threat Event Frequency', mean=50_000, stdev=10_000)
-    model.input_data('Vulerability', mean=.66, stdev=.01)
+    model.input_data('Vulnerability', mean=.67, stdev=.01)
     model.input_data('Loss Magnitude', mean=100, stdev=50)
     model.calculate_all()
 
