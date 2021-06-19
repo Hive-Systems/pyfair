@@ -123,7 +123,7 @@ multiply these together to derive the number of losses that will occur
     LEF are not rounded to the nearest integer. This allows for
     the modeling of events that happen infrequently. For instance, if
     we are running a simulation for a single year, one might model a
-    once a century occurance using a LEF/TEF of 0.01.
+    once a century occurrence using a LEF/TEF of 0.01.
 
 **Threat Event Frequency ("TEF")**
 ----------------------------------
@@ -171,7 +171,7 @@ For a given year, if we have the number of times an actor comes in
 contact with an asset (Contact Frequency/C), and the probability that
 the actor will attempt to act of that contact (Probability of Action,
 P), we can multiply these together to derive the number of times that
-a particular threat will occur (Threat Event Freuency/TEF)
+a particular threat will occur (Threat Event Frequency/TEF)
 
 +------------+-------+------+---------------+
 | Simulation | C     | A    | TEF (C x A)   |
@@ -389,7 +389,7 @@ None (this must be supplied, not calculated)
 
 Example
 -------
-The relative strength of a threat actor (Threat Capavility/C) as it
+The relative strength of a threat actor (Threat Capability/C) as it
 relates to the relative strength of the controls (Control Strength/CS)
 
 +------------+------+
@@ -574,7 +574,7 @@ multiplied together on an elementwise basis.
 Example
 ~~~~~~~
 For a given model, we can have a matrix of secondary loss
-proababilities. Each row can represent a simulation and each column can
+probabilities. Each row can represent a simulation and each column can
 represent a loss type. In this example below we have three different 
 probability columns for different types of probability loss. E.g. the 
 probabilities of loss for simulation 1 are 0.95, 0.05, and 1.00.
