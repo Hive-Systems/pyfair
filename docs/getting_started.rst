@@ -8,7 +8,7 @@ This section relates to how to use pyfair.
 
 In general you will supply your inputs, calculate your model, and then do
 something with the data (e.g. store it, create a report, or feed it into
-another calcluation).
+another calculation).
 
 Here is how you can use these pyfair tools to do that.
 
@@ -106,7 +106,7 @@ FairMetaModel constructor like this:
     # Create our metamodel
     metamodel = FairMetaModel(name='Our MetaModel', models=[model1, model2])
 
-    # Calclate our MetaModel (and contained Models)
+    # Calculate our MetaModel (and contained Models)
     metamodel.calculate_all()
 
     # Export results
