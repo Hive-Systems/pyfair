@@ -1,5 +1,8 @@
 '''Module for obtaining fig and ax data for use in Jupyter notebook'''
 
+import contextlib
+
+import matplotlib
 import matplotlib.pyplot as plt
 
 from pyfair import FairModel
@@ -102,17 +105,15 @@ class FairJupyterShim(object):
             as values
         
         """
-        # Do not plot interactively
-        plt.ioff()
-        rv = {}
-        for name, model in self._model_or_models.items():
-            if isinstance(model, FairMetaModel):
-                raise FairException('Cannot make a tree from metamodel: {}'.format(model))
-            else:
-                ftg = FairTreeGraph(model, self._format_strings)
-                fig_ax = ftg.generate_image()
-                rv[name] = fig_ax
-        plt.ion()
+        with self._defer_drawing_drawing_for_inline():
+            rv = {}
+            for name, model in self._model_or_models.items():
+                if isinstance(model, FairMetaModel):
+                    raise FairException('Cannot make a tree from metamodel: {}'.format(model))
+                else:
+                    ftg = FairTreeGraph(model, self._format_strings)
+                    fig_ax = ftg.generate_image()
+                    rv[name] = fig_ax
         return rv
 
     def get_distributions(self) -> dict:
@@ -126,20 +127,18 @@ class FairJupyterShim(object):
             all of the distributions combined.
         
         """
-        # Do not plot interactively
-        plt.ioff()
-        # Process individual distributions
-        rv = {}
-        for name, model in self._model_or_models.items():
-            fdc = FairDistributionCurve(model, self._currency_prefix)
-            fig, ax = fdc.generate_image()
-            rv[name] = (fig, ax)
-        # Process combined distributions
-        inputs = self._model_or_models.values()
-        fdc2 = FairDistributionCurve(inputs, self._currency_prefix)
-        fig, ax = fdc2.generate_image()
-        rv['combined'] = (fig, ax)
-        plt.ion()
+        with self._defer_drawing_drawing_for_inline():
+            # Process individual distributions
+            rv = {}
+            for name, model in self._model_or_models.items():
+                fdc = FairDistributionCurve(model, self._currency_prefix)
+                fig, ax = fdc.generate_image()
+                rv[name] = (fig, ax)
+            # Process combined distributions
+            inputs = self._model_or_models.values()
+            fdc2 = FairDistributionCurve(inputs, self._currency_prefix)
+            fig, ax = fdc2.generate_image()
+            rv['combined'] = (fig, ax)
         return rv
 
     def get_exceedence_curves(self) -> dict:
@@ -154,20 +153,18 @@ class FairJupyterShim(object):
             1 fig, but 2 axes.
         
         """
-        # Do not plot interactively
-        plt.ioff()
-        # Process individual curve
-        rv = {}
-        for name, model in self._model_or_models.items():
-            fec = FairExceedenceCurves(model, self._currency_prefix)
-            fig, axes = fec.generate_image()
-            rv[name] = (fig, axes)
-        # Add combined curve
-        inputs = self._model_or_models.values()
-        fec2 = FairExceedenceCurves(inputs, self._currency_prefix)
-        fig, ax = fec2.generate_image()
-        rv['combined'] = (fig, ax)
-        plt.ion()
+        with self._defer_drawing_drawing_for_inline():
+            # Process individual curve
+            rv = {}
+            for name, model in self._model_or_models.items():
+                fec = FairExceedenceCurves(model, self._currency_prefix)
+                fig, axes = fec.generate_image()
+                rv[name] = (fig, axes)
+            # Add combined curve
+            inputs = self._model_or_models.values()
+            fec2 = FairExceedenceCurves(inputs, self._currency_prefix)
+            fig, ax = fec2.generate_image()
+            rv['combined'] = (fig, ax)
         return rv
 
     def get_violins(self):
@@ -185,14 +182,21 @@ class FairJupyterShim(object):
             If input is a model (violin only addresses metamodels)
         
         """
-        # Do not plot interactively
-        plt.ioff()
-        rv = {}
-        for name, model in self._model_or_models.items():
-            if isinstance(model, FairModel):
-                raise FairException('Cannot make violin plot from model: {}'.format(model))
-        vplot = FairViolinPlot(model)
-        fig, ax = vplot.generate_image()
-        rv[name] = (fig, ax)
-        plt.ion()
+        with self._defer_drawing_drawing_for_inline():
+            rv = {}
+            for name, model in self._model_or_models.items():
+                if isinstance(model, FairModel):
+                    raise FairException('Cannot make violin plot from model: {}'.format(model))
+            vplot = FairViolinPlot(model)
+            fig, ax = vplot.generate_image()
+            rv[name] = (fig, ax)
         return rv
+
+    @contextlib.contextmanager
+    def _defer_drawing_drawing_for_inline(self):
+        '''This class is used to suppress drawings for the 'inline' backend.'''
+        if 'inline' in matplotlib.get_backend():
+            plt.ioff()
+        yield
+        if 'inline' in matplotlib.get_backend():
+            plt.ion()
