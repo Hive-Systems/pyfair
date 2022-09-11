@@ -254,11 +254,8 @@ class FairDataInput(object):
                 s = pd.Series(data)
                 # Put in dict
                 df_dict[target][column] = s
-        # Multiply
-        df1, df2 = df_dict.values()
-        combined_df = df1 * df2
-        # Sum
-        summed = combined_df.sum(axis=1)
+        # Get partial secondary losses and sum up all the values
+        summed = np.sum(df.prod(axis=1) for df in df_dict.values())
         # Record params
         new_target = 'multi_' + final_target
         self._supplied_values[new_target] = kwargs_dict
