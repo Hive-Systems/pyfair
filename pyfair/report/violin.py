@@ -3,8 +3,6 @@
 import matplotlib
 import matplotlib.pyplot as plt
 
-from matplotlib.ticker import StrMethodFormatter
-
 from ..utility.fair_exception import FairException
 from .base_curve import FairBaseCurve
 
@@ -43,8 +41,8 @@ class FairViolinPlot(FairBaseCurve):
             showmeans=False,
             showmedians=True
         )
-        ax.axes.xaxis.set_ticklabels(columns)
         ax.axes.xaxis.set_ticks([item for item in range(1, len(columns) + 1)])
+        ax.axes.xaxis.set_ticklabels(columns)
         ax.set_title('Components And Aggregate Risk', fontsize=20)
         ax.axes.yaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter('${x:,.0f}'))
         plt.subplots_adjust(left=.2)
