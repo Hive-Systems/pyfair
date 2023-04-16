@@ -26,7 +26,7 @@ class TestFairTreeGraph(unittest.TestCase):
     }
 
     def test_tree_graph_creation(self):
-        """Test tree greaph creation"""
+        """Test tree graph creation"""
         # There is little to test here other than simple creation
         # Whether it comes out OK or not ... ¯\_(ツ)_/¯
         model = FairModel(name='Test')
