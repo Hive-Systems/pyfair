@@ -462,7 +462,7 @@ class FairModel(object):
         if not(ready_for_calculation):
             status_str = str(pd.Series(self._tree.get_node_statuses()))
             raise FairException('Not ready for calculation. See statuses: \n{}'.format(status_str))
-        status = pd.Series(self._tree.get_node_statuses())
+        status = pd.Series(self._tree.get_node_statuses(), dtype='str')
         # Needs to be string to avoid weird numpy error with empty status array
         # https://stackoverflow.com/questions/40659212/futurewarning-elementwise-comparison-failed-returning-scalar-but-in-the-futur
         calculable_nodes = (status.loc[status.astype(str) == 'Calculable']
