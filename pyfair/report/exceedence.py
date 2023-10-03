@@ -78,6 +78,7 @@ class FairExceedenceCurves(FairBaseCurve):
         ax.axes.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}%'))
         ax.axes.xaxis.set_major_formatter(StrMethodFormatter(self._currency_prefix + '{x:,.0f}'))
         ax.axes.xaxis.set_tick_params(rotation=-45)
-        for tick in ax.axes.xaxis.get_major_ticks():
-            tick.label.set_horizontalalignment('left')
+        ax.axes.xaxis.set_tick_params(left = 'true')
+        #for tick in ax.axes.xaxis.get_major_ticks():
+        #    tick.label.set_horizontalalignment('left')
         ax.axes.set_title('Loss Exceedence Curve', fontsize=20)

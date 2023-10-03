@@ -60,7 +60,7 @@ class FairDistributionCurve(FairBaseCurve):
         model = self._input[model_name]
         data = model.export_results().loc[:, target]
         # Set up ax and params
-        fig, ax = plt.subplots(figsize=(6, 1))
+        fig, ax = plt.subplots(figsize=(25, 1))
         ax.set_xlim(0, data.max())
         # Set spines and axis invisible
         for spine in ['left', 'right', 'top', 'bottom']:
@@ -96,16 +96,19 @@ class FairDistributionCurve(FairBaseCurve):
 
         """
         # Setup plots
+        
         fig, ax = plt.subplots(figsize=(16, 6))
         plt.subplots_adjust(bottom=.2)
         ax.axes.set_title('Risk Distribution', fontsize=20)
+        ax.locator_params(axis='x', nbins=25)
         # Format X axis
         ax.axes.xaxis.set_major_formatter(StrMethodFormatter(self._currency_prefix + '{x:,.0f}'))
         ax.axes.xaxis.set_tick_params(rotation=-45)
+        ax.axes.grid(color='b', linestyle='-', linewidth=1, alpha=.1)
         ax.set_ylabel('Frequency Histogram')
-        ax.axes.xaxis.set_label_position('left')
+        ax.axes.xaxis.set_tick_params(left = 'true')
         #for tick in ax.axes.xaxis.get_major_ticks():
-        #    tick.label.set_horizontalalignment('left')
+            #tick.label.set_horizontalalignment('left')
         # Draw histrogram for each model
         legend_labels = []
         for name, model in self._input.items():
