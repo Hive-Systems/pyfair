@@ -103,8 +103,9 @@ class FairDistributionCurve(FairBaseCurve):
         ax.axes.xaxis.set_major_formatter(StrMethodFormatter(self._currency_prefix + '{x:,.0f}'))
         ax.axes.xaxis.set_tick_params(rotation=-45)
         ax.set_ylabel('Frequency Histogram')
-        for tick in ax.axes.xaxis.get_major_ticks():
-            tick.label.set_horizontalalignment('left')
+        ax.axes.xaxis.set_label_position('left')
+        #for tick in ax.axes.xaxis.get_major_ticks():
+        #    tick.label.set_horizontalalignment('left')
         # Draw histrogram for each model
         legend_labels = []
         for name, model in self._input.items():
