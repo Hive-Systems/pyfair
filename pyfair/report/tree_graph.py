@@ -142,7 +142,8 @@ class FairTreeGraph(object):
             output = '\n'.join([
                 key + '  ' + value.rjust(value_just)
                 for key, value
-                in data.iteritems()
+                
+                in data.items()
             ])
         elif supplied:
             # Get rid of value less items and rename
@@ -158,7 +159,7 @@ class FairTreeGraph(object):
                 output = '\n'.join([
                     key + '  ' + value.rjust(value_just)
                     for key, value
-                    in data.iteritems()
+                    in data.items()
                 ])
                 output = 'Raw input'
             # And verything else ... so much nesting
@@ -166,7 +167,7 @@ class FairTreeGraph(object):
                 output = '\n'.join([
                     key + '  ' + value.rjust(value_just)
                     for key, value
-                    in data.iteritems()
+                    in data.items()
                 ])
         else:
             output = ''
