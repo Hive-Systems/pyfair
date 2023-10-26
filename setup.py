@@ -18,8 +18,8 @@ setup(
         "Open FAIR" is a trademark of the Open Group.
 
     """,
-    author="Theo Naunheim",
-    author_email="theonaunheim@gmail.com",
+    author="Hive Systems",
+    author_email="pyfair@hivesystems.io",
     packages=[
         "pyfair",
         "pyfair.model",
@@ -27,7 +27,7 @@ setup(
         "pyfair.utility",
     ],
     license="MIT",
-    url="https://github.com/theonaunheim/pyfair",
+    url="https://github.com/Hive-Systems/pyfair",
     keywords=["FAIR", "risk"],
     classifiers=[
         "Development Status :: 3 - Alpha",
