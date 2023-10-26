@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'pyfair'
-copyright = '2023, Hive Systems LLC'
+copyright = '2023, Hive Systems, LLC'
 author = 'Hive Systems'
 
 # The short X.Y version
