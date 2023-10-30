@@ -1,7 +1,7 @@
 pyfair
 ======
 
-.. image:: static/logo.PNG
+.. image:: static/logo.png
     :alt: logo
     :width: 100px
 
