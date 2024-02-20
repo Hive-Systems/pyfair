@@ -1,9 +1,9 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
-    name='pyfair',
-    version='0.1-alpha.12',
-    description='Open FAIR Monte Carlo creator',
+    name="pyfair",
+    version="0.1-alpha.12",
+    description="Open FAIR Monte Carlo creator",
     long_description="""
         Factor Analysis of Information Risk (Open FAIR) model in Python.
 
@@ -18,31 +18,28 @@ setup(
         "Open FAIR" is a trademark of the Open Group.
 
     """,
-    author='Theo Naunheim',
-    author_email='theonaunheim@gmail.com',
+    author="Hive Systems",
+    author_email="pyfair@hivesystems.io",
     packages=[
-        'pyfair',
-        'pyfair.model',
-        'pyfair.report',
-        'pyfair.utility',
+        "pyfair",
+        "pyfair.model",
+        "pyfair.report",
+        "pyfair.utility",
     ],
-    license='MIT',
-    url='https://github.com/theonaunheim/pyfair',
-    keywords=[
-        'FAIR',
-        'risk'
-    ],
+    license="MIT",
+    url="https://github.com/Hive-Systems/pyfair",
+    keywords=["FAIR", "risk"],
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'License :: OSI Approved :: MIT License',
+        "Development Status :: 3 - Alpha",
+        "License :: OSI Approved :: MIT License",
     ],
     requires=[
-        'pandas',
-        'numpy',
-        'scipy',
-        'matplotlib',
-        'xlrd',
+        "pandas",
+        "numpy",
+        "scipy",
+        "matplotlib",
+        "xlrd",
     ],
-    package_dir={'pyfair': './pyfair'},
-    package_data={'pyfair': ['./static/*']},
+    package_dir={"pyfair": "./pyfair"},
+    package_data={"pyfair": ["./static/*"]},
 )

@@ -19,8 +19,8 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'pyfair'
-copyright = '2020, Theo Naunheim'
-author = 'Theo Naunheim'
+copyright = '2023, Hive Systems, LLC'
+author = 'Hive Systems'
 
 # The short X.Y version
 version = '0.1.12'
@@ -45,8 +45,10 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
+    'sphinx_rtd_theme',
 ]
 
+html_theme = "sphinx_rtd_theme"
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -135,7 +137,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'pyfair.tex', 'pyfair Documentation',
-     'Theo Naunheim', 'manual'),
+     'Hive Systems', 'manual'),
 ]
 
 

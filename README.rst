@@ -1,15 +1,13 @@
 pyfair
 ======
 
-.. image:: static/logo.PNG
+.. image:: static/logo.png
     :alt: logo
     :width: 100px
 
-|rtd_badge| |travis_badge| |pypi_badge|
+|rtd_badge| |pypi_badge|
 
 .. |rtd_badge| image:: https://readthedocs.org/projects/pyfair/badge/?version=latest
-
-.. |travis_badge| image:: https://travis-ci.org/theonaunheim/pyfair.svg?branch=master
 
 .. |pypi_badge| image:: https://badge.fury.io/py/pyfair.svg
 

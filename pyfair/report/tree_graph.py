@@ -125,7 +125,7 @@ class FairTreeGraph(object):
         supplied = row['status'] == 'Supplied'
         # Raw inputs will have a list
         if 'raw' in row.index:
-            if type(row['raw']) == list:
+            if isinstance(row['raw'], list):
                 raw = True
             else:
                 raw = False
@@ -141,6 +141,7 @@ class FairTreeGraph(object):
             output = '\n'.join([
                 key + '  ' + value.rjust(value_just)
                 for key, value
+                
                 in data.items()
             ])
         elif supplied:
