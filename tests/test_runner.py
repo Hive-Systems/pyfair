@@ -10,13 +10,13 @@ path = str(repo_dir)
 sys.path.append(path)
 
 # Import test modules
+import model.test_base
 import model.test_meta_model
+import model.test_model
 import model.test_model_calc
 import model.test_model_input
 import model.test_model_node
 import model.test_model_tree
-import model.test_model
-import model.test_base
 import report.test_base_curve
 import report.test_base_report
 import report.test_distribution
@@ -66,3 +66,4 @@ for test_module in test_modules:
 # Create runner and run
 runner = unittest.TextTestRunner(verbosity=5)
 result = runner.run(suite)
+sys.exit(0 if result.wasSuccessful() else 1)

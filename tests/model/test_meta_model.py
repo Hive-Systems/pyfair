@@ -3,13 +3,12 @@ import unittest
 
 import pandas as pd
 
-from pyfair.model.model import FairModel
 from pyfair.model.meta_model import FairMetaModel
+from pyfair.model.model import FairModel
 from pyfair.utility.fair_exception import FairException
 
 
 class TestFairMetaModel(unittest.TestCase):
-
     _RISK_TABLE_COLUMN_COUNT = 2
     _N_SAMPLES = 100
     _MODEL_JSON = '{     "Loss Event Frequency": {         "low": 20,         "mode": 100,         "high": 900     },     "Loss Magnitude": {         "low": 3000000,         "mode": 3500000,         "high": 5000000     },     "name": "Regular Model 1",     "n_simulations": 10000,     "random_seed": 42,     "model_uuid": "b6c6c968-a03c-11e9-a5db-f26e0bbd6dbc",     "type": "FairModel",     "creation_date": "2019-07-06 17:23:43.647370" }'
@@ -29,28 +28,22 @@ class TestFairMetaModel(unittest.TestCase):
         self.assertTrue(self._meta._creation_date)
         # Check that the table is of proper-ish
         self.assertEqual(
-            len(self._meta._risk_table.columns), 
-            self._RISK_TABLE_COLUMN_COUNT
+            len(self._meta._risk_table.columns), self._RISK_TABLE_COLUMN_COUNT
         )
         # Test regular instantiation
         m1 = FairModel.read_json(self._MODEL_JSON)
         m2 = FairModel.read_json(self._MODEL_JSON)
-        self._meta = FairMetaModel('New Model', [m1, m2])
+        self._meta = FairMetaModel("New Model", [m1, m2])
         # Throw garbage in metamodel
         self.assertRaises(
-            FairException,
-            FairMetaModel,
-            'Garnage Name', 
-            ['Garbage Input']
+            FairException, FairMetaModel, "Garnage Name", ["Garbage Input"]
         )
 
     def test_read_json(self):
         """setUp covers most, so just test Model JSON fails"""
         # Ensure metamodel fails
         self.assertRaises(
-            FairException, 
-            FairMetaModel.read_json, 
-            self._MODEL_JSON
+            FairException, FairMetaModel.read_json, self._MODEL_JSON
         )
 
     def test_inspection(self):
@@ -68,7 +61,7 @@ class TestFairMetaModel(unittest.TestCase):
         # Test regular instantiation
         m1 = FairModel.read_json(self._MODEL_JSON)
         m2 = FairModel.read_json(self._MODEL_JSON)
-        self._meta = FairMetaModel('New Model', [m1, m2])
+        self._meta = FairMetaModel("New Model", [m1, m2])
         # Test before
         self.assertFalse(self._meta.calculation_completed())
         # Calculate
@@ -80,20 +73,18 @@ class TestFairMetaModel(unittest.TestCase):
         """Test parameter and result exports are OK."""
         # Get rid of weird formatting included in class attribute
         self.maxDiff = 5_000
-        self.assertEquals(
-            self._meta.to_json().replace('\n','').replace(' ','') ,
-            self._META_MODEL_JSON.replace('\n','').replace(' ','') 
+        self.assertEqual(
+            self._meta.to_json().replace("\n", "").replace(" ", ""),
+            self._META_MODEL_JSON.replace("\n", "").replace(" ", ""),
         )
         # Test Risk Table
         param_dict = json.loads(self._META_MODEL_JSON)
-        del param_dict['creation_date']
-        del param_dict['model_uuid']
-        del param_dict['name']
-        del param_dict['type']
-        self.assertEquals(
-            self._meta.export_params(),
-            param_dict
-        )
+        del param_dict["creation_date"]
+        del param_dict["model_uuid"]
+        del param_dict["name"]
+        del param_dict["type"]
+        self.assertEqual(self._meta.export_params(), param_dict)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

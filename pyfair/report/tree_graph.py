@@ -2,9 +2,7 @@
 
 import pandas as pd
 
-import matplotlib
 import matplotlib.pyplot as plt
-
 from matplotlib.patches import Patch
 from matplotlib.patches import Rectangle
 from matplotlib.collections import PatchCollection
@@ -126,7 +124,7 @@ class FairTreeGraph(object):
         supplied = row['status'] == 'Supplied'
         # Raw inputs will have a list
         if 'raw' in row.index:
-            if type(row['raw']) == list:
+            if isinstance(row['raw'], list):
                 raw = True
             else:
                 raw = False
