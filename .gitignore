@@ -1,21 +1,31 @@
-# Debugging notebooks
-*.ipynb
-
-# VSCode
-.vscode/
-
-# Byte-compiled / optimized / DLL files
-__pycache__/
+# Python related
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Distribution / packaging
+__pycache__/
+*.egg-info/
+*.egg
 .Python
+celerybeat-schedule
+*.sage.py
+local_settings.py
+
+# Jupyter Notebook
+*.ipynb
+.ipynb_checkpoints
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# Packaging
 build/
-develop-eggs/
 dist/
 downloads/
 eggs/
@@ -26,22 +36,10 @@ parts/
 sdist/
 var/
 wheels/
-*.egg-info/
 .installed.cfg
-*.egg
 MANIFEST
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
+# Testing
 htmlcov/
 .tox/
 .coverage
@@ -53,58 +51,58 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Translations
-*.mo
-*.pot
+# Documentation
+docs/_build/
+/site
 
-# Django stuff:
-*.log
-local_settings.py
+# IDEs and Editors
+.vscode/
+.idea/
+.spyderproject
+.spyproject
+.ropeproject
+.mypy_cache/
+
+# Databases
 db.sqlite3
 
-# Flask stuff:
+# Flask
 instance/
 .webassets-cache
 
-# Scrapy stuff:
-.scrapy
+# Django
+*.log
 
-# Sphinx documentation
-docs/_build/
+# Scrapy
+.scrapy
 
 # PyBuilder
 target/
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# OS generated files
+.DS_Store
+Thumbs.db
 
-# pyenv
-.python-version
+# Vim
+*.swp
 
-# celery beat schedule file
-celerybeat-schedule
+# Secrets
+.secrets
+.env.local
 
-# SageMath parsed files
-*.sage.py
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+# PyInstaller
+*.manifest
+*.spec
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# Translations
+*.mo
+*.pot
 
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
+# Dependency Management
+poetry.lock
+Pipfile
+Pipfile.lock
