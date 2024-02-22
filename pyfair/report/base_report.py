@@ -254,7 +254,7 @@ class FairBaseReport(object):
         except KeyError:
             raise FairException("No 'Risk' key. Model likely uncalculated.")
         # Get aggregate statistics and set titles
-        risk_results = risk_results.agg([np.mean, np.std, np.min, np.max])
+        risk_results = risk_results.agg(['mean', 'std', 'min', 'max'])
         risk_results.index = ['Mean', 'Stdev', 'Minimum', 'Maximum']
         # Format risk results into dataframe
         overview_df = risk_results.applymap(lambda x: self._format_strings['Risk'].format(x))
