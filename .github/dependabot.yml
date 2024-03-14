@@ -1,0 +1,12 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 1
+updates:
+  - package-ecosystem: "pip" # Specify the package ecosystem
+    directory: "/" # Location of the package manifest file
+    schedule:
+      interval: "monthly" # Frequency of update checks
+    open-pull-requests-limit: 10 # Maximum number of open pull requests
